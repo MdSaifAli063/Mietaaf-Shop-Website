@@ -2,6 +2,8 @@
 
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import toast from "react-hot-toast";
+import { isShoppingOpen } from "@/lib/shopping-gate";
 
 interface CompareState {
   slugs: string[];
@@ -17,6 +19,10 @@ export const useCompareStore = create<CompareState>()(
       slugs: [],
       max: 4,
       add: (slug) => {
+        if (!isShoppingOpen()) {
+          toast.error("Sign in to compare products.");
+          return false;
+        }
         const { slugs, max } = get();
         if (slugs.includes(slug)) return true;
         if (slugs.length >= max) return false;

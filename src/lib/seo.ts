@@ -1,6 +1,11 @@
 import type { Metadata } from "next";
 
-const base = process.env.NEXT_PUBLIC_SITE_URL ?? "https://mietaaf.com";
+/** Canonical origin for metadata, sitemap, and JSON-LD (no trailing slash). */
+export function getSiteUrl(): string {
+  return (process.env.NEXT_PUBLIC_SITE_URL ?? "https://mietaaf.com").replace(/\/$/, "");
+}
+
+const base = getSiteUrl();
 
 export function rootMetadata(): Metadata {
   return {
@@ -38,4 +43,26 @@ export function rootMetadata(): Metadata {
 
 export function pageTitle(title: string): Metadata {
   return { title };
+}
+
+/** Home route: canonical, OG/Twitter aligned with root `metadataBase`. */
+export function homePageMetadata(): Metadata {
+  const description =
+    "Sherwani, suits, indo-western, wedding and premium menswear — Mietaaf atelier experience.";
+  return {
+    title: "Luxury Men’s Ethnic & Formal",
+    description,
+    alternates: { canonical: "/" },
+    openGraph: {
+      type: "website",
+      title: "Luxury Men’s Ethnic & Formal | Mietaaf",
+      description,
+      url: "/",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "Luxury Men’s Ethnic & Formal | Mietaaf",
+      description,
+    },
+  };
 }
