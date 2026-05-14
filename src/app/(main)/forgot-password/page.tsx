@@ -1,6 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { z } from "zod";
@@ -16,11 +18,17 @@ import { PageEnter } from "@/components/motion/page-enter";
 type ForgotValues = z.infer<typeof forgotSchema>;
 
 export default function ForgotPasswordPage() {
-  const { resetPassword, firebaseReady } = useAuth();
+  const { resetPassword, firebaseReady, user, loading } = useAuth();
+  const router = useRouter();
   const form = useForm<ForgotValues>({
     resolver: zodResolver(forgotSchema),
     defaultValues: { email: "" },
   });
+
+  useEffect(() => {
+    if (!firebaseReady || loading) return;
+    if (user) router.replace("/");
+  }, [firebaseReady, loading, user, router]);
 
   async function onSubmit(values: ForgotValues) {
     if (!firebaseReady) {

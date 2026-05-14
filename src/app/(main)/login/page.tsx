@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { Suspense, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { z } from "zod";
@@ -13,16 +14,25 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { PageEnter } from "@/components/motion/page-enter";
+import { sanitizeReturnUrl } from "@/lib/auth-public-paths";
 
 type LoginValues = z.infer<typeof loginSchema>;
 
-export default function LoginPage() {
-  const { signInEmail, signInGoogle, firebaseReady } = useAuth();
+function LoginForm() {
+  const { signInEmail, signInGoogle, firebaseReady, user, loading } = useAuth();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const returnUrl = sanitizeReturnUrl(searchParams.get("returnUrl"));
+
   const form = useForm<LoginValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: { email: "", password: "" },
   });
+
+  useEffect(() => {
+    if (!firebaseReady || loading) return;
+    if (user) router.replace(returnUrl);
+  }, [firebaseReady, loading, user, router, returnUrl]);
 
   async function onSubmit(values: LoginValues) {
     if (!firebaseReady) {
@@ -32,7 +42,7 @@ export default function LoginPage() {
     try {
       await signInEmail(values.email, values.password);
       toast.success("Welcome back");
-      router.push("/profile");
+      router.replace(sanitizeReturnUrl(searchParams.get("returnUrl")));
     } catch {
       toast.error("Invalid email or password");
     }
@@ -46,7 +56,7 @@ export default function LoginPage() {
     try {
       await signInGoogle();
       toast.success("Signed in");
-      router.push("/profile");
+      router.replace(sanitizeReturnUrl(searchParams.get("returnUrl")));
     } catch {
       toast.error("Google sign-in failed");
     }
@@ -61,6 +71,9 @@ export default function LoginPage() {
               Mietaaf
             </p>
             <h1 className="mt-2 font-heading text-3xl">Sign in</h1>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Sign in to browse collections, save pieces, and place orders.
+            </p>
           </div>
           <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
             <div className="space-y-2">
@@ -109,5 +122,19 @@ export default function LoginPage() {
         </Card>
       </div>
     </PageEnter>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex min-h-[50vh] items-center justify-center text-sm text-muted-foreground">
+          Loading…
+        </div>
+      }
+    >
+      <LoginForm />
+    </Suspense>
   );
 }
