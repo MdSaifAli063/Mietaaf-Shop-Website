@@ -4,6 +4,12 @@ Production-ready men’s ethnic and formal e-commerce experience: **Next.js 15 (
 
 Orders are completed **without a payment gateway**: checkout builds a structured message and redirects to **`https://wa.me/<YOUR_NUMBER>?text=...`**, optionally persisting an `orders` document in Firestore.
 
+## Authentication gate
+
+When **Firebase env vars are set** (`firebaseReady`), the storefront (header, search, cart, shop, etc.) is only available **after sign-in**. Visiting any other route sends you to `/login?returnUrl=…`; after login you return to that path (same-origin paths only — see `sanitizeReturnUrl` in `src/lib/auth-public-paths.ts`).
+
+If Firebase is **not** configured, the gate is **off** so you can still preview layouts while wiring `.env.local`.
+
 ## Quick start
 
 ```bash
