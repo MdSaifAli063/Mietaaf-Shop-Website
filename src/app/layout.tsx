@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, DM_Sans } from "next/font/google";
 import { AppProviders } from "@/providers/app-providers";
+import { FirebasePublicEnvScript } from "@/components/firebase/firebase-public-env-script";
+import { SiteJsonLd } from "@/components/seo/site-json-ld";
 import { rootMetadata } from "@/lib/seo";
 import "./globals.css";
 
@@ -35,6 +37,8 @@ export default function RootLayout({
       <body
         className={`${dmSans.variable} ${cormorant.variable} min-h-dvh bg-background font-sans text-foreground`}
       >
+        <FirebasePublicEnvScript />
+        <SiteJsonLd />
         <AppProviders>{children}</AppProviders>
       </body>
     </html>

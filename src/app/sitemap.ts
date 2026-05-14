@@ -1,9 +1,10 @@
 import type { MetadataRoute } from "next";
 import { DUMMY_PRODUCTS } from "@/lib/data/products";
 import { CATEGORIES } from "@/lib/data/categories";
+import { getSiteUrl } from "@/lib/seo";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const base = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://localhost:3000").replace(/\/$/, "");
+  const base = getSiteUrl();
   const staticPaths = [
     "",
     "/shop",
