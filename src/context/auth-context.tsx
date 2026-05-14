@@ -24,6 +24,11 @@ import {
 import { doc, getDoc, serverTimestamp, setDoc } from "firebase/firestore";
 import { getFirebaseAuth, getFirebaseDb } from "@/firebase/client";
 import { isFirebaseConfigured } from "@/firebase/config";
+import { syncShoppingGate } from "@/lib/shopping-gate";
+import { useCartStore } from "@/store/cart-store";
+import { useWishlistStore } from "@/store/wishlist-store";
+import { useCompareStore } from "@/store/compare-store";
+import { useRecentStore } from "@/store/recent-store";
 import type { UserProfile } from "@/types";
 
 type AuthContextValue = {
@@ -74,30 +79,57 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         return;
       }
       const ref = doc(db, "users", u.uid);
-      const snap = await getDoc(ref);
-      if (snap.exists()) {
-        const data = snap.data() as Partial<UserProfile>;
-        setProfile({
-          uid: u.uid,
-          email: u.email,
-          displayName: data.displayName ?? u.displayName,
-          photoURL: data.photoURL ?? u.photoURL,
-          phone: data.phone,
-          address: data.address,
-          city: data.city,
-          state: data.state,
-          pincode: data.pincode,
-          role: data.role,
-        });
-      } else {
+      const emailLower = (u.email ?? "").toLowerCase();
+      const envAdmin = parseAdminEmails().includes(emailLower);
+      const fallbackRole = envAdmin ? "admin" : "user";
+
+      try {
+        const snap = await getDoc(ref);
+        if (snap.exists()) {
+          const data = snap.data() as Partial<UserProfile>;
+          if (envAdmin && data.role !== "admin") {
+            await setDoc(ref, { role: "admin" }, { merge: true });
+          }
+          setProfile({
+            uid: u.uid,
+            email: u.email,
+            displayName: data.displayName ?? u.displayName,
+            photoURL: data.photoURL ?? u.photoURL,
+            phone: data.phone,
+            address: data.address,
+            city: data.city,
+            state: data.state,
+            pincode: data.pincode,
+            role: envAdmin ? "admin" : data.role,
+          });
+        } else {
+          await setDoc(
+            ref,
+            {
+              uid: u.uid,
+              email: u.email,
+              displayName: u.displayName,
+              photoURL: u.photoURL,
+              role: fallbackRole,
+              createdAt: serverTimestamp(),
+            },
+            { merge: true },
+          );
+          setProfile({
+            uid: u.uid,
+            email: u.email,
+            displayName: u.displayName,
+            photoURL: u.photoURL,
+            role: fallbackRole,
+          });
+        }
+      } catch {
         setProfile({
           uid: u.uid,
           email: u.email,
           displayName: u.displayName,
           photoURL: u.photoURL,
-          role: parseAdminEmails().includes((u.email ?? "").toLowerCase())
-            ? "admin"
-            : "user",
+          role: fallbackRole,
         });
       }
     },
@@ -118,6 +150,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     });
     return () => unsub();
   }, [auth, loadProfile]);
+
+  /** Guest persisted carts must not apply when Firebase auth is required. */
+  useEffect(() => {
+    if (!firebaseReady || loading) return;
+    if (user) return;
+    useCartStore.getState().clear();
+    useWishlistStore.getState().clear();
+    useCompareStore.getState().clear();
+    useRecentStore.getState().clear();
+  }, [firebaseReady, loading, user]);
 
   const refreshProfile = useCallback(async () => {
     if (user) await loadProfile(user);
@@ -220,6 +262,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       isAdmin,
     ],
   );
+
+  syncShoppingGate({
+    firebaseReady,
+    loading,
+    hasUser: Boolean(user),
+  });
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
