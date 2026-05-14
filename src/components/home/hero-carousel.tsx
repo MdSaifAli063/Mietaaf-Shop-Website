@@ -23,14 +23,14 @@ export function HeroCarousel() {
         loop
         className="h-full [&_.swiper-pagination-bullet]:bg-white/50 [&_.swiper-pagination-bullet-active]:bg-primary"
       >
-        {BANNERS.map((b) => (
+        {BANNERS.map((b, index) => (
           <SwiperSlide key={b.id} className="!h-full">
             <div className="relative h-full w-full">
               <Image
                 src={b.image}
                 alt={b.title}
                 fill
-                priority
+                priority={index === 0}
                 className="object-cover opacity-90"
                 sizes="100vw"
               />

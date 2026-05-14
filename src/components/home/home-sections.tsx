@@ -262,7 +262,15 @@ export function HomeSections() {
               toast.success("Welcome to the private list.");
             }}
           >
-            <Input type="email" required placeholder="Your email" className="h-11 rounded-full" />
+            <Input
+              id="mietaaf-home-private-list-email"
+              name="email"
+              type="email"
+              autoComplete="email"
+              required
+              placeholder="Your email"
+              className="h-11 rounded-full"
+            />
             <Button type="submit" className="rounded-full px-6">
               Join
             </Button>
