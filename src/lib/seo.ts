@@ -1,8 +1,17 @@
 import type { Metadata } from "next";
 
-/** Canonical origin for metadata, sitemap, and JSON-LD (no trailing slash). */
+/**
+ * Canonical origin for metadata, sitemap, and JSON-LD (no trailing slash).
+ * - Production: set `NEXT_PUBLIC_SITE_URL` in Vercel (e.g. https://mietaaf.com).
+ * - Preview: if unset, uses `https://${VERCEL_URL}` so OG/sitemap match the deployment.
+ * - Local: http://localhost:3000 when neither is set.
+ */
 export function getSiteUrl(): string {
-  return (process.env.NEXT_PUBLIC_SITE_URL ?? "https://mietaaf.com").replace(/\/$/, "");
+  const explicit = process.env.NEXT_PUBLIC_SITE_URL?.trim();
+  if (explicit) return explicit.replace(/\/$/, "");
+  const vercel = process.env.VERCEL_URL?.trim();
+  if (vercel) return `https://${vercel.replace(/\/$/, "")}`;
+  return "http://localhost:3000";
 }
 
 const base = getSiteUrl();

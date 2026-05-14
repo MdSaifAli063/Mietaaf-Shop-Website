@@ -64,8 +64,8 @@ export function SiteHeader() {
   if (isAdminRoute) return null;
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border/60 bg-background/80 backdrop-blur-xl">
-      <div className="relative mx-auto flex h-[4.5rem] w-full max-w-7xl items-center justify-between gap-2 px-2 sm:h-[5.5rem] sm:gap-3 sm:px-4 lg:h-24 lg:px-8">
+    <header className="sticky top-0 z-40 w-full min-w-0 overflow-x-clip border-b border-border/60 bg-background/80 pt-[env(safe-area-inset-top,0px)] backdrop-blur-xl">
+      <div className="relative mx-auto flex h-[4.5rem] w-full min-w-0 max-w-7xl items-center justify-between gap-2 px-2 sm:h-[5.5rem] sm:gap-3 sm:px-4 lg:h-24 lg:px-8">
         {/* Left: menu + logo (flush left) */}
         <div className="relative z-20 flex min-w-0 items-center gap-1.5 sm:gap-2">
           <Sheet open={open} onOpenChange={setOpen}>
@@ -78,7 +78,10 @@ export function SiteHeader() {
             >
               <Menu className="h-5 w-5" />
             </SheetTrigger>
-            <SheetContent side="left" className="w-[min(100vw-2rem,420px)] gap-0 p-0">
+            <SheetContent
+              side="left"
+              className="w-[min(calc(100dvw-1.25rem),420px)] max-w-dvw gap-0 p-0 pt-[env(safe-area-inset-top,0px)]"
+            >
               <div className="border-b border-border/60 p-6">
                 <Logo
                   href={logoHref}
@@ -89,26 +92,26 @@ export function SiteHeader() {
                   Luxury men’s ethnic & formal — curated in India.
                 </p>
               </div>
-              <nav className="flex flex-col gap-1 p-4">
+              <nav className="flex touch-manipulation flex-col gap-0.5 p-3 sm:p-4">
                 {isAuthPage ? (
                   <>
                     <Link
                       href="/login"
-                      className="rounded-lg px-3 py-2 text-sm font-medium hover:bg-muted"
+                      className="rounded-lg px-3 py-3 text-base font-medium hover:bg-muted sm:py-2 sm:text-sm"
                       onClick={() => setOpen(false)}
                     >
                       Sign in
                     </Link>
                     <Link
                       href="/signup"
-                      className="rounded-lg px-3 py-2 text-sm font-medium hover:bg-muted"
+                      className="rounded-lg px-3 py-3 text-base font-medium hover:bg-muted sm:py-2 sm:text-sm"
                       onClick={() => setOpen(false)}
                     >
                       Create account
                     </Link>
                     <Link
                       href="/forgot-password"
-                      className="rounded-lg px-3 py-2 text-sm hover:bg-muted"
+                      className="rounded-lg px-3 py-3 text-base hover:bg-muted sm:py-2 sm:text-sm"
                       onClick={() => setOpen(false)}
                     >
                       Forgot password
@@ -120,7 +123,7 @@ export function SiteHeader() {
                       <Link
                         key={l.href}
                         href={l.href}
-                        className="rounded-lg px-3 py-2 text-sm font-medium hover:bg-muted"
+                        className="rounded-lg px-3 py-3 text-base font-medium hover:bg-muted sm:py-2 sm:text-sm"
                         onClick={() => setOpen(false)}
                       >
                         {l.label}
@@ -134,7 +137,7 @@ export function SiteHeader() {
                       <Link
                         key={c.slug}
                         href={`/category/${c.slug}`}
-                        className="rounded-lg px-3 py-2 text-sm hover:bg-muted"
+                        className="rounded-lg px-3 py-3 text-base hover:bg-muted sm:py-2 sm:text-sm"
                         onClick={() => setOpen(false)}
                       >
                         {c.label}
@@ -145,8 +148,8 @@ export function SiteHeader() {
               </nav>
             </SheetContent>
           </Sheet>
-          <Logo href={logoHref} className="hidden min-w-0 sm:flex" priority />
-          <Logo href={logoHref} className="min-w-0 sm:hidden" />
+          <Logo href={logoHref} className="hidden min-w-0 max-w-full sm:flex" priority />
+          <Logo href={logoHref} className="min-w-0 max-w-full sm:hidden" />
         </div>
 
         {/* Desktop: dead-center in the bar (not “center of space between logo and icons”) */}
@@ -158,7 +161,7 @@ export function SiteHeader() {
             )}
             aria-label="Primary"
           >
-            <div className="pointer-events-auto flex items-center justify-center gap-5 xl:gap-7">
+            <div className="pointer-events-auto flex max-w-[min(100%,52rem)] items-center justify-center gap-3 px-2 xl:gap-6 2xl:gap-7">
               {links.map((l) => (
                 <Link
                   key={l.href}
@@ -200,7 +203,7 @@ export function SiteHeader() {
         ) : null}
 
         {/* Right: utilities */}
-        <div className="relative z-20 flex shrink-0 items-center justify-end gap-0.5 sm:gap-1.5">
+        <div className="relative z-20 flex shrink-0 touch-manipulation items-center justify-end gap-0.5 sm:gap-1.5">
           {!isAuthPage ? (
             <>
               <Button

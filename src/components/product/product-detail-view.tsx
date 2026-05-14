@@ -96,7 +96,7 @@ export function ProductDetailView({ product }: { product: Product }) {
         </BreadcrumbList>
       </Breadcrumb>
 
-      <div className="grid gap-10 lg:grid-cols-2">
+      <div className="grid min-w-0 gap-8 lg:grid-cols-2 lg:gap-10">
         <div className="space-y-4">
           <motion.div
             className="relative aspect-[3/4] overflow-hidden rounded-2xl bg-muted"
@@ -131,7 +131,7 @@ export function ProductDetailView({ product }: { product: Product }) {
           </div>
         </div>
 
-        <div className="flex flex-col gap-6">
+        <div className="flex min-w-0 flex-col gap-6">
           <div>
             {product.discountPercent ? (
               <Badge className="mb-3 rounded-full">{product.discountPercent}% off</Badge>

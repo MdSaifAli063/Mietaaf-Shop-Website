@@ -91,9 +91,9 @@ export default function CheckoutPage() {
   if (items.length === 0) {
     return (
       <PageEnter>
-        <div className="mx-auto max-w-lg px-4 py-20 text-center">
-          <p className="font-heading text-2xl">Nothing to checkout</p>
-          <Button asChild className="mt-6 rounded-full">
+        <div className="mx-auto w-full max-w-lg px-4 py-12 text-center sm:py-20 md:py-24">
+          <p className="font-heading text-xl sm:text-2xl">Nothing to checkout</p>
+          <Button asChild className="mt-6 h-11 w-full max-w-xs touch-manipulation rounded-full sm:w-auto">
             <Link href="/shop">Browse collections</Link>
           </Button>
         </div>
@@ -103,21 +103,21 @@ export default function CheckoutPage() {
 
   return (
     <PageEnter>
-      <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
-        <h1 className="font-heading text-4xl">Checkout</h1>
-        <p className="mt-2 text-sm text-muted-foreground">
+      <div className="mx-auto w-full min-w-0 max-w-6xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
+        <h1 className="font-heading text-3xl sm:text-4xl">Checkout</h1>
+        <p className="mt-2 text-sm leading-relaxed text-muted-foreground sm:text-base">
           Orders are confirmed via WhatsApp — no card payment on site.
         </p>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="mt-10 grid gap-10 lg:grid-cols-[1fr_380px]"
+          className="mt-8 grid min-w-0 gap-8 touch-manipulation sm:mt-10 lg:grid-cols-[minmax(0,1fr)_minmax(280px,380px)] lg:gap-10"
         >
-          <Card className="space-y-6 border-border/60 p-6 md:p-8">
+          <Card className="min-w-0 space-y-6 border-border/60 p-5 sm:p-6 md:p-8">
             <h2 className="font-heading text-xl">Delivery details</h2>
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-2 sm:col-span-2">
                 <Label htmlFor="fullName">Full name</Label>
-                <Input id="fullName" {...form.register("fullName")} className="rounded-xl" />
+                <Input id="fullName" autoComplete="name" {...form.register("fullName")} className="h-11 min-h-11 rounded-xl" />
                 {form.formState.errors.fullName ? (
                   <p className="text-xs text-destructive">
                     {form.formState.errors.fullName.message}
@@ -126,7 +126,7 @@ export default function CheckoutPage() {
               </div>
               <div className="space-y-2 sm:col-span-2">
                 <Label htmlFor="phone">Phone</Label>
-                <Input id="phone" {...form.register("phone")} className="rounded-xl" />
+                <Input id="phone" type="tel" autoComplete="tel" {...form.register("phone")} className="h-11 min-h-11 rounded-xl" />
                 {form.formState.errors.phone ? (
                   <p className="text-xs text-destructive">
                     {form.formState.errors.phone.message}
@@ -135,7 +135,7 @@ export default function CheckoutPage() {
               </div>
               <div className="space-y-2 sm:col-span-2">
                 <Label htmlFor="address">Address</Label>
-                <Input id="address" {...form.register("address")} className="rounded-xl" />
+                <Input id="address" autoComplete="street-address" {...form.register("address")} className="h-11 min-h-11 rounded-xl" />
                 {form.formState.errors.address ? (
                   <p className="text-xs text-destructive">
                     {form.formState.errors.address.message}
@@ -144,7 +144,7 @@ export default function CheckoutPage() {
               </div>
               <div className="space-y-2">
                 <Label htmlFor="city">City</Label>
-                <Input id="city" {...form.register("city")} className="rounded-xl" />
+                <Input id="city" autoComplete="address-level2" {...form.register("city")} className="h-11 min-h-11 rounded-xl" />
                 {form.formState.errors.city ? (
                   <p className="text-xs text-destructive">
                     {form.formState.errors.city.message}
@@ -153,7 +153,7 @@ export default function CheckoutPage() {
               </div>
               <div className="space-y-2">
                 <Label htmlFor="state">State</Label>
-                <Input id="state" {...form.register("state")} className="rounded-xl" />
+                <Input id="state" autoComplete="address-level1" {...form.register("state")} className="h-11 min-h-11 rounded-xl" />
                 {form.formState.errors.state ? (
                   <p className="text-xs text-destructive">
                     {form.formState.errors.state.message}
@@ -162,7 +162,7 @@ export default function CheckoutPage() {
               </div>
               <div className="space-y-2 sm:col-span-2">
                 <Label htmlFor="pincode">Pincode</Label>
-                <Input id="pincode" {...form.register("pincode")} className="rounded-xl" />
+                <Input id="pincode" inputMode="numeric" autoComplete="postal-code" {...form.register("pincode")} className="h-11 min-h-11 rounded-xl" />
                 {form.formState.errors.pincode ? (
                   <p className="text-xs text-destructive">
                     {form.formState.errors.pincode.message}
@@ -171,21 +171,21 @@ export default function CheckoutPage() {
               </div>
               <div className="space-y-2 sm:col-span-2">
                 <Label htmlFor="notes">Delivery notes (optional)</Label>
-                <Textarea id="notes" rows={3} {...form.register("notes")} className="rounded-xl" />
+                <Textarea id="notes" rows={3} {...form.register("notes")} className="min-h-[5.5rem] rounded-xl" />
               </div>
             </div>
             <Button
               type="submit"
               size="lg"
-              className="w-full rounded-full sm:w-auto"
+              className="h-12 w-full touch-manipulation rounded-full sm:h-11 sm:w-auto"
               disabled={form.formState.isSubmitting}
             >
               Place order via WhatsApp
             </Button>
           </Card>
-          <Card className="h-fit space-y-4 border-border/60 p-6">
+          <Card className="h-fit min-w-0 space-y-4 border-border/60 p-5 sm:p-6 lg:sticky lg:top-24 lg:self-start">
             <h2 className="font-heading text-xl">Order summary</h2>
-            <div className="max-h-72 space-y-3 overflow-y-auto pr-1">
+            <div className="max-h-[min(18rem,45dvh)] space-y-3 overflow-y-auto overscroll-contain pr-1">
               {items.map((i) => (
                 <div key={`${i.productId}-${i.size}-${i.color}`} className="flex gap-3">
                   <div className="relative h-16 w-14 shrink-0 overflow-hidden rounded-lg bg-muted">

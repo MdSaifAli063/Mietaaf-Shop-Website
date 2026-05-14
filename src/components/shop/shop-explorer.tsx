@@ -145,14 +145,14 @@ export function ShopExplorer() {
         <div className="mb-10 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.4em] text-primary">Shop</p>
-            <h1 className="font-heading text-4xl md:text-5xl">Collections</h1>
+            <h1 className="font-heading text-3xl sm:text-4xl md:text-5xl">Collections</h1>
             <p className="mt-2 max-w-xl text-muted-foreground">
               Filter by category, price, and rating — curated for clarity, designed for desire.
             </p>
           </div>
           <div className="flex flex-wrap items-center gap-3">
             <Select value={sort} onValueChange={(v) => setSort(v as SortValue)}>
-              <SelectTrigger className="w-[200px] rounded-full">
+              <SelectTrigger className="h-11 w-full min-w-0 rounded-full sm:h-10 sm:w-[200px]">
                 <SelectValue placeholder="Sort" />
               </SelectTrigger>
               <SelectContent>
@@ -173,16 +173,19 @@ export function ShopExplorer() {
                 <SlidersHorizontal className="mr-2 h-4 w-4" />
                 Filters
               </SheetTrigger>
-              <SheetContent side="left" className="w-[min(100vw-2rem,380px)] overflow-y-auto">
+              <SheetContent
+                side="left"
+                className="w-[min(calc(100dvw-1.25rem),380px)] max-w-dvw overflow-y-auto pt-[env(safe-area-inset-top,0px)]"
+              >
                 <h2 className="mb-6 font-heading text-xl">Filters</h2>
                 {filterPanel}
               </SheetContent>
             </Sheet>
           </div>
         </div>
-        <div className="flex gap-10">
+        <div className="flex min-w-0 gap-6 lg:gap-10">
           <aside className="hidden w-64 shrink-0 lg:block">{filterPanel}</aside>
-          <div className="flex-1">
+          <div className="min-w-0 flex-1">
             {filtered.length === 0 ? (
               <div className="rounded-2xl border border-dashed border-border/80 bg-muted/30 py-24 text-center">
                 <p className="font-heading text-xl">No pieces match</p>

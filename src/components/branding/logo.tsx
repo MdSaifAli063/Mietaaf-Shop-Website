@@ -25,7 +25,7 @@ export function Logo({
       ? "h-24 w-full max-w-[min(100%,380px)] sm:h-28 sm:max-w-[min(100%,460px)] lg:h-32 lg:max-w-[min(100%,540px)]"
       : variant === "drawer"
         ? "h-28 w-[min(96vw,420px)] sm:h-32 sm:w-[min(96vw,520px)]"
-        : "h-[4.125rem] w-[min(92vw,300px)] sm:h-20 sm:w-[min(90vw,360px)] lg:h-[5.375rem] lg:w-[min(44vw,480px)] xl:h-24 xl:w-[min(46vw,560px)] 2xl:w-[min(44vw,620px)]";
+        : "h-[3.75rem] w-[min(calc(100dvw-9.5rem),280px)] sm:h-[4.25rem] sm:w-[min(calc(100dvw-11rem),360px)] lg:h-[5.375rem] lg:w-[min(44vw,480px)] xl:h-24 xl:w-[min(46vw,560px)] 2xl:w-[min(44vw,620px)]";
 
   return (
     <Link
@@ -53,7 +53,7 @@ export function Logo({
                 ? "object-left"
                 : "object-left sm:object-center",
           )}
-          sizes="(max-width: 640px) 320px, (max-width: 1024px) 420px, 620px"
+          sizes="(max-width: 480px) 260px, (max-width: 640px) 300px, (max-width: 1024px) 400px, 620px"
           priority={priority}
           unoptimized={remote}
         />

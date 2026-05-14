@@ -68,18 +68,26 @@ function SignupForm() {
 
   return (
     <PageEnter>
-      <div className="mx-auto flex min-h-[70vh] max-w-md items-center px-4 py-16">
-        <Card className="w-full space-y-6 border-border/60 p-8">
+      <div className="mx-auto flex w-full min-w-0 max-w-md items-center px-4 py-10 sm:px-5 sm:py-16 md:min-h-[70vh] md:py-20">
+        <Card className="w-full min-w-0 space-y-5 border-border/60 p-5 sm:space-y-6 sm:p-8">
           <div className="text-center">
             <p className="text-xs font-semibold uppercase tracking-[0.35em] text-primary">
               Mietaaf
             </p>
-            <h1 className="mt-2 font-heading text-3xl">Create account</h1>
+            <h1 className="mt-2 font-heading text-2xl sm:text-3xl">Create account</h1>
           </div>
-          <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
+          <form
+            className="touch-manipulation space-y-4"
+            onSubmit={form.handleSubmit(onSubmit)}
+          >
             <div className="space-y-2">
               <Label htmlFor="displayName">Full name</Label>
-              <Input id="displayName" {...form.register("displayName")} className="rounded-xl" />
+              <Input
+                id="displayName"
+                autoComplete="name"
+                {...form.register("displayName")}
+                className="h-11 min-h-11 rounded-xl"
+              />
               {form.formState.errors.displayName ? (
                 <p className="text-xs text-destructive">
                   {form.formState.errors.displayName.message}
@@ -88,7 +96,13 @@ function SignupForm() {
             </div>
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" {...form.register("email")} className="rounded-xl" />
+              <Input
+                id="email"
+                type="email"
+                autoComplete="email"
+                {...form.register("email")}
+                className="h-11 min-h-11 rounded-xl"
+              />
               {form.formState.errors.email ? (
                 <p className="text-xs text-destructive">{form.formState.errors.email.message}</p>
               ) : null}
@@ -98,8 +112,9 @@ function SignupForm() {
               <Input
                 id="password"
                 type="password"
+                autoComplete="new-password"
                 {...form.register("password")}
-                className="rounded-xl"
+                className="h-11 min-h-11 rounded-xl"
               />
               {form.formState.errors.password ? (
                 <p className="text-xs text-destructive">
@@ -112,8 +127,9 @@ function SignupForm() {
               <Input
                 id="confirm"
                 type="password"
+                autoComplete="new-password"
                 {...form.register("confirm")}
-                className="rounded-xl"
+                className="h-11 min-h-11 rounded-xl"
               />
               {form.formState.errors.confirm ? (
                 <p className="text-xs text-destructive">
@@ -123,13 +139,18 @@ function SignupForm() {
             </div>
             <Button
               type="submit"
-              className="w-full rounded-full"
+              className="h-11 w-full rounded-full touch-manipulation"
               disabled={form.formState.isSubmitting}
             >
               Create account
             </Button>
           </form>
-          <Button type="button" variant="outline" className="w-full rounded-full" onClick={google}>
+          <Button
+            type="button"
+            variant="outline"
+            className="h-11 w-full rounded-full touch-manipulation"
+            onClick={google}
+          >
             Continue with Google
           </Button>
           <p className="text-center text-sm text-muted-foreground">
@@ -148,7 +169,7 @@ export default function SignupPage() {
   return (
     <Suspense
       fallback={
-        <div className="flex min-h-[50vh] items-center justify-center text-sm text-muted-foreground">
+        <div className="flex min-h-[40vh] items-center justify-center px-4 py-12 text-sm text-muted-foreground sm:min-h-[50vh]">
           Loading…
         </div>
       }

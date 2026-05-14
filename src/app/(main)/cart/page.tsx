@@ -22,12 +22,12 @@ export default function CartPage() {
   if (items.length === 0) {
     return (
       <PageEnter>
-        <div className="mx-auto flex max-w-lg flex-col items-center px-4 py-24 text-center">
-          <p className="font-heading text-3xl">Your cart is empty</p>
-          <p className="mt-3 text-muted-foreground">
+        <div className="mx-auto flex w-full max-w-lg flex-col items-center px-4 py-12 text-center sm:py-20 md:py-24">
+          <p className="font-heading text-2xl sm:text-3xl">Your cart is empty</p>
+          <p className="mt-3 max-w-md text-sm leading-relaxed text-muted-foreground sm:text-base">
             Explore the wedding edit or premium suits to begin your selection.
           </p>
-          <Button asChild className="mt-8 rounded-full px-8">
+          <Button asChild className="mt-8 h-11 w-full max-w-xs touch-manipulation rounded-full sm:w-auto sm:px-8">
             <Link href="/shop">Continue shopping</Link>
           </Button>
         </div>
@@ -37,11 +37,11 @@ export default function CartPage() {
 
   return (
     <PageEnter>
-      <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
-        <h1 className="font-heading text-4xl">Shopping bag</h1>
-        <p className="mt-2 text-muted-foreground">{items.length} items</p>
-        <div className="mt-10 grid gap-10 lg:grid-cols-[1fr_360px]">
-          <div className="space-y-4">
+      <div className="mx-auto w-full min-w-0 max-w-6xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
+        <h1 className="font-heading text-3xl sm:text-4xl">Shopping bag</h1>
+        <p className="mt-2 text-sm text-muted-foreground sm:text-base">{items.length} items</p>
+        <div className="mt-8 grid min-w-0 gap-8 lg:mt-10 lg:grid-cols-[minmax(0,1fr)_minmax(260px,360px)] lg:gap-10">
+          <div className="min-w-0 space-y-4">
             {items.map((item) => {
               const key = cartLineKey(item);
               return (
@@ -51,15 +51,15 @@ export default function CartPage() {
                   initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
                 >
-                  <Card className="flex flex-col gap-4 border-border/60 p-4 sm:flex-row">
-                    <div className="relative h-40 w-full shrink-0 overflow-hidden rounded-xl bg-muted sm:h-32 sm:w-28">
+                  <Card className="flex min-w-0 flex-col gap-4 border-border/60 p-4 sm:flex-row sm:gap-5">
+                    <div className="relative mx-auto aspect-[4/5] w-full max-w-[220px] shrink-0 overflow-hidden rounded-xl bg-muted sm:mx-0 sm:aspect-auto sm:h-32 sm:w-28 sm:max-w-none">
                       <Image src={item.image} alt={item.name} fill className="object-cover" />
                     </div>
-                    <div className="flex flex-1 flex-col justify-between">
-                      <div>
+                    <div className="flex min-w-0 flex-1 flex-col justify-between">
+                      <div className="min-w-0">
                         <Link
                           href={`/product/${item.slug}`}
-                          className="font-heading text-lg hover:text-primary"
+                          className="font-heading text-lg leading-snug hover:text-primary sm:text-xl"
                         >
                           {item.name}
                         </Link>
@@ -67,38 +67,38 @@ export default function CartPage() {
                           {item.size} · {item.color}
                         </p>
                       </div>
-                      <div className="mt-4 flex flex-wrap items-center justify-between gap-4">
-                        <div className="flex items-center rounded-full border border-border">
+                      <div className="mt-4 flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
+                        <div className="flex touch-manipulation items-center rounded-full border border-border">
                           <Button
                             type="button"
                             variant="ghost"
                             size="icon"
-                            className="rounded-full"
+                            className="h-11 w-11 shrink-0 rounded-full"
                             onClick={() => updateQty(key, item.quantity - 1)}
                           >
                             <Minus className="h-4 w-4" />
                           </Button>
-                          <span className="w-8 text-center text-sm font-medium">
+                          <span className="min-w-8 px-1 text-center text-sm font-medium">
                             {item.quantity}
                           </span>
                           <Button
                             type="button"
                             variant="ghost"
                             size="icon"
-                            className="rounded-full"
+                            className="h-11 w-11 shrink-0 rounded-full"
                             onClick={() => updateQty(key, item.quantity + 1)}
                           >
                             <Plus className="h-4 w-4" />
                           </Button>
                         </div>
-                        <div className="flex items-center gap-4">
+                        <div className="flex items-center justify-between gap-4 sm:justify-end">
                           <span className="font-semibold">
                             {formatInr(item.price * item.quantity)}
                           </span>
                           <Button
                             variant="ghost"
                             size="icon"
-                            className="text-destructive"
+                            className="h-11 w-11 shrink-0 text-destructive touch-manipulation"
                             onClick={() => removeItem(key)}
                           >
                             <Trash2 className="h-4 w-4" />
@@ -111,8 +111,8 @@ export default function CartPage() {
               );
             })}
           </div>
-          <div>
-            <Card className="sticky top-24 space-y-4 border-border/60 p-6">
+          <div className="min-w-0 lg:sticky lg:top-24 lg:self-start">
+            <Card className="space-y-4 border-border/60 p-5 sm:p-6">
               <h2 className="font-heading text-xl">Summary</h2>
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">Subtotal</span>
@@ -122,9 +122,17 @@ export default function CartPage() {
                 <p className="text-xs uppercase tracking-widest text-muted-foreground">
                   Coupon
                 </p>
-                <div className="flex gap-2">
-                  <Input placeholder="Code" className="rounded-full" disabled />
-                  <Button variant="outline" className="rounded-full" disabled>
+                <div className="flex touch-manipulation flex-col gap-2 sm:flex-row sm:items-stretch">
+                  <Input
+                    placeholder="Code"
+                    className="h-11 min-h-11 min-w-0 flex-1 rounded-full"
+                    disabled
+                  />
+                  <Button
+                    variant="outline"
+                    className="h-11 shrink-0 rounded-full sm:px-6"
+                    disabled
+                  >
                     Apply
                   </Button>
                 </div>
@@ -137,7 +145,7 @@ export default function CartPage() {
                 <span>Total</span>
                 <span>{formatInr(subtotal)}</span>
               </div>
-              <Button asChild className="w-full rounded-full" size="lg">
+              <Button asChild className="h-11 w-full touch-manipulation rounded-full" size="lg">
                 <Link href="/checkout">Proceed to checkout</Link>
               </Button>
             </Card>

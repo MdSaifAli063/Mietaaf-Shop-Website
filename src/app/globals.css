@@ -126,11 +126,14 @@
   * {
     @apply border-border outline-ring/50;
   }
-  body {
-    @apply bg-background text-foreground antialiased;
-  }
   html {
     @apply font-sans scroll-smooth;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+  body {
+    @apply bg-background text-foreground antialiased break-words;
+    overflow-x: clip;
   }
 }
 

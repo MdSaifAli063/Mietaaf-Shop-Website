@@ -12,7 +12,7 @@ export function FloatingWhatsApp() {
 
   return (
     <motion.div
-      className="fixed bottom-6 right-6 z-50 md:bottom-8 md:right-8"
+      className="fixed bottom-[max(1.25rem,env(safe-area-inset-bottom,0px))] right-[max(1.25rem,env(safe-area-inset-right,0px))] z-50 max-w-dvw touch-manipulation md:bottom-[max(2rem,env(safe-area-inset-bottom,0px))] md:right-[max(2rem,env(safe-area-inset-right,0px))]"
       initial={{ scale: 0, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
       transition={{ type: "spring", stiffness: 260, damping: 18, delay: 0.4 }}

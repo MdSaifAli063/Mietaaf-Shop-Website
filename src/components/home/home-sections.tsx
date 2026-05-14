@@ -24,7 +24,7 @@ export function HomeSections() {
 
   return (
     <>
-      <section className="border-b border-border/60 bg-muted/30 py-20">
+      <section className="border-b border-border/60 bg-muted/30 py-12 sm:py-16 md:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <Reveal>
             <div className="mb-12 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
@@ -70,7 +70,7 @@ export function HomeSections() {
         </div>
       </section>
 
-      <section className="py-20">
+      <section className="py-12 sm:py-16 md:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <Reveal>
             <h2 className="font-heading text-3xl md:text-4xl">Trending now</h2>
@@ -89,7 +89,7 @@ export function HomeSections() {
         </div>
       </section>
 
-      <section className="border-y border-border/60 bg-gradient-to-br from-card via-background to-muted/40 py-20">
+      <section className="border-y border-border/60 bg-gradient-to-br from-card via-background to-muted/40 py-12 sm:py-16 md:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <Reveal>
             <h2 className="font-heading text-3xl md:text-4xl">New arrivals</h2>
@@ -112,7 +112,7 @@ export function HomeSections() {
         </div>
       </section>
 
-      <section className="relative py-24">
+      <section className="relative py-14 sm:py-20 md:py-24">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/15 via-transparent to-transparent" />
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <Reveal>
@@ -138,7 +138,7 @@ export function HomeSections() {
         </div>
       </section>
 
-      <section className="border-t border-border/60 bg-muted/20 py-20">
+      <section className="border-t border-border/60 bg-muted/20 py-12 sm:py-16 md:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <Reveal>
             <h2 className="font-heading text-3xl md:text-4xl">Premium suits</h2>
@@ -154,7 +154,7 @@ export function HomeSections() {
         </div>
       </section>
 
-      <section className="py-20">
+      <section className="py-12 sm:py-16 md:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <Reveal>
             <h2 className="text-center font-heading text-3xl md:text-4xl">Client stories</h2>
@@ -204,7 +204,7 @@ export function HomeSections() {
         </div>
       </section>
 
-      <section className="relative overflow-hidden py-24">
+      <section className="relative overflow-hidden py-14 sm:py-20 md:py-24">
         <div className="absolute inset-0">
           <Image
             src="https://images.unsplash.com/photo-1490114538075-5a882cff5318?w=1600&q=80&auto=format&fit=crop"
@@ -233,7 +233,7 @@ export function HomeSections() {
         </div>
       </section>
 
-      <section className="py-20">
+      <section className="py-12 sm:py-16 md:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <Reveal>
             <h2 className="font-heading text-2xl md:text-3xl">The feed</h2>
@@ -249,14 +249,14 @@ export function HomeSections() {
         </div>
       </section>
 
-      <section className="border-t border-border/60 bg-muted/30 py-16">
+      <section className="border-t border-border/60 bg-muted/30 py-10 sm:py-14 md:py-16">
         <div className="mx-auto flex max-w-4xl flex-col items-center gap-4 px-4 text-center sm:px-6">
-          <h3 className="font-heading text-2xl">Private list</h3>
+          <h3 className="font-heading text-xl sm:text-2xl">Private list</h3>
           <p className="text-sm text-muted-foreground">
             Be first to access limited runs and appointment slots at our Mumbai atelier.
           </p>
           <form
-            className="mt-2 flex w-full max-w-md gap-2"
+            className="mt-2 flex w-full max-w-md touch-manipulation flex-col gap-2 sm:flex-row sm:items-stretch"
             onSubmit={(e) => {
               e.preventDefault();
               toast.success("Welcome to the private list.");
@@ -269,9 +269,9 @@ export function HomeSections() {
               autoComplete="email"
               required
               placeholder="Your email"
-              className="h-11 rounded-full"
+              className="h-11 min-w-0 flex-1 rounded-full"
             />
-            <Button type="submit" className="rounded-full px-6">
+            <Button type="submit" className="h-11 w-full shrink-0 rounded-full px-6 sm:w-auto">
               Join
             </Button>
           </form>
