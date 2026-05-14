@@ -12,21 +12,20 @@ export function SiteFooter() {
   return (
     <footer className="border-t border-border/60 bg-mietaaf-charcoal text-mietaaf-cream dark:bg-card">
       <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
-        <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
-          <div className="space-y-4">
-            <div className="text-mietaaf-cream">
-              <Logo className="text-mietaaf-cream [&_.text-muted-foreground]:text-mietaaf-cream/70" />
-            </div>
-            <p className="max-w-xs text-sm leading-relaxed text-mietaaf-cream/80">
+        <div className="grid gap-10 sm:gap-12 md:grid-cols-2 lg:grid-cols-[minmax(0,1.35fr)_repeat(3,minmax(0,1fr))] lg:gap-10 xl:gap-12">
+          {/* Brand: logo + blurb + social — left column, contained width */}
+          <div className="flex min-w-0 max-w-full flex-col items-start gap-4 lg:pr-4">
+            <Logo variant="footer" href="/" className="w-full max-w-full" />
+            <p className="max-w-sm text-sm leading-relaxed text-mietaaf-cream/80">
               {SITE_TAGLINE}. Crafted silhouettes, ceremonial grandeur, and contemporary
               tailoring for the modern gentleman.
             </p>
-            <div className="flex gap-3">
+            <div className="flex flex-wrap gap-3">
               {["Instagram", "Facebook", "Pinterest"].map((s) => (
                 <Link
                   key={s}
                   href="#"
-                  className="flex h-10 w-10 items-center justify-center rounded-full border border-white/15 text-mietaaf-cream/90 transition-colors hover:border-primary hover:text-primary"
+                  className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/15 text-mietaaf-cream/90 transition-colors hover:border-primary hover:text-primary"
                   aria-label={s}
                 >
                   <Share2 className="h-4 w-4" />
@@ -34,7 +33,7 @@ export function SiteFooter() {
               ))}
             </div>
           </div>
-          <div>
+          <div className="min-w-0">
             <h4 className="mb-4 text-xs font-semibold uppercase tracking-[0.35em] text-primary">
               Shop
             </h4>
@@ -48,7 +47,7 @@ export function SiteFooter() {
               ))}
             </ul>
           </div>
-          <div>
+          <div className="min-w-0">
             <h4 className="mb-4 text-xs font-semibold uppercase tracking-[0.35em] text-primary">
               Company
             </h4>
@@ -74,7 +73,7 @@ export function SiteFooter() {
               ))}
             </ul>
           </div>
-          <div className="space-y-4">
+          <div className="min-w-0 space-y-4">
             <h4 className="text-xs font-semibold uppercase tracking-[0.35em] text-primary">
               Newsletter
             </h4>
@@ -89,7 +88,10 @@ export function SiteFooter() {
               }}
             >
               <Input
+                id="mietaaf-footer-newsletter-email"
                 type="email"
+                name="email"
+                autoComplete="email"
                 required
                 placeholder="Email"
                 className="border-white/20 bg-white/5 text-mietaaf-cream placeholder:text-mietaaf-cream/50"
