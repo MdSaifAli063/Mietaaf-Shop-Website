@@ -1,0 +1,102 @@
+"use client";
+
+import { useMemo, useState } from "react";
+import Link from "next/link";
+import { Search, Sparkles, X } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { useUiStore } from "@/store/ui-store";
+import { useDebounce } from "@/hooks/use-debounce";
+import { DUMMY_PRODUCTS } from "@/lib/data/products";
+import Image from "next/image";
+import { formatInr } from "@/lib/format";
+
+export function SearchOverlay() {
+  const open = useUiStore((s) => s.searchOpen);
+  const setOpen = useUiStore((s) => s.setSearchOpen);
+  const [q, setQ] = useState("");
+  const debounced = useDebounce(q, 200);
+
+  const results = useMemo(() => {
+    const t = debounced.trim().toLowerCase();
+    if (!t) return DUMMY_PRODUCTS.slice(0, 6);
+    return DUMMY_PRODUCTS.filter(
+      (p) =>
+        p.name.toLowerCase().includes(t) ||
+        p.tags.some((tag) => tag.includes(t)) ||
+        p.category.toLowerCase().includes(t),
+    ).slice(0, 8);
+  }, [debounced]);
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogContent className="top-[12%] max-w-2xl translate-y-0 gap-4 border-border/80 bg-card/95 p-6 sm:rounded-2xl">
+        <DialogHeader>
+          <DialogTitle className="flex items-center gap-2 font-heading text-xl">
+            <Sparkles className="h-5 w-5 text-primary" />
+            Search Mietaaf
+          </DialogTitle>
+        </DialogHeader>
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <Input
+            autoFocus
+            value={q}
+            onChange={(e) => setQ(e.target.value)}
+            placeholder="Sherwani, suits, wedding…"
+            className="h-12 rounded-full pl-10 pr-10"
+          />
+          {q ? (
+            <button
+              type="button"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+              onClick={() => setQ("")}
+              aria-label="Clear"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          ) : null}
+        </div>
+        <div className="max-h-[50vh] space-y-2 overflow-y-auto pr-1">
+          {results.length === 0 ? (
+            <p className="py-8 text-center text-sm text-muted-foreground">
+              No matches. Try another keyword.
+            </p>
+          ) : (
+            results.map((p) => (
+              <Link
+                key={p.id}
+                href={`/product/${p.slug}`}
+                onClick={() => setOpen(false)}
+                className="flex items-center gap-3 rounded-xl border border-transparent p-2 transition-colors hover:border-border hover:bg-muted/60"
+              >
+                <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-lg bg-muted">
+                  <Image src={p.images[0]!} alt="" fill className="object-cover" />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="truncate font-medium">{p.name}</p>
+                  <p className="text-xs text-muted-foreground">{p.category}</p>
+                </div>
+                <span className="text-sm font-semibold">{formatInr(p.price)}</span>
+              </Link>
+            ))
+          )}
+        </div>
+        <p className="text-center text-[11px] text-muted-foreground">
+          <Link
+            href={q.trim() ? `/search?q=${encodeURIComponent(q.trim())}` : "/search"}
+            className="text-primary hover:underline"
+            onClick={() => setOpen(false)}
+          >
+            Open full search results
+          </Link>
+        </p>
+      </DialogContent>
+    </Dialog>
+  );
+}
