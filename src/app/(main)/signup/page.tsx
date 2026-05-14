@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { Suspense, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { z } from "zod";
@@ -13,12 +14,16 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { PageEnter } from "@/components/motion/page-enter";
+import { sanitizeReturnUrl } from "@/lib/auth-public-paths";
 
 type SignupValues = z.infer<typeof signupSchema>;
 
-export default function SignupPage() {
-  const { signUpEmail, signInGoogle, firebaseReady } = useAuth();
+function SignupForm() {
+  const { signUpEmail, signInGoogle, firebaseReady, user, loading } = useAuth();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const returnAfterAuth = sanitizeReturnUrl(searchParams.get("returnUrl"));
+
   const form = useForm<SignupValues>({
     resolver: zodResolver(signupSchema),
     defaultValues: {
@@ -29,6 +34,11 @@ export default function SignupPage() {
     },
   });
 
+  useEffect(() => {
+    if (!firebaseReady || loading) return;
+    if (user) router.replace(returnAfterAuth);
+  }, [firebaseReady, loading, user, router, returnAfterAuth]);
+
   async function onSubmit(values: SignupValues) {
     if (!firebaseReady) {
       toast.error("Add Firebase keys in .env to enable signup.");
@@ -37,7 +47,7 @@ export default function SignupPage() {
     try {
       await signUpEmail(values.email, values.password, values.displayName);
       toast.success("Account created");
-      router.push("/profile");
+      router.replace(sanitizeReturnUrl(searchParams.get("returnUrl")));
     } catch {
       toast.error("Could not create account");
     }
@@ -50,7 +60,7 @@ export default function SignupPage() {
     }
     try {
       await signInGoogle();
-      router.push("/profile");
+      router.replace(sanitizeReturnUrl(searchParams.get("returnUrl")));
     } catch {
       toast.error("Google sign-in failed");
     }
@@ -131,5 +141,19 @@ export default function SignupPage() {
         </Card>
       </div>
     </PageEnter>
+  );
+}
+
+export default function SignupPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex min-h-[50vh] items-center justify-center text-sm text-muted-foreground">
+          Loading…
+        </div>
+      }
+    >
+      <SignupForm />
+    </Suspense>
   );
 }
