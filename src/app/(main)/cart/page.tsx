@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { PageEnter } from "@/components/motion/page-enter";
 import { Separator } from "@/components/ui/separator";
+import { MOBILE_STICKY_BAR, MOBILE_STICKY_OFFSET } from "@/lib/layout";
 
 export default function CartPage() {
   const items = useCartStore((s) => s.items);
@@ -37,7 +38,7 @@ export default function CartPage() {
 
   return (
     <PageEnter>
-      <div className="mx-auto w-full min-w-0 max-w-6xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
+      <div className={`mx-auto w-full min-w-0 max-w-6xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8 ${MOBILE_STICKY_OFFSET}`}>
         <h1 className="font-heading text-3xl sm:text-4xl">Shopping bag</h1>
         <p className="mt-2 text-sm text-muted-foreground sm:text-base">{items.length} items</p>
         <div className="mt-8 grid min-w-0 gap-8 lg:mt-10 lg:grid-cols-[minmax(0,1fr)_minmax(260px,360px)] lg:gap-10">
@@ -149,6 +150,18 @@ export default function CartPage() {
                 <Link href="/checkout">Proceed to checkout</Link>
               </Button>
             </Card>
+          </div>
+        </div>
+
+        <div className={MOBILE_STICKY_BAR}>
+          <div className="mx-auto flex max-w-6xl items-center justify-between gap-4">
+            <div>
+              <p className="text-xs text-muted-foreground">Total</p>
+              <p className="text-lg font-semibold">{formatInr(subtotal)}</p>
+            </div>
+            <Button asChild className="h-11 shrink-0 touch-manipulation rounded-full px-6">
+              <Link href="/checkout">Checkout</Link>
+            </Button>
           </div>
         </div>
       </div>

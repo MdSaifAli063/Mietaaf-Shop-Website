@@ -137,6 +137,18 @@
   }
 }
 
+@utility page-container {
+  @apply mx-auto w-full min-w-0 max-w-7xl px-4 sm:px-6 lg:px-8;
+}
+
+@utility page-section-y {
+  @apply py-12 sm:py-16 md:py-20;
+}
+
+@utility touch-target {
+  @apply min-h-11 touch-manipulation;
+}
+
 @utility font-heading {
   font-family: var(--font-heading);
 }

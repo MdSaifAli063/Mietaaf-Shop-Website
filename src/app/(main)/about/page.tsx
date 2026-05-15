@@ -1,11 +1,12 @@
 import { PageEnter } from "@/components/motion/page-enter";
+import { PAGE_CONTAINER, PAGE_PY } from "@/lib/layout";
 
 export default function AboutPage() {
   return (
     <PageEnter>
-      <article className="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
+      <article className={`${PAGE_CONTAINER} ${PAGE_PY} mx-auto max-w-3xl min-w-0`}>
         <p className="text-xs font-semibold uppercase tracking-[0.4em] text-primary">About</p>
-        <h1 className="mt-3 font-heading text-4xl md:text-5xl">Mietaaf atelier</h1>
+        <h1 className="mt-3 font-heading text-3xl sm:text-4xl md:text-5xl">Mietaaf atelier</h1>
         <div className="mt-8 space-y-6 text-muted-foreground leading-relaxed">
           <p>
             Mietaaf is a luxury men’s fashion house rooted in modern Indian ceremony — sherwanis,
