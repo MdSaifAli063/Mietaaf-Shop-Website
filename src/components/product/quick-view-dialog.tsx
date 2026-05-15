@@ -61,10 +61,19 @@ export function QuickViewDialog() {
 
   return (
     <Dialog open onOpenChange={(o) => !o && setQuick(null)}>
-      <DialogContent className="max-w-3xl gap-6 border-border/80 bg-card/95 p-0 sm:max-w-4xl">
-        <div className="grid gap-0 md:grid-cols-2">
-          <div className="relative aspect-[3/4] bg-muted">
-            <Image src={img} alt={product.name} fill className="object-cover" />
+      <DialogContent
+        position="mobile-sheet"
+        className="gap-0 overflow-y-auto overscroll-contain border-border/80 bg-card/95 p-0"
+      >
+        <div className="grid min-w-0 gap-0 md:grid-cols-2">
+          <div className="relative aspect-[4/5] max-h-[45dvh] bg-muted sm:aspect-[3/4] sm:max-h-none">
+            <Image
+              src={img}
+              alt={product.name}
+              fill
+              className="object-cover"
+              sizes="(max-width:768px) 100vw, 50vw"
+            />
           </div>
           <div className="flex flex-col gap-4 p-6 md:p-8">
             <DialogHeader className="text-left">

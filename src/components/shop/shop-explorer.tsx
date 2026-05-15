@@ -141,7 +141,7 @@ export function ShopExplorer() {
 
   return (
     <PageEnter>
-      <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+      <div className="page-container min-w-0 py-8 sm:py-10 md:py-12">
         <div className="mb-10 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.4em] text-primary">Shop</p>

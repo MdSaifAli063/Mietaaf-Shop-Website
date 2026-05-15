@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { Minus, Plus, Share2, ShoppingBag, MessageCircle } from "lucide-react";
@@ -73,8 +74,17 @@ export function ProductDetailView({ product }: { product: Product }) {
   }
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-      <Breadcrumb className="mb-8">
+    <div className="page-container min-w-0 py-8 sm:py-10 md:py-12">
+      <p className="mb-4 text-sm text-muted-foreground sm:hidden">
+        <Link href="/shop" className="hover:text-primary">
+          Shop
+        </Link>
+        <span className="mx-2">/</span>
+        <Link href={`/category/${product.categorySlug}`} className="hover:text-primary">
+          {product.category}
+        </Link>
+      </p>
+      <Breadcrumb className="mb-6 hidden sm:block">
         <BreadcrumbList>
           <BreadcrumbItem>
             <BreadcrumbLink href="/">Home</BreadcrumbLink>
@@ -114,7 +124,7 @@ export function ProductDetailView({ product }: { product: Product }) {
               />
             </div>
           </motion.div>
-          <div className="flex gap-2 overflow-x-auto pb-1">
+          <div className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 sm:mx-0 sm:px-0">
             {product.images.map((src, i) => (
               <button
                 type="button"
@@ -136,7 +146,7 @@ export function ProductDetailView({ product }: { product: Product }) {
             {product.discountPercent ? (
               <Badge className="mb-3 rounded-full">{product.discountPercent}% off</Badge>
             ) : null}
-            <h1 className="font-heading text-4xl md:text-5xl">{product.name}</h1>
+            <h1 className="font-heading text-2xl leading-tight sm:text-4xl md:text-5xl">{product.name}</h1>
             <div className="mt-3 flex flex-wrap items-center gap-4">
               <StarRating value={product.rating} count={product.reviewCount} />
               <span className="text-sm text-muted-foreground">
@@ -163,7 +173,7 @@ export function ProductDetailView({ product }: { product: Product }) {
                   key={s}
                   type="button"
                   variant={size === s ? "default" : "outline"}
-                  className="rounded-full px-4"
+                  className="h-10 min-h-10 touch-manipulation rounded-full px-4"
                   onClick={() => setSize(s)}
                 >
                   {s}
@@ -220,10 +230,10 @@ export function ProductDetailView({ product }: { product: Product }) {
             </div>
           </div>
 
-          <div className="flex flex-col gap-3 sm:flex-row">
+          <div className="flex flex-col gap-3">
             <Button
               size="lg"
-              className="flex-1 rounded-full"
+              className="h-12 w-full touch-manipulation rounded-full sm:h-11"
               onClick={() => {
                 addItem({
                   productId: product.id,
@@ -244,7 +254,7 @@ export function ProductDetailView({ product }: { product: Product }) {
             <Button
               size="lg"
               variant="outline"
-              className="flex-1 rounded-full border-[#25D366]/40 text-[#128C7E] hover:bg-[#25D366]/10"
+              className="h-12 w-full touch-manipulation rounded-full border-[#25D366]/40 text-[#128C7E] hover:bg-[#25D366]/10 sm:h-11"
               asChild
             >
               <a
@@ -260,20 +270,27 @@ export function ProductDetailView({ product }: { product: Product }) {
                 Buy via WhatsApp
               </a>
             </Button>
-            <Button size="lg" variant="secondary" className="rounded-full" onClick={share}>
-              <Share2 className="h-5 w-5" />
+            <Button
+              size="lg"
+              variant="secondary"
+              className="h-12 w-full touch-manipulation rounded-full sm:h-11"
+              onClick={share}
+            >
+              <Share2 className="mr-2 h-5 w-5 sm:mr-0" />
+              <span className="sm:sr-only">Share</span>
+              <span className="sm:hidden">Share product</span>
             </Button>
           </div>
 
-          <Tabs defaultValue="desc" className="w-full">
-            <TabsList className="grid w-full grid-cols-3 rounded-full bg-muted/80">
-              <TabsTrigger value="desc" className="rounded-full">
+          <Tabs defaultValue="desc" className="w-full min-w-0">
+            <TabsList className="flex h-auto w-full gap-1 overflow-x-auto rounded-full bg-muted/80 p-1">
+              <TabsTrigger value="desc" className="shrink-0 rounded-full px-4 py-2 text-xs sm:text-sm">
                 Details
               </TabsTrigger>
-              <TabsTrigger value="fabric" className="rounded-full">
+              <TabsTrigger value="fabric" className="shrink-0 rounded-full px-4 py-2 text-xs sm:text-sm">
                 Fabric
               </TabsTrigger>
-              <TabsTrigger value="reviews" className="rounded-full">
+              <TabsTrigger value="reviews" className="shrink-0 rounded-full px-4 py-2 text-xs sm:text-sm">
                 Reviews
               </TabsTrigger>
             </TabsList>
