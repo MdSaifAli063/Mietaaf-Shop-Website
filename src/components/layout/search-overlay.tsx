@@ -35,7 +35,10 @@ export function SearchOverlay() {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className="top-[12%] max-w-2xl translate-y-0 gap-4 border-border/80 bg-card/95 p-6 sm:rounded-2xl">
+      <DialogContent
+        position="bottom-sheet"
+        className="gap-4 overflow-y-auto overscroll-contain border-border/80 bg-card/95 p-4 sm:p-6"
+      >
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2 font-heading text-xl">
             <Sparkles className="h-5 w-5 text-primary" />
@@ -62,7 +65,7 @@ export function SearchOverlay() {
             </button>
           ) : null}
         </div>
-        <div className="max-h-[50vh] space-y-2 overflow-y-auto pr-1">
+        <div className="max-h-[min(50dvh,400px)] space-y-2 overflow-y-auto overscroll-contain sm:max-h-[50vh]">
           {results.length === 0 ? (
             <p className="py-8 text-center text-sm text-muted-foreground">
               No matches. Try another keyword.
@@ -73,16 +76,22 @@ export function SearchOverlay() {
                 key={p.id}
                 href={`/product/${p.slug}`}
                 onClick={() => setOpen(false)}
-                className="flex items-center gap-3 rounded-xl border border-transparent p-2 transition-colors hover:border-border hover:bg-muted/60"
+                className="flex min-w-0 items-center gap-3 rounded-xl border border-transparent p-2 transition-colors hover:border-border hover:bg-muted/60"
               >
                 <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-lg bg-muted">
-                  <Image src={p.images[0]!} alt="" fill className="object-cover" />
+                  <Image
+                    src={p.images[0]!}
+                    alt=""
+                    fill
+                    className="object-cover"
+                    sizes="56px"
+                  />
                 </div>
                 <div className="min-w-0 flex-1">
                   <p className="truncate font-medium">{p.name}</p>
-                  <p className="text-xs text-muted-foreground">{p.category}</p>
+                  <p className="truncate text-xs text-muted-foreground">{p.category}</p>
                 </div>
-                <span className="text-sm font-semibold">{formatInr(p.price)}</span>
+                <span className="shrink-0 text-sm font-semibold">{formatInr(p.price)}</span>
               </Link>
             ))
           )}

@@ -65,7 +65,7 @@ export function SiteHeader() {
 
   return (
     <header className="sticky top-0 z-40 w-full min-w-0 overflow-x-clip border-b border-border/60 bg-background/80 pt-[env(safe-area-inset-top,0px)] backdrop-blur-xl">
-      <div className="relative mx-auto flex h-[4.5rem] w-full min-w-0 max-w-7xl items-center justify-between gap-2 px-2 sm:h-[5.5rem] sm:gap-3 sm:px-4 lg:h-24 lg:px-8">
+      <div className="relative mx-auto flex h-16 w-full min-w-0 max-w-7xl items-center justify-between gap-1 px-2 sm:h-[4.5rem] sm:gap-2 sm:px-4 md:h-[5.5rem] lg:h-24 lg:px-8">
         {/* Left: menu + logo (flush left) */}
         <div className="relative z-20 flex min-w-0 items-center gap-1.5 sm:gap-2">
           <Sheet open={open} onOpenChange={setOpen}>
@@ -80,19 +80,20 @@ export function SiteHeader() {
             </SheetTrigger>
             <SheetContent
               side="left"
-              className="w-[min(calc(100dvw-1.25rem),420px)] max-w-dvw gap-0 p-0 pt-[env(safe-area-inset-top,0px)]"
+              className="flex h-dvh max-h-dvh w-[min(100dvw,420px)] max-w-[min(85vw,420px)] flex-col gap-0 overflow-hidden p-0"
             >
-              <div className="border-b border-border/60 p-6">
+              <div className="shrink-0 border-b border-border/60 px-4 pb-4 pt-[max(1rem,env(safe-area-inset-top))] pr-12">
                 <Logo
                   href={logoHref}
                   variant="drawer"
+                  priority
                   onClick={() => setOpen(false)}
                 />
-                <p className="mt-2 text-xs text-muted-foreground">
+                <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
                   Luxury men’s ethnic & formal — curated in India.
                 </p>
               </div>
-              <nav className="flex touch-manipulation flex-col gap-0.5 p-3 sm:p-4">
+              <nav className="flex min-h-0 flex-1 touch-manipulation flex-col gap-0.5 overflow-y-auto overscroll-contain px-3 py-3 pb-[max(1.25rem,env(safe-area-inset-bottom))] sm:px-4">
                 {isAuthPage ? (
                   <>
                     <Link
@@ -148,8 +149,7 @@ export function SiteHeader() {
               </nav>
             </SheetContent>
           </Sheet>
-          <Logo href={logoHref} className="hidden min-w-0 max-w-full sm:flex" priority />
-          <Logo href={logoHref} className="min-w-0 max-w-full sm:hidden" />
+          <Logo href={logoHref} className="min-w-0" priority />
         </div>
 
         {/* Desktop: dead-center in the bar (not “center of space between logo and icons”) */}
@@ -209,27 +209,20 @@ export function SiteHeader() {
               <Button
                 variant="ghost"
                 size="icon"
-                className="hidden md:inline-flex"
+                className="h-10 w-10 shrink-0 sm:h-11 sm:w-11"
                 onClick={() => setSearch(true)}
                 aria-label="Search"
               >
                 <Search className="h-5 w-5" />
               </Button>
-              <Link
-                href="/search"
-                aria-label="Search"
-                className={cn(
-                  buttonVariants({ variant: "ghost", size: "icon" }),
-                  "md:hidden",
-                )}
-              >
-                <Search className="h-5 w-5" />
-              </Link>
 
               <Link
                 href="/wishlist"
                 aria-label="Wishlist"
-                className={cn(buttonVariants({ variant: "ghost", size: "icon" }), "relative")}
+                className={cn(
+                  buttonVariants({ variant: "ghost", size: "icon" }),
+                  "relative h-10 w-10 shrink-0 sm:h-11 sm:w-11",
+                )}
               >
                 <Heart className="h-5 w-5" />
                 {wishCount > 0 ? (
@@ -242,7 +235,10 @@ export function SiteHeader() {
               <Link
                 href="/cart"
                 aria-label="Cart"
-                className={cn(buttonVariants({ variant: "ghost", size: "icon" }), "relative")}
+                className={cn(
+                  buttonVariants({ variant: "ghost", size: "icon" }),
+                  "relative h-10 w-10 shrink-0 sm:h-11 sm:w-11",
+                )}
               >
                 <ShoppingBag className="h-5 w-5" />
                 {cartCount > 0 ? (
@@ -257,7 +253,7 @@ export function SiteHeader() {
           <Button
             variant="ghost"
             size="icon"
-            className="relative"
+            className="relative h-10 w-10 shrink-0 sm:h-11 sm:w-11"
             onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
             aria-label="Toggle theme"
           >
@@ -268,7 +264,10 @@ export function SiteHeader() {
           {!isAuthPage ? (
             <DropdownMenu>
               <DropdownMenuTrigger
-                className={cn(buttonVariants({ variant: "ghost", size: "icon" }))}
+                className={cn(
+                  buttonVariants({ variant: "ghost", size: "icon" }),
+                  "h-10 w-10 shrink-0 sm:h-11 sm:w-11",
+                )}
                 aria-label="Account"
               >
                 <User2 className="h-5 w-5" />
