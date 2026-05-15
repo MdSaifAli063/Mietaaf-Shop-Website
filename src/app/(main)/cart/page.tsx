@@ -3,7 +3,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Minus, Plus, Trash2 } from "lucide-react";
-import { motion } from "framer-motion";
 import { useCartStore, cartLineKey } from "@/store/cart-store";
 import { formatInr } from "@/lib/format";
 import { Button } from "@/components/ui/button";
@@ -46,15 +45,16 @@ export default function CartPage() {
             {items.map((item) => {
               const key = cartLineKey(item);
               return (
-                <motion.div
-                  key={key}
-                  layout
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                >
+                <div key={key}>
                   <Card className="flex min-w-0 flex-col gap-4 border-border/60 p-4 sm:flex-row sm:gap-5">
                     <div className="relative mx-auto aspect-[4/5] w-full max-w-[220px] shrink-0 overflow-hidden rounded-xl bg-muted sm:mx-0 sm:aspect-auto sm:h-32 sm:w-28 sm:max-w-none">
-                      <Image src={item.image} alt={item.name} fill className="object-cover" />
+                      <Image
+                        src={item.image}
+                        alt={item.name}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width:640px) 220px, 112px"
+                      />
                     </div>
                     <div className="flex min-w-0 flex-1 flex-col justify-between">
                       <div className="min-w-0">
@@ -108,7 +108,7 @@ export default function CartPage() {
                       </div>
                     </div>
                   </Card>
-                </motion.div>
+                </div>
               );
             })}
           </div>

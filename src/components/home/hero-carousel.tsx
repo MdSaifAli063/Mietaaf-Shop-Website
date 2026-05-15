@@ -4,7 +4,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { Autoplay, EffectFade, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { motion } from "framer-motion";
 import { BANNERS } from "@/lib/data/banners";
 import { Button } from "@/components/ui/button";
 import "swiper/css";
@@ -17,7 +16,7 @@ export function HeroCarousel() {
       <Swiper
         modules={[Autoplay, EffectFade, Pagination]}
         effect="fade"
-        speed={900}
+        speed={520}
         autoplay={{ delay: 5200, disableOnInteraction: false }}
         pagination={{ clickable: true }}
         loop
@@ -36,13 +35,8 @@ export function HeroCarousel() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
               <div className="absolute inset-0 bg-gradient-to-r from-background/90 via-background/20 to-transparent" />
-              <motion.div className="absolute inset-0 flex flex-col justify-end px-4 pb-[max(6rem,env(safe-area-inset-bottom))] sm:px-12 sm:pb-28 lg:px-16 lg:pb-32">
-                <motion.div
-                  initial={{ opacity: 0, y: 32 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                  className="max-w-xl space-y-6"
-                >
+              <div className="absolute inset-0 flex flex-col justify-end px-4 pb-[max(6rem,env(safe-area-inset-bottom))] sm:px-12 sm:pb-28 lg:px-16 lg:pb-32">
+                <div className="max-w-xl space-y-6">
                   <p className="text-xs font-semibold uppercase tracking-[0.45em] text-primary">
                     Mietaaf Atelier
                   </p>
@@ -71,8 +65,8 @@ export function HeroCarousel() {
                       <Link href="/shop">Shop all</Link>
                     </Button>
                   </div>
-                </motion.div>
-              </motion.div>
+                </div>
+              </div>
             </div>
           </SwiperSlide>
         ))}
