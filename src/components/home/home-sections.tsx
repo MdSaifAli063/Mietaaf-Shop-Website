@@ -166,7 +166,13 @@ export function HomeSections() {
                   <p className="text-sm leading-relaxed text-muted-foreground">&ldquo;{t.quote}&rdquo;</p>
                   <div className="mt-6 flex items-center gap-3">
                     <div className="relative h-12 w-12 overflow-hidden rounded-full">
-                      <Image src={t.image} alt={t.name} fill className="object-cover" />
+                      <Image
+                        src={t.image}
+                        alt={t.name}
+                        fill
+                        className="object-cover"
+                        sizes="48px"
+                      />
                     </div>
                     <div>
                       <p className="font-medium">{t.name}</p>
@@ -211,6 +217,7 @@ export function HomeSections() {
             alt=""
             fill
             className="object-cover opacity-30"
+            sizes="100vw"
           />
           <div className="absolute inset-0 bg-background/85 backdrop-blur-sm" />
         </div>
@@ -239,10 +246,16 @@ export function HomeSections() {
             <h2 className="font-heading text-2xl md:text-3xl">The feed</h2>
             <p className="text-sm text-muted-foreground">A moodboard in motion — new drops weekly.</p>
           </Reveal>
-          <div className="mt-8 grid grid-cols-3 gap-1 sm:gap-2 md:grid-cols-6">
+          <div className="mt-8 grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-2 md:grid-cols-6">
             {DUMMY_PRODUCTS.slice(0, 6).map((p) => (
               <Link key={p.id} href={`/product/${p.slug}`} className="relative aspect-square overflow-hidden">
-                <Image src={p.images[0]!} alt={p.name} fill className="object-cover transition-transform hover:scale-105" />
+                <Image
+                  src={p.images[0]!}
+                  alt={p.name}
+                  fill
+                  className="object-cover transition-transform hover:scale-105"
+                  sizes="(max-width:640px) 50vw, 16vw"
+                />
               </Link>
             ))}
           </div>

@@ -13,7 +13,9 @@ export function MainShell({ children }: { children: React.ReactNode }) {
         <RequireAuth>
           <SiteHeader />
           <MainShellOverlays />
-          <main className="flex-1 min-w-0 w-full">{children}</main>
+          <main className="flex-1 min-w-0 w-full pb-[env(safe-area-inset-bottom,0px)]">
+            {children}
+          </main>
           <SiteFooter />
           <FloatingWhatsApp />
         </RequireAuth>

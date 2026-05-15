@@ -43,15 +43,11 @@ export function RequireAuth({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (!mounted) return;
     if (openWithoutLogin) return;
-    const returnUrl = `${pathname}${typeof window !== "undefined" ? window.location.search : ""}`;
-    const login = `/login?returnUrl=${encodeURIComponent(returnUrl)}`;
-    if (!firebaseReady) {
-      router.replace(login);
-      return;
-    }
+    if (!firebaseReady) return;
     if (loading) return;
     if (user) return;
-    router.replace(login);
+    const returnUrl = `${pathname}${typeof window !== "undefined" ? window.location.search : ""}`;
+    router.replace(`/login?returnUrl=${encodeURIComponent(returnUrl)}`);
   }, [mounted, firebaseReady, loading, user, openWithoutLogin, pathname, router]);
 
   if (!mounted) {
@@ -68,7 +64,7 @@ export function RequireAuth({ children }: { children: React.ReactNode }) {
   }
 
   if (!firebaseReady) {
-    return <RedirectingToLogin />;
+    return <>{children}</>;
   }
 
   if (loading) {

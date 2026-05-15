@@ -13,7 +13,7 @@ import "swiper/css/pagination";
 
 export function HeroCarousel() {
   return (
-    <section className="relative h-[min(100dvh,900px)] w-full overflow-hidden bg-black">
+    <section className="relative h-[min(calc(100dvh-4rem),820px)] w-full overflow-hidden bg-black sm:h-[min(calc(100dvh-4.5rem),860px)] lg:h-[min(100dvh,900px)]">
       <Swiper
         modules={[Autoplay, EffectFade, Pagination]}
         effect="fade"
@@ -21,11 +21,11 @@ export function HeroCarousel() {
         autoplay={{ delay: 5200, disableOnInteraction: false }}
         pagination={{ clickable: true }}
         loop
-        className="h-full [&_.swiper-pagination-bullet]:bg-white/50 [&_.swiper-pagination-bullet-active]:bg-primary"
+        className="absolute inset-0 h-full w-full [&_.swiper-slide]:!h-full [&_.swiper-wrapper]:!h-full [&_.swiper-pagination-bullet]:bg-white/50 [&_.swiper-pagination-bullet-active]:bg-primary"
       >
         {BANNERS.map((b, index) => (
           <SwiperSlide key={b.id} className="!h-full">
-            <div className="relative h-full w-full">
+            <div className="relative h-full min-h-[inherit] w-full">
               <Image
                 src={b.image}
                 alt={b.title}
@@ -36,7 +36,7 @@ export function HeroCarousel() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
               <div className="absolute inset-0 bg-gradient-to-r from-background/90 via-background/20 to-transparent" />
-              <div className="absolute inset-0 flex flex-col justify-end px-6 pb-24 sm:px-12 lg:px-16 lg:pb-32">
+              <motion.div className="absolute inset-0 flex flex-col justify-end px-4 pb-[max(6rem,env(safe-area-inset-bottom))] sm:px-12 sm:pb-28 lg:px-16 lg:pb-32">
                 <motion.div
                   initial={{ opacity: 0, y: 32 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -46,7 +46,7 @@ export function HeroCarousel() {
                   <p className="text-xs font-semibold uppercase tracking-[0.45em] text-primary">
                     Mietaaf Atelier
                   </p>
-                  <h1 className="font-heading text-4xl leading-tight text-foreground sm:text-5xl lg:text-6xl">
+                  <h1 className="font-heading text-3xl leading-tight text-foreground sm:text-5xl lg:text-6xl">
                     {b.title}
                   </h1>
                   {b.subtitle ? (
@@ -72,7 +72,7 @@ export function HeroCarousel() {
                     </Button>
                   </div>
                 </motion.div>
-              </div>
+              </motion.div>
             </div>
           </SwiperSlide>
         ))}
