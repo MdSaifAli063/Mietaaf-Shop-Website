@@ -2,10 +2,11 @@
 
 import Link from "next/link";
 import { MessageCircle } from "lucide-react";
+import { SITE_WHATSAPP_E164_DIGITS } from "@/lib/site-contact";
 import { sanitizeWhatsAppNumber } from "@/lib/whatsapp";
 
 export function FloatingWhatsApp() {
-  const raw = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "919999999999";
+  const raw = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? SITE_WHATSAPP_E164_DIGITS;
   const num = sanitizeWhatsAppNumber(raw);
   const href = `https://wa.me/${num}?text=${encodeURIComponent("Hello Mietaaf, I would like styling assistance.")}`;
 

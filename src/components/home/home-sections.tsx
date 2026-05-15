@@ -258,7 +258,7 @@ export function HomeSections() {
         <div className="mx-auto flex max-w-4xl flex-col items-center gap-4 px-4 text-center sm:px-6">
           <h3 className="font-heading text-xl sm:text-2xl">Private list</h3>
           <p className="text-sm text-muted-foreground">
-            Be first to access limited runs and appointment slots at our Mumbai atelier.
+            Be first to access limited runs and appointment slots at our Bengaluru atelier.
           </p>
           <form
             className="mt-2 flex w-full max-w-md touch-manipulation flex-col gap-2 sm:flex-row sm:items-stretch"
