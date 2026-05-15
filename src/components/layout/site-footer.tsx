@@ -5,7 +5,7 @@ import { Mail, MapPin, Phone } from "lucide-react";
 import { Logo } from "@/components/branding/logo";
 import { FacebookIcon, InstagramIcon, LinkedInIcon } from "@/components/branding/social-brand-icons";
 import { FOOTER_LINKS, SITE_SOCIAL_URLS, SITE_TAGLINE } from "@/lib/constants";
-import { SITE_ADDRESS_DISPLAY, SITE_PHONE_DISPLAY } from "@/lib/site-contact";
+import { SITE_ADDRESS_DISPLAY, SITE_EMAIL_DISPLAY, SITE_PHONE_DISPLAY } from "@/lib/site-contact";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import toast from "react-hot-toast";
@@ -131,7 +131,7 @@ export function SiteFooter() {
                 <Phone className="h-4 w-4 text-primary" /> {SITE_PHONE_DISPLAY}
               </p>
               <p className="flex items-center gap-2">
-                <Mail className="h-4 w-4 text-primary" /> care@mietaaf.com
+                <Mail className="h-4 w-4 text-primary" /> {SITE_EMAIL_DISPLAY}
               </p>
               <p className="flex items-start gap-2">
                 <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
