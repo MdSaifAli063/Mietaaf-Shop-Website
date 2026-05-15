@@ -1,7 +1,7 @@
 export const TESTIMONIALS = [
   {
     name: "Arjun Mehta",
-    role: "Groom, Mumbai",
+    role: "Groom, Bengaluru",
     quote:
       "The sherwani felt cinematic. Fit sessions were thoughtful and the fabric quality is unmistakably premium.",
     image:

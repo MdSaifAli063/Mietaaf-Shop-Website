@@ -26,8 +26,10 @@ import {
 } from "@/components/ui/breadcrumb";
 import toast from "react-hot-toast";
 import { cn } from "@/lib/utils";
+import { SITE_WHATSAPP_E164_DIGITS } from "@/lib/site-contact";
 
-const waNumber = () => process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "919999999999";
+const waNumber = () =>
+  process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? SITE_WHATSAPP_E164_DIGITS;
 
 export function ProductDetailView({ product }: { product: Product }) {
   const addItem = useCartStore((s) => s.addItem);

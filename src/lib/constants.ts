@@ -3,6 +3,13 @@ import type { CategorySlug } from "@/types";
 export const SITE_NAME = "MIETAAF";
 export const SITE_TAGLINE = "Luxury Men’s Ethnic & Formal";
 
+/** LinkedIn, Instagram, Facebook — set `NEXT_PUBLIC_SOCIAL_*` in `.env.local` or edit these fallbacks. */
+export const SITE_SOCIAL_URLS = {
+  linkedin: process.env.NEXT_PUBLIC_SOCIAL_LINKEDIN?.trim() || "#",
+  instagram: process.env.NEXT_PUBLIC_SOCIAL_INSTAGRAM?.trim() || "#",
+  facebook: process.env.NEXT_PUBLIC_SOCIAL_FACEBOOK?.trim() || "#",
+} as const;
+
 export const NAV_CATEGORIES: { slug: CategorySlug; label: string }[] = [
   { slug: "sherwani", label: "Sherwani" },
   { slug: "blazer", label: "Blazer" },

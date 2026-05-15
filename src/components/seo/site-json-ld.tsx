@@ -1,4 +1,5 @@
 import { getSiteUrl } from "@/lib/seo";
+import { SITE_ADDRESS_SCHEMA_POSTAL, SITE_PHONE_E164_PLUS } from "@/lib/site-contact";
 
 /** Organization + WebSite schema for rich results (server-rendered). */
 export function SiteJsonLd() {
@@ -11,6 +12,8 @@ export function SiteJsonLd() {
         "@id": `${base}/#organization`,
         name: "Mietaaf",
         url: base,
+        telephone: SITE_PHONE_E164_PLUS,
+        address: SITE_ADDRESS_SCHEMA_POSTAL,
       },
       {
         "@type": "WebSite",

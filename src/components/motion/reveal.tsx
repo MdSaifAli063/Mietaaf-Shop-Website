@@ -3,15 +3,12 @@
 /**
  * Simple wrapper — scroll-based motion removed for faster paint and smaller JS.
  */
-export function Reveal({
-  children,
-  className,
-  delay: _delay,
-}: {
+export function Reveal(props: {
   children: React.ReactNode;
   className?: string;
-  /** Unused — kept so existing call sites stay unchanged. */
+  /** Accepted for API compatibility with existing call sites (no effect). */
   delay?: number;
 }) {
+  const { children, className } = props;
   return <div className={className}>{children}</div>;
 }

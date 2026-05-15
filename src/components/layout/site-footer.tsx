@@ -1,9 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { Share2, Mail, MapPin, Phone } from "lucide-react";
+import { Mail, MapPin, Phone } from "lucide-react";
 import { Logo } from "@/components/branding/logo";
-import { FOOTER_LINKS, SITE_TAGLINE } from "@/lib/constants";
+import { FacebookIcon, InstagramIcon, LinkedInIcon } from "@/components/branding/social-brand-icons";
+import { FOOTER_LINKS, SITE_SOCIAL_URLS, SITE_TAGLINE } from "@/lib/constants";
+import { SITE_ADDRESS_DISPLAY, SITE_PHONE_DISPLAY } from "@/lib/site-contact";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import toast from "react-hot-toast";
@@ -21,16 +23,40 @@ export function SiteFooter() {
               tailoring for the modern gentleman.
             </p>
             <div className="flex flex-wrap gap-3">
-              {["Instagram", "Facebook", "Pinterest"].map((s) => (
-                <Link
-                  key={s}
-                  href="#"
-                  className="flex h-11 w-11 shrink-0 touch-manipulation items-center justify-center rounded-full border border-white/15 text-mietaaf-cream/90 transition-colors hover:border-primary hover:text-primary"
-                  aria-label={s}
-                >
-                  <Share2 className="h-4 w-4" />
-                </Link>
-              ))}
+              {(
+                [
+                  {
+                    href: SITE_SOCIAL_URLS.linkedin,
+                    label: "LinkedIn",
+                    Icon: LinkedInIcon,
+                  },
+                  {
+                    href: SITE_SOCIAL_URLS.instagram,
+                    label: "Instagram",
+                    Icon: InstagramIcon,
+                  },
+                  {
+                    href: SITE_SOCIAL_URLS.facebook,
+                    label: "Facebook",
+                    Icon: FacebookIcon,
+                  },
+                ] as const
+              ).map(({ href, label, Icon }) => {
+                const external = href.startsWith("http");
+                return (
+                  <Link
+                    key={label}
+                    href={href}
+                    {...(external
+                      ? { target: "_blank" as const, rel: "noopener noreferrer" }
+                      : {})}
+                    className="flex h-11 w-11 shrink-0 touch-manipulation items-center justify-center rounded-full border border-white/15 text-mietaaf-cream/90 transition-colors hover:border-primary hover:text-primary"
+                    aria-label={label}
+                  >
+                    <Icon className="h-4 w-4" />
+                  </Link>
+                );
+              })}
             </div>
           </div>
           <div className="min-w-0">
@@ -102,14 +128,14 @@ export function SiteFooter() {
             </form>
             <div className="space-y-2 pt-2 text-sm text-mietaaf-cream/80">
               <p className="flex items-center gap-2">
-                <Phone className="h-4 w-4 text-primary" /> +91 99999 99999
+                <Phone className="h-4 w-4 text-primary" /> {SITE_PHONE_DISPLAY}
               </p>
               <p className="flex items-center gap-2">
                 <Mail className="h-4 w-4 text-primary" /> care@mietaaf.com
               </p>
               <p className="flex items-start gap-2">
                 <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-                Atelier District, Mumbai — by appointment.
+                {SITE_ADDRESS_DISPLAY} — by appointment.
               </p>
             </div>
           </div>
