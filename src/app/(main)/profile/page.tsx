@@ -105,8 +105,8 @@ export default function ProfilePage() {
 
   return (
     <PageEnter>
-      <div className="mx-auto max-w-xl px-4 py-10 sm:px-6 lg:px-8">
-        <h1 className="font-heading text-4xl">Profile</h1>
+      <div className="page-container mx-auto min-w-0 max-w-xl py-8 sm:py-10 md:py-12">
+        <h1 className="font-heading text-3xl sm:text-4xl">Profile</h1>
         <Card className="mt-8 space-y-6 border-border/60 p-6">
           <div className="flex items-center gap-4">
             <Avatar className="h-16 w-16">
@@ -120,34 +120,34 @@ export default function ProfilePage() {
               <p className="text-sm text-muted-foreground">{user?.email}</p>
             </div>
           </div>
-          <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
+          <form className="touch-manipulation space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
             <div className="space-y-2">
               <Label htmlFor="displayName">Display name</Label>
-              <Input id="displayName" {...form.register("displayName")} className="rounded-xl" />
+              <Input id="displayName" {...form.register("displayName")} className="h-11 min-h-11 rounded-xl" />
             </div>
             <div className="space-y-2">
               <Label htmlFor="phone">Phone</Label>
-              <Input id="phone" {...form.register("phone")} className="rounded-xl" />
+              <Input id="phone" type="tel" {...form.register("phone")} className="h-11 min-h-11 rounded-xl" />
             </div>
             <div className="space-y-2">
               <Label htmlFor="address">Address</Label>
-              <Input id="address" {...form.register("address")} className="rounded-xl" />
+              <Input id="address" {...form.register("address")} className="h-11 min-h-11 rounded-xl" />
             </div>
-            <div className="grid gap-4 sm:grid-cols-3">
-              <div className="space-y-2">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              <div className="space-y-2 sm:col-span-2 lg:col-span-1">
                 <Label htmlFor="city">City</Label>
-                <Input id="city" {...form.register("city")} className="rounded-xl" />
+                <Input id="city" {...form.register("city")} className="h-11 min-h-11 rounded-xl" />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="state">State</Label>
-                <Input id="state" {...form.register("state")} className="rounded-xl" />
+                <Input id="state" {...form.register("state")} className="h-11 min-h-11 rounded-xl" />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="pincode">Pincode</Label>
-                <Input id="pincode" {...form.register("pincode")} className="rounded-xl" />
+                <Input id="pincode" {...form.register("pincode")} className="h-11 min-h-11 rounded-xl" />
               </div>
             </div>
-            <Button type="submit" className="rounded-full" disabled={form.formState.isSubmitting}>
+            <Button type="submit" className="h-11 w-full rounded-full sm:w-auto" disabled={form.formState.isSubmitting}>
               Save changes
             </Button>
           </form>

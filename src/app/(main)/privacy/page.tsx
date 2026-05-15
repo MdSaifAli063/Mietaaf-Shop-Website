@@ -1,10 +1,11 @@
 import { PageEnter } from "@/components/motion/page-enter";
+import { PAGE_CONTAINER, PAGE_PY } from "@/lib/layout";
 
 export default function PrivacyPage() {
   return (
     <PageEnter>
-      <article className="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
-        <h1 className="font-heading text-4xl">Privacy policy</h1>
+      <article className={`${PAGE_CONTAINER} ${PAGE_PY} mx-auto max-w-3xl min-w-0`}>
+        <h1 className="font-heading text-3xl sm:text-4xl">Privacy policy</h1>
         <div className="mt-8 space-y-4 text-sm leading-relaxed text-muted-foreground">
           <p>
             Mietaaf collects information you provide during checkout, account creation, and

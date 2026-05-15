@@ -3,18 +3,19 @@
 import Image from "next/image";
 import { DUMMY_PRODUCTS } from "@/lib/data/products";
 import { PageEnter } from "@/components/motion/page-enter";
+import { PAGE_CONTAINER, PAGE_PY } from "@/lib/layout";
 
 export default function LookbookPage() {
   const shots = DUMMY_PRODUCTS.flatMap((p) => p.images).slice(0, 9);
   return (
     <PageEnter>
-      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+      <div className={`${PAGE_CONTAINER} ${PAGE_PY} min-w-0`}>
         <p className="text-xs font-semibold uppercase tracking-[0.4em] text-primary">Lookbook</p>
-        <h1 className="mt-2 font-heading text-4xl md:text-5xl">Atelier lens</h1>
+        <h1 className="mt-2 font-heading text-3xl sm:text-4xl md:text-5xl">Atelier lens</h1>
         <p className="mt-4 max-w-2xl text-muted-foreground">
           A study in drape, lapel, and light — the Mietaaf man in motion.
         </p>
-        <div className="mt-12 grid gap-2 md:grid-cols-3">
+        <div className="mt-8 grid grid-cols-2 gap-2 sm:mt-12 md:grid-cols-3">
           {shots.map((src, i) => (
             <div
               key={`${src}-${i}`}
