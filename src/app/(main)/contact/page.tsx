@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import toast from "react-hot-toast";
 import { PAGE_CONTAINER, PAGE_PY } from "@/lib/layout";
+import { SITE_ADDRESS_DISPLAY, SITE_PHONE_DISPLAY } from "@/lib/site-contact";
 
 export default function ContactPage() {
   const [sent, setSent] = useState(false);
@@ -19,11 +20,12 @@ export default function ContactPage() {
           <p className="text-xs font-semibold uppercase tracking-[0.4em] text-primary">Contact</p>
           <h1 className="mt-3 font-heading text-3xl sm:text-4xl">Concierge</h1>
           <p className="mt-4 text-muted-foreground">
-            Appointments, bespoke inquiries, and press — reach our Mumbai atelier desk.
+            Appointments, bespoke inquiries, and press — reach our Bengaluru atelier desk.
           </p>
           <ul className="mt-8 space-y-3 text-sm text-muted-foreground">
-            <li>Phone: +91 99999 99999</li>
+            <li>Phone: {SITE_PHONE_DISPLAY}</li>
             <li>Email: care@mietaaf.com</li>
+            <li>Address: {SITE_ADDRESS_DISPLAY}</li>
             <li>Hours: 10:00 — 19:00 IST, Tue–Sun</li>
           </ul>
         </div>

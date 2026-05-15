@@ -17,6 +17,7 @@ import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { PageEnter } from "@/components/motion/page-enter";
 import { formatInr } from "@/lib/format";
+import { SITE_WHATSAPP_E164_DIGITS } from "@/lib/site-contact";
 import toast from "react-hot-toast";
 import Image from "next/image";
 
@@ -40,7 +41,7 @@ export default function CheckoutPage() {
   });
 
   async function onSubmit(data: CheckoutSchema) {
-    const wa = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "919999999999";
+    const wa = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? SITE_WHATSAPP_E164_DIGITS;
     const url = buildCheckoutWhatsAppUrl(
       {
         fullName: data.fullName,
