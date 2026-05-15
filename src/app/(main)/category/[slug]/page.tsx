@@ -7,6 +7,7 @@ import { getProductsByCategorySlug } from "@/lib/data/products";
 import { ProductCard } from "@/components/product/product-card";
 import { PageEnter } from "@/components/motion/page-enter";
 import type { CategorySlug } from "@/types";
+import { PAGE_CONTAINER, PAGE_PY } from "@/lib/layout";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -45,8 +46,8 @@ export default async function CategoryPage({
 
   return (
     <PageEnter>
-      <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-        <Breadcrumb className="mb-8">
+      <div className={`${PAGE_CONTAINER} ${PAGE_PY} min-w-0`}>
+        <Breadcrumb className="mb-6 overflow-x-auto sm:mb-8">
           <BreadcrumbList>
             <BreadcrumbItem>
               <BreadcrumbLink href="/">Home</BreadcrumbLink>
@@ -76,7 +77,7 @@ export default async function CategoryPage({
             <p className="text-xs font-semibold uppercase tracking-[0.4em] text-primary">
               Category
             </p>
-            <h1 className="mt-2 font-heading text-4xl md:text-5xl">{cat.name}</h1>
+            <h1 className="mt-2 font-heading text-3xl sm:text-4xl md:text-5xl">{cat.name}</h1>
             <p className="mt-4 max-w-xl text-muted-foreground">{cat.description}</p>
             <Link
               href="/shop"
@@ -86,7 +87,7 @@ export default async function CategoryPage({
             </Link>
           </div>
         </div>
-        <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-10 grid grid-cols-2 gap-4 sm:mt-16 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
           {products.map((p) => (
             <ProductCard key={p.id} product={p} />
           ))}
