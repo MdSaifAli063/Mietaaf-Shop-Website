@@ -1,15 +1,8 @@
 "use client";
 
-import { motion } from "framer-motion";
-
+/**
+ * Lightweight page chrome — avoids Framer Motion on every navigation for snappier route changes.
+ */
 export function PageEnter({ children }: { children: React.ReactNode }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 8 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
-    >
-      {children}
-    </motion.div>
-  );
+  return <div className="min-w-0 animate-in fade-in duration-150">{children}</div>;
 }

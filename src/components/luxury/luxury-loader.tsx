@@ -1,17 +1,31 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
+
+const STORAGE_KEY = "mietaaf_splash_seen";
 
 /**
- * Brief brand splash — kept short so first paint and interaction stay fast.
- * Pure CSS (no Framer) to avoid pulling motion into the layout chunk.
+ * Lightweight first-visit splash. Skipped for the rest of the tab session via sessionStorage.
+ * Short fade only — avoids blocking navigations after the initial load.
  */
 export function LuxuryLoader() {
   const [phase, setPhase] = useState<"in" | "out" | "done">("in");
 
-  useEffect(() => {
-    const hide = window.setTimeout(() => setPhase("out"), 320);
-    const remove = window.setTimeout(() => setPhase("done"), 520);
+  useLayoutEffect(() => {
+    if (typeof window === "undefined") return;
+    if (sessionStorage.getItem(STORAGE_KEY) === "1") {
+      setPhase("done");
+      return;
+    }
+    const hide = window.setTimeout(() => setPhase("out"), 160);
+    const remove = window.setTimeout(() => {
+      try {
+        sessionStorage.setItem(STORAGE_KEY, "1");
+      } catch {
+        /* private mode etc. */
+      }
+      setPhase("done");
+    }, 260);
     return () => {
       window.clearTimeout(hide);
       window.clearTimeout(remove);
@@ -22,7 +36,7 @@ export function LuxuryLoader() {
 
   return (
     <div
-      className={`fixed inset-0 z-[100] flex items-center justify-center bg-background transition-opacity duration-200 ease-out ${
+      className={`fixed inset-0 z-[100] flex items-center justify-center bg-background transition-opacity duration-150 ease-out ${
         phase === "out" ? "pointer-events-none opacity-0" : "opacity-100"
       }`}
       aria-hidden

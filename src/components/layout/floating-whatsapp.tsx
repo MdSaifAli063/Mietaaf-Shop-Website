@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { MessageCircle } from "lucide-react";
-import { motion } from "framer-motion";
 import { sanitizeWhatsAppNumber } from "@/lib/whatsapp";
 
 export function FloatingWhatsApp() {
@@ -11,12 +10,7 @@ export function FloatingWhatsApp() {
   const href = `https://wa.me/${num}?text=${encodeURIComponent("Hello Mietaaf, I would like styling assistance.")}`;
 
   return (
-    <motion.div
-      className="fixed bottom-[max(1.25rem,env(safe-area-inset-bottom,0px))] right-[max(1.25rem,env(safe-area-inset-right,0px))] z-50 max-w-dvw touch-manipulation md:bottom-[max(2rem,env(safe-area-inset-bottom,0px))] md:right-[max(2rem,env(safe-area-inset-right,0px))]"
-      initial={{ scale: 0, opacity: 0 }}
-      animate={{ scale: 1, opacity: 1 }}
-      transition={{ type: "spring", stiffness: 260, damping: 18, delay: 0.4 }}
-    >
+    <div className="fixed bottom-[max(1.25rem,env(safe-area-inset-bottom,0px))] right-[max(1.25rem,env(safe-area-inset-right,0px))] z-50 max-w-dvw touch-manipulation animate-in fade-in zoom-in duration-300 md:bottom-[max(2rem,env(safe-area-inset-bottom,0px))] md:right-[max(2rem,env(safe-area-inset-right,0px))]">
       <Link
         href={href}
         target="_blank"
@@ -26,6 +20,6 @@ export function FloatingWhatsApp() {
       >
         <MessageCircle className="h-7 w-7 transition-transform group-hover:rotate-6 md:h-8 md:w-8" />
       </Link>
-    </motion.div>
+    </div>
   );
 }

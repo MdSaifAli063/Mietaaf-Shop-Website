@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { motion } from "framer-motion";
 import { ArrowUpRight, Play } from "lucide-react";
 import { CATEGORIES } from "@/lib/data/categories";
 import { DUMMY_PRODUCTS } from "@/lib/data/products";
@@ -193,18 +192,11 @@ export function HomeSections() {
           </Reveal>
           <div className="columns-2 gap-3 sm:columns-3 lg:columns-4">
             {feed.map((src, i) => (
-              <motion.div
-                key={`${src}-${i}`}
-                initial={{ opacity: 0, y: 12 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: (i % 6) * 0.04 }}
-                className="mb-3 break-inside-avoid"
-              >
+              <div key={`${src}-${i}`} className="mb-3 break-inside-avoid">
                 <div className="relative aspect-[3/4] overflow-hidden rounded-xl bg-muted">
                   <Image src={src} alt="" fill className="object-cover" sizes="(max-width:768px) 50vw, 25vw" />
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>

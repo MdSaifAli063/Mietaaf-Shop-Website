@@ -3,7 +3,6 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { motion } from "framer-motion";
 import { Minus, Plus, Share2, ShoppingBag, MessageCircle } from "lucide-react";
 import type { Product } from "@/types";
 import { DUMMY_PRODUCTS } from "@/lib/data/products";
@@ -108,11 +107,7 @@ export function ProductDetailView({ product }: { product: Product }) {
 
       <div className="grid min-w-0 gap-8 lg:grid-cols-2 lg:gap-10">
         <div className="space-y-4">
-          <motion.div
-            className="relative aspect-[3/4] overflow-hidden rounded-2xl bg-muted"
-            whileHover={{ scale: 1.01 }}
-            transition={{ duration: 0.4 }}
-          >
+          <div className="relative aspect-[3/4] overflow-hidden rounded-2xl bg-muted transition-transform duration-300 hover:scale-[1.01]">
             <div className="relative h-full w-full overflow-hidden">
               <Image
                 src={mainImg}
@@ -123,7 +118,7 @@ export function ProductDetailView({ product }: { product: Product }) {
                 sizes="(max-width:1024px) 100vw, 50vw"
               />
             </div>
-          </motion.div>
+          </div>
           <div className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 sm:mx-0 sm:px-0">
             {product.images.map((src, i) => (
               <button

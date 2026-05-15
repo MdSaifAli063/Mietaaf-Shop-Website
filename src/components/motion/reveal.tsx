@@ -1,25 +1,17 @@
 "use client";
 
-import { motion } from "framer-motion";
-
+/**
+ * Simple wrapper — scroll-based motion removed for faster paint and smaller JS.
+ */
 export function Reveal({
   children,
   className,
-  delay = 0,
+  delay: _delay,
 }: {
   children: React.ReactNode;
   className?: string;
+  /** Unused — kept so existing call sites stay unchanged. */
   delay?: number;
 }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-24px" }}
-      transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1], delay }}
-      className={className}
-    >
-      {children}
-    </motion.div>
-  );
+  return <div className={className}>{children}</div>;
 }

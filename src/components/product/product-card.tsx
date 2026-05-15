@@ -3,7 +3,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Eye, Heart, ShoppingBag } from "lucide-react";
-import { motion } from "framer-motion";
 import type { Product } from "@/types";
 import { formatInr } from "@/lib/format";
 import { Button } from "@/components/ui/button";
@@ -61,7 +60,7 @@ export function ProductCard({ product }: { product: Product }) {
 
   return (
     <Card className="group relative flex min-w-0 flex-col overflow-hidden border-border/60 bg-card/80 shadow-sm backdrop-blur-sm transition-all hover:-translate-y-1 hover:shadow-xl">
-      <motion.div className="relative aspect-[3/4] overflow-hidden bg-muted">
+      <div className="relative aspect-[3/4] overflow-hidden bg-muted">
         <Link href={`/product/${product.slug}`} className="absolute inset-0 z-0" />
         <Image
           src={primary}
@@ -114,11 +113,8 @@ export function ProductCard({ product }: { product: Product }) {
           </Button>
         </div>
         {/* Desktop hover tray */}
-        <motion.div
-          className="absolute inset-x-0 bottom-0 z-10 hidden translate-y-full bg-gradient-to-t from-background/95 to-transparent p-3 transition-transform duration-300 [@media(hover:hover)]:group-hover:translate-y-0 lg:block"
-          initial={false}
-        >
-          <motion.div className="flex gap-2">
+        <div className="absolute inset-x-0 bottom-0 z-10 hidden translate-y-full bg-gradient-to-t from-background/95 to-transparent p-3 transition-transform duration-300 [@media(hover:hover)]:group-hover:translate-y-0 lg:block">
+          <div className="flex gap-2">
             <Button className="h-10 flex-1 touch-manipulation rounded-full" onClick={addToCart}>
               <ShoppingBag className="mr-2 h-4 w-4" />
               Add
@@ -131,9 +127,9 @@ export function ProductCard({ product }: { product: Product }) {
             >
               Compare
             </Button>
-          </motion.div>
-        </motion.div>
-      </motion.div>
+          </div>
+        </div>
+      </div>
       <div className="flex min-w-0 flex-1 flex-col space-y-2 p-3 sm:p-4">
         <Link href={`/product/${product.slug}`} className="block min-w-0">
           <h3 className="font-heading text-base leading-snug text-foreground transition-colors hover:text-primary sm:text-lg">

@@ -156,7 +156,7 @@ export function SiteHeader() {
         {!isAuthPage ? (
           <nav
             className={cn(
-              "pointer-events-none absolute inset-x-0 top-1/2 z-10 hidden -translate-y-1/2 lg:flex",
+              "pointer-events-none absolute inset-x-0 top-1/2 z-30 hidden -translate-y-1/2 lg:flex",
               "items-center justify-center",
             )}
             aria-label="Primary"
