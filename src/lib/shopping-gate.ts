@@ -11,7 +11,7 @@ export function syncShoppingGate(input: {
   hasUser: boolean;
 }): void {
   if (!input.firebaseReady) {
-    shoppingOpen = false;
+    shoppingOpen = true;
     return;
   }
   if (input.loading) {

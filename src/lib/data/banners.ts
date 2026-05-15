@@ -1,12 +1,12 @@
 import type { Banner } from "@/types";
+import { UNSPLASH_PHOTOS, unsplashImageUrl } from "@/lib/unsplash-images";
 
 export const BANNERS: Banner[] = [
   {
     id: "1",
     title: "The Wedding Edit",
     subtitle: "Hand-embellished sherwanis & indo-western",
-    image:
-      "https://images.unsplash.com/photo-1519741497674-611481863552?w=1920&q=75&auto=format&fit=crop",
+    image: unsplashImageUrl(UNSPLASH_PHOTOS.weddingSherwani, 1920, 75),
     href: "/category/wedding-collection",
     cta: "Explore Wedding",
   },
@@ -14,8 +14,7 @@ export const BANNERS: Banner[] = [
     id: "2",
     title: "Premium Suits",
     subtitle: "Charcoal, midnight, ivory — tailored in India",
-    image:
-      "https://images.unsplash.com/photo-1593032465175-481ac7f401a0?w=1920&q=75&auto=format&fit=crop",
+    image: unsplashImageUrl(UNSPLASH_PHOTOS.suitFormal, 1920, 75),
     href: "/category/suits",
     cta: "Shop Suits",
   },
@@ -23,8 +22,7 @@ export const BANNERS: Banner[] = [
     id: "3",
     title: "Festive Gold",
     subtitle: "Silk textures & metallic accents",
-    image:
-      "https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=1920&q=75&auto=format&fit=crop",
+    image: unsplashImageUrl(UNSPLASH_PHOTOS.festiveGold, 1920, 75),
     href: "/category/festive-collection",
     cta: "View Festive",
   },

@@ -1,7 +1,7 @@
 import type { Product } from "@/types";
+import { unsplashImageUrl } from "@/lib/unsplash-images";
 
-const img = (id: string) =>
-  `https://images.unsplash.com/photo-${id}?w=900&q=82&auto=format&fit=crop`;
+const img = (id: string) => unsplashImageUrl(id, 900);
 
 export const DUMMY_PRODUCTS: Product[] = [
   {

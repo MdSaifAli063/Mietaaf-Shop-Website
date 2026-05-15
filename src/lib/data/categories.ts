@@ -1,12 +1,12 @@
 import type { Category } from "@/types";
+import { UNSPLASH_PHOTOS, unsplashImageUrl } from "@/lib/unsplash-images";
 
 export const CATEGORIES: Category[] = [
   {
     slug: "sherwani",
     name: "Sherwani",
     description: "Regal silhouettes for celebrations and weddings.",
-    image:
-      "https://images.unsplash.com/photo-1593037617599-2040e0c8d3ad?w=1200&q=80&auto=format&fit=crop",
+    image: unsplashImageUrl(UNSPLASH_PHOTOS.weddingSherwani, 1200, 80),
   },
   {
     slug: "blazer",
@@ -19,8 +19,7 @@ export const CATEGORIES: Category[] = [
     slug: "coat",
     name: "Coat",
     description: "Layered luxury for cooler evenings and galas.",
-    image:
-      "https://images.unsplash.com/photo-1539533018407-2cb987c8abdc?w=1200&q=80&auto=format&fit=crop",
+    image: unsplashImageUrl(UNSPLASH_PHOTOS.coat, 1200, 80),
   },
   {
     slug: "suits",
@@ -33,15 +32,13 @@ export const CATEGORIES: Category[] = [
     slug: "kurta",
     name: "Kurta",
     description: "Effortless elegance in premium fabrics.",
-    image:
-      "https://images.unsplash.com/photo-1617137984093-3e3b3f5e5a0e?w=1200&q=80&auto=format&fit=crop",
+    image: unsplashImageUrl(UNSPLASH_PHOTOS.festiveGold, 1200, 80),
   },
   {
     slug: "pants",
     name: "Pants",
     description: "Tailored trousers with impeccable drape.",
-    image:
-      "https://images.unsplash.com/photo-1624378515193-66bb5a006a80?w=1200&q=80&auto=format&fit=crop",
+    image: unsplashImageUrl(UNSPLASH_PHOTOS.suitFormal, 1200, 80),
   },
   {
     slug: "designer-dresses",
