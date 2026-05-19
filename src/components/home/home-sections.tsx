@@ -7,6 +7,8 @@ import { CATEGORIES } from "@/lib/data/categories";
 import { DUMMY_PRODUCTS } from "@/lib/data/products";
 import { TESTIMONIALS } from "@/lib/data/testimonials";
 import { ProductCard } from "@/components/product/product-card";
+import { CatalogProductPanel } from "@/components/product/catalog-product-panel";
+import { catalogPhotoCropWidth } from "@/components/product/catalog-product-photo";
 import { Reveal } from "@/components/motion/reveal";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -19,7 +21,7 @@ export function HomeSections() {
   const trending = DUMMY_PRODUCTS.filter((p) => p.trending).slice(0, 4);
   const arrivals = DUMMY_PRODUCTS.filter((p) => p.newArrival).slice(0, 4);
   const wedding = DUMMY_PRODUCTS.filter((p) => p.wedding).slice(0, 3);
-  const suits = DUMMY_PRODUCTS.filter((p) => p.categorySlug === "suits").slice(0, 3);
+  const suits = DUMMY_PRODUCTS.filter((p) => p.categorySlug === "suits").slice(0, 2);
 
   return (
     <>
@@ -45,14 +47,29 @@ export function HomeSections() {
               <Reveal key={c.slug} delay={i * 0.05}>
                 <Link href={`/category/${c.slug}`} className="group block">
                   <Card className="overflow-hidden border-border/60 bg-card/80 shadow-sm transition-all hover:-translate-y-1 hover:shadow-xl">
-                    <div className="relative aspect-[4/5]">
-                      <Image
-                        src={c.image}
-                        alt={c.name}
-                        fill
-                        className="object-cover transition-transform duration-700 group-hover:scale-105"
-                        sizes="(max-width:768px) 50vw, 25vw"
-                      />
+                    <div className="relative aspect-[4/5] overflow-hidden">
+                      {c.slug === "suits" ? (
+                        <div
+                          className="absolute inset-y-0 left-0 h-full transition-transform duration-700 group-hover:scale-105"
+                          style={{ width: catalogPhotoCropWidth }}
+                        >
+                          <Image
+                            src={c.image}
+                            alt={c.name}
+                            fill
+                            className="object-cover object-left"
+                            sizes="(max-width:768px) 50vw, 25vw"
+                          />
+                        </div>
+                      ) : (
+                        <Image
+                          src={c.image}
+                          alt={c.name}
+                          fill
+                          className="object-cover transition-transform duration-700 group-hover:scale-105"
+                          sizes="(max-width:768px) 50vw, 25vw"
+                        />
+                      )}
                       <div className="absolute inset-0 bg-gradient-to-t from-background/90 to-transparent" />
                       <div className="absolute bottom-4 left-4 right-4">
                         <h3 className="font-heading text-xl">{c.name}</h3>
@@ -140,13 +157,24 @@ export function HomeSections() {
       <section className="border-t border-border/60 bg-muted/20 py-12 sm:py-16 md:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <Reveal>
-            <h2 className="font-heading text-3xl md:text-4xl">Premium suits</h2>
-            <p className="mt-2 text-muted-foreground">Architectural tailoring for decisive moments.</p>
+            <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+              <div>
+                <h2 className="font-heading text-3xl md:text-4xl">Premium suits</h2>
+                <p className="mt-2 max-w-2xl text-muted-foreground">
+                  From the Mietaaf catalog — tuxedos, bandhgalas, and statement three-piece sets.
+                </p>
+              </div>
+              <Button asChild variant="outline" className="rounded-full">
+                <Link href="/category/suits">
+                  Shop all suits <ArrowUpRight className="ml-1 h-4 w-4" />
+                </Link>
+              </Button>
+            </div>
           </Reveal>
-          <div className="mt-10 grid gap-6 md:grid-cols-3">
+          <div className="mt-10 space-y-10 sm:space-y-12">
             {suits.map((p, i) => (
               <Reveal key={p.id} delay={i * 0.07}>
-                <ProductCard product={p} />
+                <CatalogProductPanel product={p} variant="listing" />
               </Reveal>
             ))}
           </div>

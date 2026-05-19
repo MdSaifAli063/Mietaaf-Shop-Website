@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { DUMMY_PRODUCTS, getProductBySlug } from "@/lib/data/products";
 import { ProductDetailView } from "@/components/product/product-detail-view";
+import { CatalogProductDetailView } from "@/components/product/catalog-product-detail-view";
+import { isCatalogProduct } from "@/lib/data/catalog-suits";
 
 export function generateStaticParams() {
   return DUMMY_PRODUCTS.map((p) => ({ slug: p.slug }));
@@ -30,5 +32,8 @@ export default async function ProductPage({
   const { slug } = await params;
   const p = getProductBySlug(slug);
   if (!p) notFound();
+  if (isCatalogProduct(p)) {
+    return <CatalogProductDetailView product={p} />;
+  }
   return <ProductDetailView product={p} />;
 }

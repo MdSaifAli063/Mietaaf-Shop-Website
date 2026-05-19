@@ -19,7 +19,7 @@ import { PageEnter } from "@/components/motion/page-enter";
 import { formatInr } from "@/lib/format";
 import { SITE_WHATSAPP_E164_DIGITS } from "@/lib/site-contact";
 import toast from "react-hot-toast";
-import Image from "next/image";
+import { ProductThumbnailImage } from "@/components/product/catalog-product-photo";
 
 export default function CheckoutPage() {
   const items = useCartStore((s) => s.items);
@@ -189,8 +189,12 @@ export default function CheckoutPage() {
             <div className="max-h-[min(18rem,45dvh)] space-y-3 overflow-y-auto overscroll-contain pr-1">
               {items.map((i) => (
                 <div key={`${i.productId}-${i.size}-${i.color}`} className="flex gap-3">
-                  <div className="relative h-16 w-14 shrink-0 overflow-hidden rounded-lg bg-muted">
-                    <Image src={i.image} alt="" fill className="object-cover" />
+                  <div className="relative h-16 w-14 shrink-0 overflow-hidden rounded-lg bg-white">
+                    <ProductThumbnailImage
+                      src={i.image}
+                      alt={i.name}
+                      sizes="56px"
+                    />
                   </div>
                   <div className="min-w-0 flex-1 text-sm">
                     <p className="truncate font-medium">{i.name}</p>
