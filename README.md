@@ -10,6 +10,8 @@ When **Firebase env vars are set** (`firebaseReady`), the storefront (header, se
 
 If Firebase is **not** configured, the gate is **off** so you can still preview layouts while wiring `.env.local`.
 
+Auth pages (`/login`, `/signup`, `/forgot-password`) use a compact card layout with the gold wordmark inside the form. Logo path: `src/lib/auth-wordmark-src.ts` (default `/branding/mietaaf-auth-wordmark.png`).
+
 ## Quick start
 
 ```bash
@@ -28,23 +30,32 @@ Copy `.env.example` to `.env.local` and set:
 | Variable | Purpose |
 |----------|---------|
 | `NEXT_PUBLIC_SITE_URL` | Canonical URL for metadata / Open Graph |
-| `NEXT_PUBLIC_WHATSAPP_NUMBER` | Business WhatsApp in **digits only** (e.g. `9198xxxxxxxx`) |
+| `NEXT_PUBLIC_WHATSAPP_NUMBER` | Business WhatsApp in **digits only** (e.g. `917411025321`) |
 | `NEXT_PUBLIC_ADMIN_EMAILS` | Comma-separated emails that may access `/admin` in the UI |
 | `NEXT_PUBLIC_FIREBASE_*` | Firebase Web SDK config from the Firebase console |
+| `NEXT_PUBLIC_SOCIAL_*` | Optional LinkedIn / Instagram / Facebook URLs for the footer |
 
-## Firebase setup
+## Site contact & branding
 
-1. Create a Firebase project at [https://console.firebase.google.com](https://console.firebase.google.com).
-2. Enable **Authentication** → Email/Password and **Google**.
-3. Create a **Firestore** database (production mode), then deploy rules from `firebase/firestore.rules` (adjust for production — see comments in the file).
-4. Enable **Storage** and deploy `firebase/storage.rules`.
-5. Add a **Web app** in Project settings and paste keys into `.env.local`.
-6. **Admin access**
-   - Add your email to `NEXT_PUBLIC_ADMIN_EMAILS`, **or**
-   - After first sign-in, in Firestore document `users/<uid>` set `role` to `"admin"` so rules allow product writes.
-7. **Sample admin (dev)**  
-   - Create an Auth user e.g. `admin@mietaaf.com` / your password.  
-   - Add that email to `NEXT_PUBLIC_ADMIN_EMAILS` and add `role: "admin"` on the `users/<uid>` document for Firestore rule alignment.
+Customer-facing phone, email, address, and Maps links live in **`src/lib/site-contact.ts`** (footer, Contact page, JSON-LD). Update that file when business details change.
+
+Default WhatsApp number in `.env.example` matches `SITE_WHATSAPP_E164_DIGITS` in `site-contact.ts`.
+
+## Catalog suits (PDF → shop)
+
+Ten suit products from the Mietaaf catalog PDF are seeded in **`src/lib/data/catalog-suits.ts`** and merged into the shop via **`src/lib/data/products.ts`**.
+
+| What | Where |
+|------|--------|
+| Page images (full PDF spreads) | `public/catalog/catalog-page-01.png` … `catalog-page-10.png` |
+| Product copy, slugs, tags | `CATALOG_SUIT_PRODUCTS` in `catalog-suits.ts` |
+| **Selling price / MRP** | Edit `price` and `compareAtPrice` on each product in `catalog-suits.ts` |
+| Category listing | `/category/suits` — photo left (cropped), catalogue copy right |
+| Product detail | `/product/<slug>` — same layout + size picker, cart, WhatsApp |
+
+**Image crop:** Catalog PNGs include embedded text on the right. The UI crops to the **model photo only** (left ~46% of the image) everywhere it matters — category panels, cart, checkout, and thumbnails — via **`ProductThumbnailImage`** / **`CatalogProductPhoto`** in `src/components/product/catalog-product-photo.tsx`. Do not set `style.width` on a Next.js `Image` with `fill`; apply crop width on a positioned wrapper `div` instead.
+
+To add or replace catalog looks, drop new PNGs under `public/catalog/`, add a row in `catalog-suits.ts`, and rebuild.
 
 ## WhatsApp checkout
 
@@ -78,13 +89,15 @@ npm start
 
 ## Project structure (high level)
 
-- `src/app` — App Router pages (shop group `(main)`, `admin`, `not-found`)  
-- `src/components` — UI, layout, home, product, admin, motion, luxury  
-- `src/lib` — constants, data seeds, formatting, WhatsApp helpers, validations, SEO  
+- `src/app` — App Router: `(main)` shop, `(auth)` login/signup, `admin`, static pages (About, Contact, FAQ), `not-found`  
+- `src/components` — UI, layout, home, product (including catalog panels & cropped thumbnails), admin, motion  
+- `src/lib` — `site-contact.ts`, `data/catalog-suits.ts`, `data/products.ts`, WhatsApp helpers, validations, SEO  
 - `src/store` — Zustand (cart, wishlist, compare, recent, UI)  
 - `src/context` — Firebase auth provider  
 - `src/firebase` — client SDK bootstrap  
 - `src/services` — optional helpers (e.g. Storage upload)  
+- `public/catalog/` — catalog suit page images  
+- `public/branding/` — auth wordmark and brand assets  
 - `firebase/` — Firestore and Storage rules templates  
 
 ## Security notes
