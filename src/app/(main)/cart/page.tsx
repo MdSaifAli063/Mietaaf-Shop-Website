@@ -1,7 +1,7 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
+import { ProductThumbnailImage } from "@/components/product/catalog-product-photo";
 import { Minus, Plus, Trash2 } from "lucide-react";
 import { useCartStore, cartLineKey } from "@/store/cart-store";
 import { formatInr } from "@/lib/format";
@@ -47,12 +47,10 @@ export default function CartPage() {
               return (
                 <div key={key}>
                   <Card className="flex min-w-0 flex-col gap-4 border-border/60 p-4 sm:flex-row sm:gap-5">
-                    <div className="relative mx-auto aspect-[4/5] w-full max-w-[220px] shrink-0 overflow-hidden rounded-xl bg-muted sm:mx-0 sm:aspect-auto sm:h-32 sm:w-28 sm:max-w-none">
-                      <Image
+                    <div className="relative mx-auto aspect-[4/5] w-full max-w-[220px] shrink-0 overflow-hidden rounded-xl bg-white sm:mx-0 sm:aspect-auto sm:h-32 sm:w-28 sm:max-w-none">
+                      <ProductThumbnailImage
                         src={item.image}
                         alt={item.name}
-                        fill
-                        className="object-cover"
                         sizes="(max-width:640px) 220px, 112px"
                       />
                     </div>

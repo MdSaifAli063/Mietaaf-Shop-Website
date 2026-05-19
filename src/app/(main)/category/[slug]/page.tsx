@@ -5,6 +5,7 @@ import Image from "next/image";
 import { CATEGORIES } from "@/lib/data/categories";
 import { getProductsByCategorySlug } from "@/lib/data/products";
 import { ProductCard } from "@/components/product/product-card";
+import { CatalogSuitsCategory } from "@/components/product/catalog-suits-category";
 import { PageEnter } from "@/components/motion/page-enter";
 import type { CategorySlug } from "@/types";
 import { PAGE_CONTAINER, PAGE_PY } from "@/lib/layout";
@@ -62,6 +63,19 @@ export default async function CategoryPage({
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
+        {slug === "suits" ? (
+          <header className="max-w-3xl">
+            <p className="text-xs font-semibold uppercase tracking-[0.4em] text-primary">
+              Catalog
+            </p>
+            <h1 className="mt-2 font-heading text-3xl sm:text-4xl md:text-5xl">{cat.name}</h1>
+            <p className="mt-4 text-muted-foreground">{cat.description}</p>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Each look matches our catalogue — model photo on the left, description, sizes,
+              MRP and selling price on the right.
+            </p>
+          </header>
+        ) : (
         <div className="grid gap-10 lg:grid-cols-[1fr_2fr]">
           <div className="relative aspect-[3/4] overflow-hidden rounded-2xl bg-muted lg:aspect-auto lg:min-h-[420px]">
             <Image
@@ -87,11 +101,16 @@ export default async function CategoryPage({
             </Link>
           </div>
         </div>
-        <div className="mt-10 grid grid-cols-2 gap-4 sm:mt-16 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
-          {products.map((p) => (
-            <ProductCard key={p.id} product={p} />
-          ))}
-        </div>
+        )}
+        {slug === "suits" ? (
+          <CatalogSuitsCategory products={products} />
+        ) : (
+          <div className="mt-10 grid grid-cols-2 gap-4 sm:mt-16 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
+            {products.map((p) => (
+              <ProductCard key={p.id} product={p} />
+            ))}
+          </div>
+        )}
       </div>
     </PageEnter>
   );
