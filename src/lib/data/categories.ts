@@ -25,8 +25,7 @@ export const CATEGORIES: Category[] = [
     slug: "suits",
     name: "Suits",
     description: "Precision-cut suits for boardrooms and banquets.",
-    image:
-      "https://images.unsplash.com/photo-1593032465175-481ac7f401a0?w=1200&q=80&auto=format&fit=crop",
+    image: "/catalog/catalog-page-01.png",
   },
   {
     slug: "kurta",

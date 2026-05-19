@@ -1,9 +1,10 @@
 import type { Product } from "@/types";
 import { unsplashImageUrl } from "@/lib/unsplash-images";
+import { CATALOG_SUIT_PRODUCTS } from "@/lib/data/catalog-suits";
 
 const img = (id: string) => unsplashImageUrl(id, 900);
 
-export const DUMMY_PRODUCTS: Product[] = [
+const BASE_PRODUCTS: Product[] = [
   {
     id: "p1",
     slug: "royal-embroidered-sherwani",
@@ -83,31 +84,6 @@ export const DUMMY_PRODUCTS: Product[] = [
     featured: true,
     popularity: 82,
     newArrival: true,
-  },
-  {
-    id: "p4",
-    slug: "ivory-three-piece-suit",
-    name: "Ivory Three-Piece Suit",
-    description:
-      "Jacket, waistcoat, and pleated trousers in warm ivory. Ideal for day weddings and sangeet.",
-    price: 28999,
-    compareAtPrice: 31999,
-    discountPercent: 9,
-    category: "Suits",
-    categorySlug: "suits",
-    sizes: ["38", "40", "42", "44"],
-    colors: [
-      { name: "Ivory", hex: "#faf7f2" },
-      { name: "Sand", hex: "#d4c4a8" },
-    ],
-    images: [img("1593032465175-481ac7f401a0"), img("1594938298603-c8148c4dae35")],
-    rating: 4.9,
-    reviewCount: 112,
-    stock: 18,
-    fabric: "Super 120s wool. Horn buttons.",
-    tags: ["wedding", "three-piece"],
-    wedding: true,
-    popularity: 95,
   },
   {
     id: "p5",
@@ -371,6 +347,12 @@ export const DUMMY_PRODUCTS: Product[] = [
     featured: true,
     popularity: 97,
   },
+];
+
+/** Shop inventory: catalog suits + all other categories. */
+export const DUMMY_PRODUCTS: Product[] = [
+  ...BASE_PRODUCTS,
+  ...CATALOG_SUIT_PRODUCTS,
 ];
 
 export function getProductBySlug(slug: string): Product | undefined {

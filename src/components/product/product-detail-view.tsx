@@ -27,7 +27,6 @@ import {
 import toast from "react-hot-toast";
 import { cn } from "@/lib/utils";
 import { SITE_WHATSAPP_E164_DIGITS } from "@/lib/site-contact";
-
 const waNumber = () =>
   process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? SITE_WHATSAPP_E164_DIGITS;
 
