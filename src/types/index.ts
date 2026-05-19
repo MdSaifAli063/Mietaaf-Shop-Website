@@ -34,6 +34,10 @@ export interface Product {
   stock: number;
   fabric: string;
   tags: string[];
+  /** Catalog PDF headline (e.g. MEN TUXEDO SUIT SET) */
+  catalogTitle?: string;
+  /** Lines under “Description” on catalog layout */
+  catalogBullets?: string[];
   featured?: boolean;
   trending?: boolean;
   newArrival?: boolean;
