@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 
 type CatalogProductPanelProps = {
   product: Product;
-  variant?: "listing" | "detail";
+  variant?: "listing" | "detail" | "showcase";
   priority?: boolean;
   className?: string;
   /** Cart / WhatsApp — detail layout only */
@@ -25,6 +25,65 @@ export function CatalogProductPanel({
   const bullets = product.catalogBullets ?? [];
   const href = `/product/${product.slug}`;
   const isListing = variant === "listing";
+  const isShowcase = variant === "showcase";
+  const isLinked = variant !== "detail";
+
+  if (isShowcase) {
+    return (
+      <article
+        className={cn(
+          "group grid min-w-0 overflow-hidden rounded-[1.5rem] border border-border/70 bg-card/80 shadow-[0_14px_38px_rgba(58,48,38,0.06)] transition-all duration-300 hover:-translate-y-1 hover:border-primary/25 hover:shadow-[0_20px_48px_rgba(58,48,38,0.1)] sm:grid-cols-[0.82fr_1.18fr]",
+          className,
+        )}
+      >
+        <CatalogProductPhoto
+          src={product.images[0]!}
+          alt={product.name}
+          href={href}
+          priority={priority}
+          className="h-full rounded-none ring-0 [&>div]:h-full [&>div]:min-h-72 [&>div]:aspect-auto sm:[&>div]:min-h-[23rem]"
+          imageClassName="transition-transform duration-700 group-hover:scale-[1.025]"
+        />
+
+        <div className="flex min-w-0 flex-col justify-center p-5 sm:p-6 lg:p-7">
+          <p className="text-[10px] font-semibold uppercase tracking-[0.32em] text-primary">
+            Mietaaf catalog
+          </p>
+          <Link href={href} className="mt-2 block">
+            <h3 className="font-heading text-2xl leading-tight tracking-[0.02em] text-foreground transition-colors group-hover:text-primary">
+              {product.name}
+            </h3>
+          </Link>
+          <p className="mt-3 line-clamp-3 text-sm leading-6 text-muted-foreground">
+            {product.description}
+          </p>
+
+          <div className="mt-4 border-y border-border/70 py-3 text-sm">
+            <p className="line-clamp-1 text-foreground/80">{product.fabric}</p>
+            <p className="mt-2 text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+              Sizes&nbsp; {product.sizes.join(" · ")}
+            </p>
+          </div>
+
+          <div className="mt-4 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+            <span className="text-lg font-semibold text-foreground">{formatInr(product.price)}</span>
+            {product.compareAtPrice ? (
+              <span className="text-sm text-muted-foreground line-through">
+                {formatInr(product.compareAtPrice)}
+              </span>
+            ) : null}
+          </div>
+
+          <Link
+            href={href}
+            className="mt-4 inline-flex w-fit items-center text-sm font-semibold text-primary underline-offset-4 transition-colors hover:text-foreground hover:underline"
+          >
+            View product <span aria-hidden="true">&nbsp;→</span>
+          </Link>
+        </div>
+      </article>
+    );
+  }
 
   return (
     <article
@@ -36,7 +95,7 @@ export function CatalogProductPanel({
       <CatalogProductPhoto
         src={product.images[0]!}
         alt={product.name}
-        href={isListing ? href : undefined}
+        href={isLinked ? href : undefined}
         priority={priority}
       />
 

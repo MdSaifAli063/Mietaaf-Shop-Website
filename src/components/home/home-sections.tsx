@@ -208,10 +208,10 @@ export function HomeSections() {
               </Button>
             </div>
           </Reveal>
-          <div className="mt-10 space-y-10 sm:space-y-12">
+          <div className="mt-8 grid gap-5 xl:grid-cols-2 xl:gap-6">
             {suits.map((product, index) => (
               <Reveal key={product.id} delay={index * 0.07}>
-                <CatalogProductPanel product={product} variant="listing" />
+                <CatalogProductPanel product={product} variant="showcase" />
               </Reveal>
             ))}
           </div>
