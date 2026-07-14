@@ -15,7 +15,10 @@ import {
 } from "lucide-react";
 import { ProductCard } from "@/components/product/product-card";
 import { CatalogProductPanel } from "@/components/product/catalog-product-panel";
-import { catalogPhotoCropWidth } from "@/components/product/catalog-product-photo";
+import {
+  catalogPhotoCropWidth,
+  ProductThumbnailImage,
+} from "@/components/product/catalog-product-photo";
 import { Reveal } from "@/components/motion/reveal";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -30,6 +33,7 @@ import {
 import toast from "react-hot-toast";
 import { useShopData } from "@/hooks/use-shop-data";
 import { TESTIMONIALS } from "@/lib/data/testimonials";
+import { cn } from "@/lib/utils";
 
 export function HomeSections() {
   const { products, categories } = useShopData();
@@ -39,6 +43,7 @@ export function HomeSections() {
   const wedding = products.filter((p) => p.wedding).slice(0, 3);
   const suits = products.filter((p) => p.categorySlug === "suits").slice(0, 2);
   const feed = products.slice(0, 8).flatMap((p) => p.images).slice(0, 12);
+  const feedProducts = products.slice(0, 6);
   const [activeGalleryIndex, setActiveGalleryIndex] = useState<number | null>(null);
   const activeGalleryImage =
     activeGalleryIndex == null ? undefined : feed[activeGalleryIndex];
@@ -416,19 +421,60 @@ export function HomeSections() {
       <section className="bg-[#eee4d6] py-12 sm:py-16 md:py-20 dark:bg-[#201d19]">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <Reveal>
-            <h2 className="font-heading text-2xl md:text-3xl">The feed</h2>
-            <p className="text-sm text-muted-foreground">A moodboard in motion — new drops weekly.</p>
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.4em] text-primary">
+                  From the atelier
+                </p>
+                <h2 className="mt-2 font-heading text-3xl md:text-4xl">The feed</h2>
+                <p className="mt-2 max-w-xl text-sm leading-6 text-muted-foreground">
+                  A closer look at new silhouettes, refined details, and occasion-ready tailoring.
+                </p>
+              </div>
+              <Button asChild variant="outline" className="w-fit rounded-full bg-background/70">
+                <Link href="/shop">
+                  Explore the collection <ArrowUpRight className="ml-1 size-4" />
+                </Link>
+              </Button>
+            </div>
           </Reveal>
-          <div className="mt-8 grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-2 md:grid-cols-6">
-            {products.slice(0, 6).map((p) => (
-              <Link key={p.id} href={`/product/${p.slug}`} className="relative aspect-square overflow-hidden">
-                <Image
-                  src={p.images[0]!}
-                  alt={p.name}
-                  fill
-                  className="object-cover transition-transform hover:scale-105"
-                  sizes="(max-width:640px) 50vw, 16vw"
+          <div className="mt-8 grid auto-rows-[170px] grid-cols-2 gap-3 sm:auto-rows-[210px] lg:auto-rows-[190px] lg:grid-cols-4">
+            {feedProducts.map((product, index) => (
+              <Link
+                key={product.id}
+                href={`/product/${product.slug}`}
+                className={cn(
+                  "group relative overflow-hidden rounded-2xl bg-muted shadow-sm outline-none ring-offset-background transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+                  index === 0 && "col-span-2 row-span-2",
+                  index === 1 && "col-span-2",
+                  (index === 4 || index === 5) && "col-span-2",
+                )}
+              >
+                <ProductThumbnailImage
+                  src={product.images[0]!}
+                  alt={product.name}
+                  sizes={
+                    index === 0
+                      ? "(max-width:1024px) 100vw, 50vw"
+                      : "(max-width:1024px) 100vw, 25vw"
+                  }
+                  className="transition-transform duration-700 ease-out group-hover:scale-105"
                 />
+                <span className="absolute inset-0 bg-linear-to-t from-black/70 via-black/5 to-transparent transition-colors duration-300 group-hover:from-black/80" />
+                <span className="absolute left-4 top-4 rounded-full border border-white/20 bg-black/25 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.22em] text-white backdrop-blur-md">
+                  {product.category}
+                </span>
+                <span className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 p-4 text-white sm:p-5">
+                  <span className="min-w-0">
+                    <span className="block font-heading text-lg leading-tight sm:text-xl">
+                      {product.name}
+                    </span>
+                    <span className="mt-1 block text-xs text-white/75">View the look</span>
+                  </span>
+                  <span className="flex size-9 shrink-0 items-center justify-center rounded-full border border-white/25 bg-white/10 backdrop-blur-md transition-all group-hover:bg-white group-hover:text-foreground">
+                    <ArrowUpRight className="size-4" aria-hidden="true" />
+                  </span>
+                </span>
               </Link>
             ))}
           </div>

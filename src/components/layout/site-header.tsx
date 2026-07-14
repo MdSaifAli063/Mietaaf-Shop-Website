@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import { useTheme } from "next-themes";
 import {
+  ChevronDown,
   Menu,
   Moon,
   Search,
@@ -43,6 +44,7 @@ export function SiteHeader() {
   const pathname = usePathname();
   const router = useRouter();
   const [open, setOpen] = useState(false);
+  const [categoriesOpen, setCategoriesOpen] = useState(false);
 
   const links = useMemo(
     () => [
@@ -159,7 +161,52 @@ export function SiteHeader() {
             aria-label="Primary"
           >
             <div className="pointer-events-auto flex max-w-[min(100%,52rem)] items-center justify-center gap-3 px-2 xl:gap-6 2xl:gap-7">
-              {links.map((l) => (
+              <Link
+                href={links[0]!.href}
+                className={cn(
+                  "relative shrink-0 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground",
+                  "after:absolute after:-bottom-1 after:left-0 after:h-px after:w-0 after:bg-primary after:transition-all hover:after:w-full",
+                )}
+              >
+                {links[0]!.label}
+              </Link>
+              <DropdownMenu open={categoriesOpen} onOpenChange={setCategoriesOpen}>
+                <DropdownMenuTrigger
+                  className={cn(
+                    "relative inline-flex h-10 shrink-0 items-center gap-1.5 px-1 text-sm font-medium text-muted-foreground outline-none transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background data-popup-open:text-foreground",
+                    "after:absolute after:bottom-1 after:left-1 after:h-px after:w-0 after:bg-primary after:transition-all hover:after:w-[calc(100%-0.5rem)] data-popup-open:after:w-[calc(100%-0.5rem)]",
+                  )}
+                >
+                  <span>Categories</span>
+                  <ChevronDown
+                    className={cn(
+                      "size-4 transition-transform duration-200",
+                      categoriesOpen && "rotate-180",
+                    )}
+                    aria-hidden="true"
+                  />
+                </DropdownMenuTrigger>
+                <DropdownMenuContent
+                  className="w-[min(90vw,720px)] p-4"
+                  align="center"
+                  sideOffset={10}
+                >
+                  <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-3">
+                    {NAV_CATEGORIES.map((c) => (
+                      <Link
+                        key={c.slug}
+                        href={`/category/${c.slug}`}
+                        onClick={() => setCategoriesOpen(false)}
+                        className="rounded-2xl border border-border/70 bg-card/80 p-3 text-sm transition-colors hover:border-primary/50 hover:bg-accent/35"
+                      >
+                        <div className="font-heading text-base tracking-[0.04em]">{c.label}</div>
+                        <p className="mt-1 text-xs text-muted-foreground">Explore collection</p>
+                      </Link>
+                    ))}
+                  </div>
+                </DropdownMenuContent>
+              </DropdownMenu>
+              {links.slice(1).map((l) => (
                 <Link
                   key={l.href}
                   href={l.href}
@@ -171,30 +218,6 @@ export function SiteHeader() {
                   {l.label}
                 </Link>
               ))}
-              <DropdownMenu>
-                <DropdownMenuTrigger
-                  className={cn(
-                    buttonVariants({ variant: "ghost" }),
-                    "shrink-0 text-[0.78rem] font-medium uppercase tracking-[0.22em] text-muted-foreground",
-                  )}
-                >
-                  Categories
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-[min(90vw,720px)] p-4" align="center">
-                  <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-3">
-                    {NAV_CATEGORIES.map((c) => (
-                      <Link
-                        key={c.slug}
-                        href={`/category/${c.slug}`}
-                        className="rounded-2xl border border-border/70 bg-card/80 p-3 text-sm transition-colors hover:border-primary/50 hover:bg-accent/35"
-                      >
-                        <div className="font-heading text-base tracking-[0.04em]">{c.label}</div>
-                        <p className="mt-1 text-xs text-muted-foreground">Explore collection</p>
-                      </Link>
-                    ))}
-                  </div>
-                </DropdownMenuContent>
-              </DropdownMenu>
             </div>
           </nav>
         ) : null}
