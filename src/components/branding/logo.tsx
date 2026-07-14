@@ -34,7 +34,7 @@ export function Logo({
         ? "h-20 w-44 sm:h-24 sm:w-52"
       : variant === "drawer"
         ? "h-28 w-[min(96vw,420px)] sm:h-32 sm:w-[min(96vw,520px)]"
-        : "h-[3.75rem] w-[min(calc(100dvw-9.5rem),280px)] sm:h-[4.25rem] sm:w-[min(calc(100dvw-11rem),360px)] lg:h-[5.375rem] lg:w-[min(44vw,480px)] xl:h-24 xl:w-[min(46vw,560px)] 2xl:w-[min(44vw,620px)]";
+        : "h-[3.75rem] w-[min(calc(100dvw-9.5rem),280px)] sm:h-[4.25rem] sm:w-[min(calc(100dvw-11rem),360px)] lg:h-[5.375rem] lg:w-[min(44vw,480px)] xl:h-24 xl:w-80 2xl:w-96";
 
   return (
     <Link

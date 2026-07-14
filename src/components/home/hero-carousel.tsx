@@ -2,20 +2,18 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { Autoplay, EffectFade, Pagination } from "swiper/modules";
+import { Autoplay, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { BANNERS } from "@/lib/data/banners";
 import { Button } from "@/components/ui/button";
 import "swiper/css";
-import "swiper/css/effect-fade";
 import "swiper/css/pagination";
 
 export function HeroCarousel() {
   return (
     <section className="relative h-[min(calc(100dvh-4rem),820px)] w-full overflow-hidden bg-background sm:h-[min(calc(100dvh-4.5rem),860px)] lg:h-[min(100dvh,900px)]">
       <Swiper
-        modules={[Autoplay, EffectFade, Pagination]}
-        effect="fade"
+        modules={[Autoplay, Pagination]}
         speed={520}
         autoplay={{ delay: 5200, disableOnInteraction: false }}
         pagination={{ clickable: true }}
