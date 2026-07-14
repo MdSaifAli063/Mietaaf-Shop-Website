@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowUpRight, Play } from "lucide-react";
+import { ArrowUpRight, Play, Quote, Star } from "lucide-react";
 import { ProductCard } from "@/components/product/product-card";
 import { CatalogProductPanel } from "@/components/product/catalog-product-panel";
 import { catalogPhotoCropWidth } from "@/components/product/catalog-product-photo";
@@ -25,7 +25,7 @@ export function HomeSections() {
 
   return (
     <>
-      <section className="border-b border-border/60 bg-muted/30 py-12 sm:py-16 md:py-20">
+      <section className="border-b border-border/60 bg-[#eee4d6] py-12 sm:py-16 md:py-20 dark:bg-[#201d19]">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <Reveal>
             <div className="mb-12 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
@@ -86,7 +86,7 @@ export function HomeSections() {
         </div>
       </section>
 
-      <section className="py-12 sm:py-16 md:py-20">
+      <section className="bg-[#fbf8f2] py-12 sm:py-16 md:py-20 dark:bg-[#181613]">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <Reveal>
             <h2 className="font-heading text-3xl md:text-4xl">Trending now</h2>
@@ -105,7 +105,7 @@ export function HomeSections() {
         </div>
       </section>
 
-      <section className="border-y border-border/60 bg-gradient-to-br from-card via-background to-muted/40 py-12 sm:py-16 md:py-20">
+      <section className="border-y border-border/60 bg-[#eee4d6] py-12 sm:py-16 md:py-20 dark:bg-[#201d19]">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <Reveal>
             <h2 className="font-heading text-3xl md:text-4xl">New arrivals</h2>
@@ -128,7 +128,7 @@ export function HomeSections() {
         </div>
       </section>
 
-      <section className="relative py-14 sm:py-20 md:py-24">
+      <section className="relative bg-[#fbf8f2] py-14 sm:py-20 md:py-24 dark:bg-[#181613]">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/15 via-transparent to-transparent" />
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <Reveal>
@@ -154,66 +154,37 @@ export function HomeSections() {
         </div>
       </section>
 
-      <section className="border-t border-border/60 bg-muted/20 py-12 sm:py-16 md:py-20">
+      <section className="border-y border-border/60 bg-[#eee4d6] py-12 sm:py-16 md:py-20 dark:bg-[#201d19]">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <Reveal>
             <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
               <div>
-                <h2 className="font-heading text-3xl md:text-4xl">Premium suits</h2>
-                <p className="mt-2 max-w-2xl text-muted-foreground">
-                  From the Mietaaf catalog — tuxedos, bandhgalas, and statement three-piece sets.
+                <p className="text-xs font-semibold uppercase tracking-[0.4em] text-primary">
+                  Tailored distinction
+                </p>
+                <h2 className="mt-2 font-heading text-3xl md:text-4xl">Premium suits</h2>
+                <p className="mt-2 max-w-2xl leading-relaxed text-muted-foreground">
+                  Refined tuxedos, bandhgalas, and three-piece suits crafted for weddings and special occasions.
                 </p>
               </div>
-              <Button asChild variant="outline" className="rounded-full">
+              <Button asChild variant="outline" className="rounded-full bg-background/70">
                 <Link href="/category/suits">
-                  Shop all suits <ArrowUpRight className="ml-1 h-4 w-4" />
+                  View all suits <ArrowUpRight className="ml-1 h-4 w-4" />
                 </Link>
               </Button>
             </div>
           </Reveal>
           <div className="mt-10 space-y-10 sm:space-y-12">
-            {suits.map((p, i) => (
-              <Reveal key={p.id} delay={i * 0.07}>
-                <CatalogProductPanel product={p} variant="listing" />
+            {suits.map((product, index) => (
+              <Reveal key={product.id} delay={index * 0.07}>
+                <CatalogProductPanel product={product} variant="listing" />
               </Reveal>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="py-12 sm:py-16 md:py-20">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <Reveal>
-            <h2 className="text-center font-heading text-3xl md:text-4xl">Client stories</h2>
-          </Reveal>
-          <div className="mt-12 grid gap-6 md:grid-cols-3">
-            {TESTIMONIALS.map((t, i) => (
-              <Reveal key={t.name} delay={i * 0.08}>
-                <Card className="h-full border-border/60 bg-card/80 p-6 shadow-sm backdrop-blur">
-                  <p className="text-sm leading-relaxed text-muted-foreground">&ldquo;{t.quote}&rdquo;</p>
-                  <div className="mt-6 flex items-center gap-3">
-                    <div className="relative h-12 w-12 overflow-hidden rounded-full">
-                      <Image
-                        src={t.image}
-                        alt={t.name}
-                        fill
-                        className="object-cover"
-                        sizes="48px"
-                      />
-                    </div>
-                    <div>
-                      <p className="font-medium">{t.name}</p>
-                      <p className="text-xs text-muted-foreground">{t.role}</p>
-                    </div>
-                  </div>
-                </Card>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="border-y border-border/60 py-16">
+      <section className="border-y border-border/60 bg-[#fbf8f2] py-16 dark:bg-[#181613]">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <Reveal>
             <h2 className="mb-8 font-heading text-2xl md:text-3xl">Fashion gallery</h2>
@@ -230,7 +201,7 @@ export function HomeSections() {
         </div>
       </section>
 
-      <section className="relative overflow-hidden py-14 sm:py-20 md:py-24">
+      <section className="relative overflow-hidden bg-[#eee4d6] py-14 sm:py-20 md:py-24 dark:bg-[#201d19]">
         <div className="absolute inset-0">
           <Image
             src="https://images.unsplash.com/photo-1490114538075-5a882cff5318?w=1600&q=80&auto=format&fit=crop"
@@ -239,7 +210,7 @@ export function HomeSections() {
             className="object-cover opacity-30"
             sizes="100vw"
           />
-          <div className="absolute inset-0 bg-background/85 backdrop-blur-sm" />
+          <div className="absolute inset-0 bg-[#eee4d6]/88 backdrop-blur-sm dark:bg-[#201d19]/90" />
         </div>
         <div className="relative mx-auto max-w-3xl px-4 text-center sm:px-6">
           <Reveal>
@@ -260,7 +231,64 @@ export function HomeSections() {
         </div>
       </section>
 
-      <section className="py-12 sm:py-16 md:py-20">
+      <section className="relative overflow-hidden border-y border-border/60 bg-[#fbf8f2] py-14 sm:py-18 md:py-20 dark:bg-[#181613]">
+        <div className="pointer-events-none absolute -left-24 top-10 size-64 rounded-full bg-primary/8 blur-3xl" />
+        <div className="pointer-events-none absolute -right-24 bottom-0 size-72 rounded-full bg-mietaaf-gold/8 blur-3xl" />
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <Reveal>
+            <div className="mx-auto max-w-2xl text-center">
+              <p className="text-xs font-semibold uppercase tracking-[0.4em] text-primary">
+                Worn with confidence
+              </p>
+              <h2 className="mt-3 font-heading text-3xl md:text-5xl">Client stories</h2>
+              <p className="mx-auto mt-3 max-w-xl leading-relaxed text-muted-foreground">
+                Personal experiences from clients who chose Mietaaf for their most memorable moments.
+              </p>
+            </div>
+          </Reveal>
+
+          <div className="mt-10 grid gap-5 md:grid-cols-3 lg:gap-6">
+            {TESTIMONIALS.map((testimonial, index) => (
+              <Reveal key={testimonial.name} delay={index * 0.08}>
+                <Card className="group flex h-full flex-col rounded-[1.5rem] border-border/70 bg-card/90 p-6 shadow-[0_16px_45px_rgba(58,48,38,0.06)] backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-[0_22px_55px_rgba(58,48,38,0.1)] sm:p-7">
+                  <div className="flex items-center justify-between">
+                    <span className="flex size-10 items-center justify-center rounded-full bg-primary/10 text-primary">
+                      <Quote className="size-4" aria-hidden="true" />
+                    </span>
+                    <div className="flex gap-0.5 text-primary" aria-label="5 out of 5 stars">
+                      {Array.from({ length: 5 }).map((_, starIndex) => (
+                        <Star key={starIndex} className="size-3.5 fill-current" aria-hidden="true" />
+                      ))}
+                    </div>
+                  </div>
+
+                  <blockquote className="mt-6 flex-1 font-heading text-xl leading-7 tracking-[0.01em] text-foreground sm:text-[1.35rem]">
+                    &ldquo;{testimonial.quote}&rdquo;
+                  </blockquote>
+
+                  <div className="mt-7 flex items-center gap-3 border-t border-border/70 pt-5">
+                    <div className="relative size-12 shrink-0 overflow-hidden rounded-full ring-2 ring-background shadow-sm">
+                      <Image
+                        src={testimonial.image}
+                        alt={testimonial.name}
+                        fill
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        sizes="48px"
+                      />
+                    </div>
+                    <div className="min-w-0">
+                      <p className="font-semibold text-foreground">{testimonial.name}</p>
+                      <p className="mt-0.5 text-xs text-muted-foreground">{testimonial.role}</p>
+                    </div>
+                  </div>
+                </Card>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-[#eee4d6] py-12 sm:py-16 md:py-20 dark:bg-[#201d19]">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <Reveal>
             <h2 className="font-heading text-2xl md:text-3xl">The feed</h2>
@@ -282,7 +310,7 @@ export function HomeSections() {
         </div>
       </section>
 
-      <section className="border-t border-border/60 bg-muted/30 py-10 sm:py-14 md:py-16">
+      <section className="border-t border-border/60 bg-[#fbf8f2] py-10 sm:py-14 md:py-16 dark:bg-[#181613]">
         <div className="mx-auto flex max-w-4xl flex-col items-center gap-4 px-4 text-center sm:px-6">
           <h3 className="font-heading text-xl sm:text-2xl">Private list</h3>
           <p className="text-sm text-muted-foreground">
