@@ -37,7 +37,7 @@ export default function LookbookPage() {
           </header>
 
           <section className="mt-8 sm:mt-10" aria-label="Mietaaf lookbook">
-            <div className="grid auto-rows-[210px] grid-cols-2 gap-3 sm:auto-rows-[260px] lg:grid-cols-4 lg:gap-4">
+            <div className="grid auto-rows-[170px] grid-cols-2 gap-3 sm:auto-rows-[220px] md:auto-rows-[260px] lg:grid-cols-4 lg:gap-4">
               {looks.map((product, index) => (
                 <Link
                   key={product.id}

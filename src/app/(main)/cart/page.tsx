@@ -46,12 +46,12 @@ export default function CartPage() {
               const key = cartLineKey(item);
               return (
                 <div key={key}>
-                  <Card className="flex min-w-0 flex-col gap-4 border-border/60 p-4 sm:flex-row sm:gap-5">
-                    <div className="relative mx-auto aspect-[4/5] w-full max-w-[220px] shrink-0 overflow-hidden rounded-xl bg-white sm:mx-0 sm:aspect-auto sm:h-32 sm:w-28 sm:max-w-none">
+                  <Card className="flex min-w-0 flex-row gap-3 border-border/60 p-3 sm:gap-5 sm:p-4">
+                    <div className="relative h-32 w-24 shrink-0 overflow-hidden rounded-xl bg-white sm:w-28">
                       <ProductThumbnailImage
                         src={item.image}
                         alt={item.name}
-                        sizes="(max-width:640px) 220px, 112px"
+                        sizes="(max-width:640px) 96px, 112px"
                       />
                     </div>
                     <div className="flex min-w-0 flex-1 flex-col justify-between">
@@ -66,7 +66,7 @@ export default function CartPage() {
                           {item.size} · {item.color}
                         </p>
                       </div>
-                      <div className="mt-4 flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
+                      <div className="mt-3 flex flex-col gap-2 sm:mt-4 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between sm:gap-4">
                         <div className="flex touch-manipulation items-center rounded-full border border-border">
                           <Button
                             type="button"
@@ -90,7 +90,7 @@ export default function CartPage() {
                             <Plus className="h-4 w-4" />
                           </Button>
                         </div>
-                        <div className="flex items-center justify-between gap-4 sm:justify-end">
+                        <div className="flex items-center justify-between gap-2 sm:justify-end sm:gap-4">
                           <span className="font-semibold">
                             {formatInr(item.price * item.quantity)}
                           </span>

@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
@@ -24,7 +25,7 @@ import { ProductThumbnailImage } from "@/components/product/catalog-product-phot
 export default function CheckoutPage() {
   const items = useCartStore((s) => s.items);
   const clear = useCartStore((s) => s.clear);
-  const { user } = useAuth();
+  const { user, profile } = useAuth();
   const subtotal = items.reduce((n, i) => n + i.price * i.quantity, 0);
 
   const form = useForm<CheckoutSchema>({
@@ -39,6 +40,19 @@ export default function CheckoutPage() {
       notes: "",
     },
   });
+
+  useEffect(() => {
+    if (!profile || form.formState.isDirty) return;
+    form.reset({
+      fullName: profile.displayName ?? "",
+      phone: profile.phone ?? "",
+      address: profile.address ?? "",
+      city: profile.city ?? "",
+      state: profile.state ?? "",
+      pincode: profile.pincode ?? "",
+      notes: "",
+    });
+  }, [profile, form]);
 
   async function onSubmit(data: CheckoutSchema) {
     const wa = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? SITE_WHATSAPP_E164_DIGITS;
