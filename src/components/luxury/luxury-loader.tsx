@@ -1,6 +1,8 @@
 "use client";
 
+import Image from "next/image";
 import { useLayoutEffect, useState } from "react";
+import { SITE_LOGO_URL } from "@/lib/site-logo";
 
 const STORAGE_KEY = "mietaaf_splash_seen";
 
@@ -41,11 +43,16 @@ export function LuxuryLoader() {
       }`}
       aria-hidden
     >
-      <div className="text-center">
-        <p className="font-heading text-4xl tracking-[0.35em] text-foreground md:text-5xl">
-          MIETAAF
-        </p>
-        <p className="mt-3 text-xs uppercase tracking-[0.4em] text-muted-foreground">Atelier</p>
+      <div className="relative h-[6.5rem] w-[min(86vw,520px)] sm:h-[7.5rem] sm:w-[min(76vw,600px)] lg:h-[8.5rem] lg:w-[min(64vw,680px)]">
+        <Image
+          src={SITE_LOGO_URL}
+          alt="Mietaaf"
+          fill
+          priority
+          unoptimized
+          sizes="(max-width: 640px) 420px, 680px"
+          className="animate-[logo-pop_750ms_cubic-bezier(0.16,1,0.3,1)] object-contain drop-shadow-[0_6px_24px_rgba(15,23,42,0.22)]"
+        />
       </div>
     </div>
   );

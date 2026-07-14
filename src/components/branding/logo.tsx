@@ -12,6 +12,7 @@ type LogoProps = {
   variant?: "header" | "drawer" | "footer";
   priority?: boolean;
   onClick?: () => void;
+  src?: string;
 };
 
 export function Logo({
@@ -20,9 +21,10 @@ export function Logo({
   variant = "header",
   priority = false,
   onClick,
+  src,
 }: LogoProps) {
   const settingsLogo = useSettingsStore((s) => s.settings.logoUrl);
-  const activeLogo = settingsLogo || SITE_LOGO_URL;
+  const activeLogo = src || settingsLogo || SITE_LOGO_URL;
   const remote = typeof activeLogo === "string" && /^https?:\/\//i.test(activeLogo);
 
   const box =

@@ -126,11 +126,13 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   html {
     @apply font-sans scroll-smooth;
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
   }
+
   body {
     @apply bg-background text-foreground antialiased break-words;
     overflow-x: clip;
@@ -163,13 +165,28 @@
 }
 
 .text-gradient-gold {
-  background: linear-gradient(
-    120deg,
-    oklch(0.88 0.12 88),
-    oklch(0.72 0.14 85),
-    oklch(0.58 0.1 75)
-  );
+  background: linear-gradient(120deg,
+      oklch(0.88 0.12 88),
+      oklch(0.72 0.14 85),
+      oklch(0.58 0.1 75));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+}
+
+@keyframes logo-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.82);
+  }
+
+  70% {
+    opacity: 1;
+    transform: scale(1.04);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
