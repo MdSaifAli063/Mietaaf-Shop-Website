@@ -1,16 +1,17 @@
 "use client";
 
 import Link from "next/link";
-import { DUMMY_PRODUCTS } from "@/lib/data/products";
 import { useWishlistStore } from "@/store/wishlist-store";
 import { ProductCard } from "@/components/product/product-card";
 import { PageEnter } from "@/components/motion/page-enter";
 import { Button } from "@/components/ui/button";
 import { PAGE_CONTAINER, PAGE_PY } from "@/lib/layout";
+import { useShopData } from "@/hooks/use-shop-data";
 
 export default function WishlistPage() {
   const ids = useWishlistStore((s) => s.ids);
-  const products = DUMMY_PRODUCTS.filter((p) => ids.includes(p.id));
+  const { products: allProducts } = useShopData();
+  const products = allProducts.filter((p) => ids.includes(p.id));
 
   if (products.length === 0) {
     return (

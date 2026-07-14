@@ -3,19 +3,20 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useCompareStore } from "@/store/compare-store";
-import { DUMMY_PRODUCTS } from "@/lib/data/products";
 import { PageEnter } from "@/components/motion/page-enter";
 import { Button } from "@/components/ui/button";
 import { formatInr } from "@/lib/format";
 import { PAGE_CONTAINER, PAGE_PY } from "@/lib/layout";
 import type { Product } from "@/types";
+import { useShopData } from "@/hooks/use-shop-data";
 
 export default function ComparePage() {
   const slugs = useCompareStore((s) => s.slugs);
   const remove = useCompareStore((s) => s.remove);
   const clear = useCompareStore((s) => s.clear);
+  const { products: allProducts } = useShopData();
   const products = slugs
-    .map((slug) => DUMMY_PRODUCTS.find((p) => p.slug === slug))
+    .map((slug) => allProducts.find((p) => p.slug === slug))
     .filter(Boolean) as Product[];
 
   if (products.length === 0) {

@@ -3,7 +3,6 @@
 import { Suspense, useMemo, useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Search } from "lucide-react";
-import { DUMMY_PRODUCTS } from "@/lib/data/products";
 import { ProductCard } from "@/components/product/product-card";
 import { PageEnter } from "@/components/motion/page-enter";
 import { useDebounce } from "@/hooks/use-debounce";
@@ -11,6 +10,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { PAGE_CONTAINER, PAGE_PY } from "@/lib/layout";
+import { useShopData } from "@/hooks/use-shop-data";
 
 function SearchBody() {
   const router = useRouter();
@@ -18,6 +18,7 @@ function SearchBody() {
   const urlQ = sp.get("q") ?? "";
   const [input, setInput] = useState(urlQ);
   const debounced = useDebounce(input, 250);
+  const { products } = useShopData();
 
   useEffect(() => {
     setInput(urlQ);
@@ -37,13 +38,13 @@ function SearchBody() {
   const results = useMemo(() => {
     const t = debounced.trim().toLowerCase();
     if (!t) return [];
-    return DUMMY_PRODUCTS.filter(
+    return products.filter(
       (p) =>
         p.name.toLowerCase().includes(t) ||
         p.category.toLowerCase().includes(t) ||
         p.tags.some((tag) => tag.includes(t)),
     );
-  }, [debounced]);
+  }, [debounced, products]);
 
   return (
     <PageEnter>
@@ -125,3 +126,4 @@ export default function SearchPage() {
     </Suspense>
   );
 }
+

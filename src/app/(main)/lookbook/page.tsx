@@ -1,12 +1,13 @@
 "use client";
 
 import Image from "next/image";
-import { DUMMY_PRODUCTS } from "@/lib/data/products";
 import { PageEnter } from "@/components/motion/page-enter";
 import { PAGE_CONTAINER, PAGE_PY } from "@/lib/layout";
+import { useShopData } from "@/hooks/use-shop-data";
 
 export default function LookbookPage() {
-  const shots = DUMMY_PRODUCTS.flatMap((p) => p.images).slice(0, 9);
+  const { products } = useShopData();
+  const shots = products.flatMap((p) => p.images).slice(0, 9);
   return (
     <PageEnter>
       <div className={`${PAGE_CONTAINER} ${PAGE_PY} min-w-0`}>
