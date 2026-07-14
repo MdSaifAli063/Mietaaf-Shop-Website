@@ -33,7 +33,7 @@ export default function WishlistPage() {
     <PageEnter>
       <div className={`${PAGE_CONTAINER} ${PAGE_PY} min-w-0`}>
         <h1 className="font-heading text-3xl sm:text-4xl">Wishlist</h1>
-        <div className="mt-8 grid grid-cols-2 gap-4 sm:mt-10 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4">
+        <div className="mt-8 grid grid-cols-1 gap-5 sm:mt-10 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4">
           {products.map((p) => (
             <ProductCard key={p.id} product={p} />
           ))}
