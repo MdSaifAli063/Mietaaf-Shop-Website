@@ -168,7 +168,7 @@ export function ShopExplorer() {
               <SheetTrigger
                 className={cn(
                   buttonVariants({ variant: "outline" }),
-                  "rounded-full lg:hidden",
+                  "h-11 rounded-full lg:hidden",
                 )}
               >
                 <SlidersHorizontal className="mr-2 h-4 w-4" />

@@ -151,7 +151,7 @@ export function ProductDetailView({ product }: { product: Product }) {
                 {product.stock} in stock
               </span>
             </div>
-            <div className="mt-4 flex items-baseline gap-3">
+            <div className="mt-4 flex flex-wrap items-baseline gap-x-3 gap-y-1">
               <span className="text-3xl font-semibold">{formatInr(product.price)}</span>
               {product.compareAtPrice ? (
                 <span className="text-lg text-muted-foreground line-through">
@@ -319,7 +319,7 @@ export function ProductDetailView({ product }: { product: Product }) {
       </div>
 
       {recentProducts.length > 0 ? (
-        <section className="mt-20">
+        <section className="mt-12 sm:mt-16 md:mt-20">
           <h2 className="font-heading text-2xl">Recently viewed</h2>
           <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {recentProducts.slice(0, 4).map((p) => (
@@ -329,7 +329,7 @@ export function ProductDetailView({ product }: { product: Product }) {
         </section>
       ) : null}
 
-      <section className="mt-20">
+      <section className="mt-12 sm:mt-16 md:mt-20">
         <h2 className="font-heading text-2xl">You may also like</h2>
         <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {similar.map((p) => (

@@ -7,7 +7,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import Image from "next/image";
 import Link from "next/link";
 import { useUiStore } from "@/store/ui-store";
 import { getProductBySlug } from "@/lib/data/products";
@@ -24,6 +23,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { ProductThumbnailImage } from "@/components/product/catalog-product-photo";
 
 export function QuickViewDialog() {
   const slug = useUiStore((s) => s.quickViewSlug);
@@ -67,15 +67,13 @@ export function QuickViewDialog() {
       >
         <div className="grid min-w-0 gap-0 md:grid-cols-2">
           <div className="relative aspect-[4/5] max-h-[45dvh] bg-muted sm:aspect-[3/4] sm:max-h-none">
-            <Image
+            <ProductThumbnailImage
               src={img}
               alt={product.name}
-              fill
-              className="object-cover"
               sizes="(max-width:768px) 100vw, 50vw"
             />
           </div>
-          <div className="flex flex-col gap-4 p-6 md:p-8">
+          <div className="flex flex-col gap-4 p-4 sm:p-6 md:p-8">
             <DialogHeader className="text-left">
               <DialogTitle className="font-heading text-2xl md:text-3xl">
                 {product.name}
