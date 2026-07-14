@@ -1,8 +1,18 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowUpRight, Play, Quote, Star } from "lucide-react";
+import {
+  ArrowUpRight,
+  ChevronLeft,
+  ChevronRight,
+  Expand,
+  Play,
+  Quote,
+  Star,
+  X,
+} from "lucide-react";
 import { ProductCard } from "@/components/product/product-card";
 import { CatalogProductPanel } from "@/components/product/catalog-product-panel";
 import { catalogPhotoCropWidth } from "@/components/product/catalog-product-photo";
@@ -10,6 +20,13 @@ import { Reveal } from "@/components/motion/reveal";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import toast from "react-hot-toast";
 import { useShopData } from "@/hooks/use-shop-data";
 import { TESTIMONIALS } from "@/lib/data/testimonials";
@@ -22,6 +39,23 @@ export function HomeSections() {
   const wedding = products.filter((p) => p.wedding).slice(0, 3);
   const suits = products.filter((p) => p.categorySlug === "suits").slice(0, 2);
   const feed = products.slice(0, 8).flatMap((p) => p.images).slice(0, 12);
+  const [activeGalleryIndex, setActiveGalleryIndex] = useState<number | null>(null);
+  const activeGalleryImage =
+    activeGalleryIndex == null ? undefined : feed[activeGalleryIndex];
+
+  function showPreviousGalleryImage() {
+    if (!feed.length) return;
+    setActiveGalleryIndex((current) =>
+      current == null ? 0 : (current - 1 + feed.length) % feed.length,
+    );
+  }
+
+  function showNextGalleryImage() {
+    if (!feed.length) return;
+    setActiveGalleryIndex((current) =>
+      current == null ? 0 : (current + 1) % feed.length,
+    );
+  }
 
   return (
     <>
@@ -192,14 +226,105 @@ export function HomeSections() {
           <div className="columns-2 gap-3 sm:columns-3 lg:columns-4">
             {feed.map((src, i) => (
               <div key={`${src}-${i}`} className="mb-3 break-inside-avoid">
-                <div className="relative aspect-[3/4] overflow-hidden rounded-xl bg-muted">
-                  <Image src={src} alt="" fill className="object-cover" sizes="(max-width:768px) 50vw, 25vw" />
-                </div>
+                <button
+                  type="button"
+                  onClick={() => setActiveGalleryIndex(i)}
+                  className="group relative block aspect-[3/4] w-full cursor-zoom-in overflow-hidden rounded-xl bg-muted text-left outline-none ring-offset-background transition-shadow focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                  aria-label={`Open fashion gallery image ${i + 1}`}
+                >
+                  <Image
+                    src={src}
+                    alt={`Mietaaf fashion look ${i + 1}`}
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    sizes="(max-width:768px) 50vw, 25vw"
+                  />
+                  <span className="absolute inset-0 bg-black/0 transition-colors duration-300 group-hover:bg-black/20" />
+                  <span className="absolute bottom-3 right-3 flex size-9 translate-y-2 items-center justify-center rounded-full bg-background/90 text-foreground opacity-0 shadow-md backdrop-blur-sm transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:opacity-100">
+                    <Expand className="size-4" aria-hidden="true" />
+                  </span>
+                </button>
               </div>
             ))}
           </div>
         </div>
       </section>
+
+      <Dialog
+        open={activeGalleryIndex != null}
+        onOpenChange={(open) => {
+          if (!open) setActiveGalleryIndex(null);
+        }}
+      >
+        <DialogContent
+          showCloseButton={false}
+          overlayClassName="bg-black/75 supports-backdrop-filter:backdrop-blur-md"
+          className="h-[min(92dvh,920px)] w-[min(96vw,1280px)] max-w-[min(96vw,1280px)]! gap-0 overflow-hidden rounded-2xl border border-white/15 bg-[#171512]/98 p-0 text-white shadow-2xl ring-0 sm:max-w-[min(96vw,1280px)]!"
+          onKeyDown={(event) => {
+            if (event.key === "ArrowLeft") {
+              event.preventDefault();
+              showPreviousGalleryImage();
+            }
+            if (event.key === "ArrowRight") {
+              event.preventDefault();
+              showNextGalleryImage();
+            }
+          }}
+        >
+          <DialogTitle className="sr-only">Fashion gallery image viewer</DialogTitle>
+          <DialogDescription className="sr-only">
+            Use the previous and next buttons or your keyboard arrow keys to browse the gallery.
+          </DialogDescription>
+
+          <div className="relative h-full w-full">
+            {activeGalleryImage ? (
+              <Image
+                key={activeGalleryImage}
+                src={activeGalleryImage}
+                alt={`Mietaaf fashion look ${(activeGalleryIndex ?? 0) + 1}`}
+                fill
+                priority
+                className="object-contain p-3 sm:p-6"
+                sizes="96vw"
+              />
+            ) : null}
+
+            <div className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-linear-to-b from-black/55 to-transparent" />
+            <DialogClose
+              render={
+                <button
+                  type="button"
+                  className="absolute right-3 top-3 z-20 flex size-11 items-center justify-center rounded-full border border-white/20 bg-black/45 text-white shadow-lg backdrop-blur-md transition-colors hover:bg-white hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white sm:right-5 sm:top-5"
+                />
+              }
+            >
+              <X className="size-5" aria-hidden="true" />
+              <span className="sr-only">Close gallery</span>
+            </DialogClose>
+
+            <button
+              type="button"
+              onClick={showPreviousGalleryImage}
+              className="absolute left-3 top-1/2 z-20 flex size-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-black/45 text-white shadow-lg backdrop-blur-md transition-all hover:scale-105 hover:bg-white hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white sm:left-5 sm:size-12"
+              aria-label="Previous gallery image"
+            >
+              <ChevronLeft className="size-6" aria-hidden="true" />
+            </button>
+            <button
+              type="button"
+              onClick={showNextGalleryImage}
+              className="absolute right-3 top-1/2 z-20 flex size-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-black/45 text-white shadow-lg backdrop-blur-md transition-all hover:scale-105 hover:bg-white hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white sm:right-5 sm:size-12"
+              aria-label="Next gallery image"
+            >
+              <ChevronRight className="size-6" aria-hidden="true" />
+            </button>
+
+            <div className="absolute bottom-4 left-1/2 z-20 -translate-x-1/2 rounded-full border border-white/15 bg-black/50 px-4 py-2 text-xs font-medium tracking-[0.18em] text-white/90 backdrop-blur-md">
+              {(activeGalleryIndex ?? 0) + 1} / {feed.length}
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
 
       <section className="relative overflow-hidden bg-[#eee4d6] py-14 sm:py-20 md:py-24 dark:bg-[#201d19]">
         <div className="absolute inset-0">
