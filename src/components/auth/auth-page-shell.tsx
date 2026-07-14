@@ -6,6 +6,7 @@ type AuthPageShellProps = {
   className?: string;
   children: React.ReactNode;
   showPromoPanel?: boolean;
+  offWhite?: boolean;
 };
 
 /**
@@ -22,11 +23,15 @@ export function AuthPageShell({
   className,
   children,
   showPromoPanel = true,
+  offWhite = false,
 }: AuthPageShellProps) {
   return (
     <div
       className={cn(
-        "relative isolate min-h-dvh w-full overflow-hidden bg-linear-to-b from-mietaaf-cream/75 via-background to-background dark:from-mietaaf-cream/10",
+        "relative isolate min-h-dvh w-full overflow-hidden",
+        offWhite
+          ? "bg-[#fbf8f2] dark:bg-[#181613]"
+          : "bg-linear-to-b from-mietaaf-cream/75 via-background to-background dark:from-mietaaf-cream/10",
         className,
       )}
     >

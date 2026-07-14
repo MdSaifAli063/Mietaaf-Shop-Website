@@ -9,7 +9,7 @@ import { useSettingsStore } from "@/store/settings-store";
 type LogoProps = {
   className?: string;
   href?: string;
-  variant?: "header" | "drawer" | "footer";
+  variant?: "header" | "auth" | "drawer" | "footer";
   priority?: boolean;
   onClick?: () => void;
   src?: string;
@@ -30,6 +30,8 @@ export function Logo({
   const box =
     variant === "footer"
       ? "h-24 w-full max-w-[min(100%,380px)] sm:h-28 sm:max-w-[min(100%,460px)] lg:h-32 lg:max-w-[min(100%,540px)]"
+      : variant === "auth"
+        ? "h-20 w-44 sm:h-24 sm:w-52"
       : variant === "drawer"
         ? "h-28 w-[min(96vw,420px)] sm:h-32 sm:w-[min(96vw,520px)]"
         : "h-[3.75rem] w-[min(calc(100dvw-9.5rem),280px)] sm:h-[4.25rem] sm:w-[min(calc(100dvw-11rem),360px)] lg:h-[5.375rem] lg:w-[min(44vw,480px)] xl:h-24 xl:w-[min(46vw,560px)] 2xl:w-[min(44vw,620px)]";
@@ -56,11 +58,13 @@ export function Logo({
               : "drop-shadow-[0_3px_16px_rgba(15,23,42,0.26)] sm:drop-shadow-[0_5px_24px_rgba(15,23,42,0.3)] lg:drop-shadow-[0_6px_32px_rgba(15,23,42,0.34)] dark:drop-shadow-[0_4px_26px_rgba(0,0,0,0.58)] dark:lg:drop-shadow-[0_6px_36px_rgba(0,0,0,0.66)]",
             variant === "header"
               ? "object-left"
+              : variant === "auth"
+                ? "object-center"
               : variant === "footer"
                 ? "object-left"
                 : "object-left sm:object-center",
           )}
-          sizes="(max-width: 480px) 260px, (max-width: 640px) 300px, (max-width: 1024px) 400px, 620px"
+          sizes={variant === "auth" ? "260px" : "(max-width: 480px) 260px, (max-width: 640px) 300px, (max-width: 1024px) 400px, 620px"}
           priority={priority}
           unoptimized={remote}
         />

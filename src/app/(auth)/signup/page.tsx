@@ -18,8 +18,9 @@ import { Card } from "@/components/ui/card";
 import { PageEnter } from "@/components/motion/page-enter";
 import { sanitizeReturnUrl } from "@/lib/auth-public-paths";
 import { GoogleBrandIcon } from "@/components/auth/google-icon";
-import { AuthWordmarkLink } from "@/components/auth/auth-wordmark";
+import { Logo } from "@/components/branding/logo";
 import { getAuthErrorMessage } from "@/lib/auth-error-message";
+import { SITE_LOGO_URL } from "@/lib/site-logo";
 
 type SignupValues = z.infer<typeof signupSchema>;
 
@@ -85,10 +86,16 @@ function SignupForm() {
 
   return (
     <PageEnter className="min-h-dvh motion-reduce:animate-none">
-      <AuthPageShell>
+      <AuthPageShell offWhite>
         <Card className="w-full min-w-0 space-y-3 rounded-[1.5rem] border-border/70 bg-card/96 px-5 py-5 shadow-[0_18px_45px_rgba(58,48,38,0.08)] ring-1 ring-black/5 backdrop-blur-md sm:px-7 sm:py-6 lg:px-8 dark:bg-card/92 dark:shadow-black/25 dark:ring-white/8">
           <div className="flex flex-col items-center text-center *:max-w-full">
-            <AuthWordmarkLink className="max-w-[min(100%,165px)] sm:max-w-[min(100%,185px)]" />
+            <Logo
+              href="/"
+              src={SITE_LOGO_URL}
+              variant="auth"
+              priority
+              className="mx-auto"
+            />
             <p className="mt-2.5 text-[10px] font-semibold uppercase tracking-[0.34em] text-muted-foreground">
               Create your profile
             </p>
