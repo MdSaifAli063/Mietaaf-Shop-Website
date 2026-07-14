@@ -34,6 +34,7 @@ import toast from "react-hot-toast";
 import { useShopData } from "@/hooks/use-shop-data";
 import { TESTIMONIALS } from "@/lib/data/testimonials";
 import { cn } from "@/lib/utils";
+import { UNSPLASH_PHOTOS, unsplashImageUrl } from "@/lib/unsplash-images";
 
 export function HomeSections() {
   const { products, categories } = useShopData();
@@ -97,7 +98,7 @@ export function HomeSections() {
                             alt={c.name}
                             fill
                             className="object-cover object-left"
-                            sizes="(max-width:768px) 50vw, 25vw"
+                            sizes="(max-width:639px) 100vw, (max-width:1024px) 50vw, 25vw"
                           />
                         </div>
                       ) : (
@@ -106,7 +107,7 @@ export function HomeSections() {
                           alt={c.name}
                           fill
                           className="object-cover transition-transform duration-700 group-hover:scale-105"
-                          sizes="(max-width:768px) 50vw, 25vw"
+                          sizes="(max-width:639px) 100vw, (max-width:1024px) 50vw, 25vw"
                         />
                       )}
                       <div className="absolute inset-0 bg-gradient-to-t from-background/90 to-transparent" />
@@ -264,7 +265,7 @@ export function HomeSections() {
         <DialogContent
           showCloseButton={false}
           overlayClassName="bg-black/75 supports-backdrop-filter:backdrop-blur-md"
-          className="h-[min(92dvh,920px)] w-[min(96vw,1280px)] max-w-[min(96vw,1280px)]! gap-0 overflow-hidden rounded-2xl border border-white/15 bg-[#171512]/98 p-0 text-white shadow-2xl ring-0 sm:max-w-[min(96vw,1280px)]!"
+          className="h-dvh w-dvw max-w-none! gap-0 overflow-hidden rounded-none border-x-0 border-white/15 bg-[#171512]/98 p-0 text-white shadow-2xl ring-0 sm:h-[min(92dvh,920px)] sm:w-[min(96vw,1280px)] sm:max-w-[min(96vw,1280px)]! sm:rounded-2xl sm:border-x"
           onKeyDown={(event) => {
             if (event.key === "ArrowLeft") {
               event.preventDefault();
@@ -299,7 +300,7 @@ export function HomeSections() {
               render={
                 <button
                   type="button"
-                  className="absolute right-3 top-3 z-20 flex size-11 items-center justify-center rounded-full border border-white/20 bg-black/45 text-white shadow-lg backdrop-blur-md transition-colors hover:bg-white hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white sm:right-5 sm:top-5"
+                  className="absolute right-3 top-[max(0.75rem,env(safe-area-inset-top))] z-20 flex size-11 items-center justify-center rounded-full border border-white/20 bg-black/45 text-white shadow-lg backdrop-blur-md transition-colors hover:bg-white hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white sm:right-5 sm:top-5"
                 />
               }
             >
@@ -324,7 +325,7 @@ export function HomeSections() {
               <ChevronRight className="size-6" aria-hidden="true" />
             </button>
 
-            <div className="absolute bottom-4 left-1/2 z-20 -translate-x-1/2 rounded-full border border-white/15 bg-black/50 px-4 py-2 text-xs font-medium tracking-[0.18em] text-white/90 backdrop-blur-md">
+            <div className="absolute bottom-[max(1rem,env(safe-area-inset-bottom))] left-1/2 z-20 -translate-x-1/2 rounded-full border border-white/15 bg-black/50 px-4 py-2 text-xs font-medium tracking-[0.18em] text-white/90 backdrop-blur-md sm:bottom-4">
               {(activeGalleryIndex ?? 0) + 1} / {feed.length}
             </div>
           </div>
@@ -334,7 +335,7 @@ export function HomeSections() {
       <section className="relative overflow-hidden bg-[#eee4d6] py-14 sm:py-20 md:py-24 dark:bg-[#201d19]">
         <div className="absolute inset-0">
           <Image
-            src="https://images.unsplash.com/photo-1490114538075-5a882cff5318?w=1600&q=80&auto=format&fit=crop"
+            src={unsplashImageUrl(UNSPLASH_PHOTOS.tailoring, 1600, 80)}
             alt=""
             fill
             className="object-cover opacity-30"

@@ -1,14 +1,18 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { MessageCircle } from "lucide-react";
 import { SITE_WHATSAPP_E164_DIGITS } from "@/lib/site-contact";
 import { sanitizeWhatsAppNumber } from "@/lib/whatsapp";
 
 export function FloatingWhatsApp() {
+  const pathname = usePathname();
   const raw = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? SITE_WHATSAPP_E164_DIGITS;
   const num = sanitizeWhatsAppNumber(raw);
   const href = `https://wa.me/${num}?text=${encodeURIComponent("Hello Mietaaf, I would like styling assistance.")}`;
+
+  if (pathname === "/cart" || pathname === "/checkout") return null;
 
   return (
     <div className="fixed bottom-[max(1.25rem,env(safe-area-inset-bottom,0px))] right-[max(1.25rem,env(safe-area-inset-right,0px))] z-50 max-w-dvw touch-manipulation animate-in fade-in zoom-in duration-300 md:bottom-[max(2rem,env(safe-area-inset-bottom,0px))] md:right-[max(2rem,env(safe-area-inset-right,0px))]">

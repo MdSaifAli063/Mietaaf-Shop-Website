@@ -13,8 +13,8 @@ import { Input } from "@/components/ui/input";
 import { useUiStore } from "@/store/ui-store";
 import { useDebounce } from "@/hooks/use-debounce";
 import { useShopData } from "@/hooks/use-shop-data";
-import Image from "next/image";
 import { formatInr } from "@/lib/format";
+import { ProductThumbnailImage } from "@/components/product/catalog-product-photo";
 
 export function SearchOverlay() {
   const open = useUiStore((s) => s.searchOpen);
@@ -80,11 +80,9 @@ export function SearchOverlay() {
                 className="flex min-w-0 items-center gap-3 rounded-xl border border-transparent p-2 transition-colors hover:border-border hover:bg-muted/60"
               >
                 <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-lg bg-muted">
-                  <Image
+                  <ProductThumbnailImage
                     src={p.images[0]!}
                     alt=""
-                    fill
-                    className="object-cover"
                     sizes="56px"
                   />
                 </div>
@@ -110,4 +108,3 @@ export function SearchOverlay() {
     </Dialog>
   );
 }
-
