@@ -1,7 +1,10 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 import { SITE_LOGO_URL } from "@/lib/site-logo";
 import { cn } from "@/lib/utils";
+import { useSettingsStore } from "@/store/settings-store";
 
 type LogoProps = {
   className?: string;
@@ -11,8 +14,6 @@ type LogoProps = {
   onClick?: () => void;
 };
 
-const remote = typeof SITE_LOGO_URL === "string" && /^https?:\/\//i.test(SITE_LOGO_URL);
-
 export function Logo({
   className = "",
   href = "/",
@@ -20,6 +21,10 @@ export function Logo({
   priority = false,
   onClick,
 }: LogoProps) {
+  const settingsLogo = useSettingsStore((s) => s.settings.logoUrl);
+  const activeLogo = settingsLogo || SITE_LOGO_URL;
+  const remote = typeof activeLogo === "string" && /^https?:\/\//i.test(activeLogo);
+
   const box =
     variant === "footer"
       ? "h-24 w-full max-w-[min(100%,380px)] sm:h-28 sm:max-w-[min(100%,460px)] lg:h-32 lg:max-w-[min(100%,540px)]"
@@ -39,7 +44,7 @@ export function Logo({
     >
       <span className={cn("relative block", box)}>
         <Image
-          src={SITE_LOGO_URL}
+          src={activeLogo}
           alt="Mietaaf"
           fill
           className={cn(

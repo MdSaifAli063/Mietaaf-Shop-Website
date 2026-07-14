@@ -39,12 +39,10 @@ export function SiteHeader() {
   const wishCount = useWishlistStore((s) => s.ids.length);
   const setSearch = useUiStore((s) => s.setSearchOpen);
   const { theme, setTheme } = useTheme();
-  const { user, logout, loading, isAdmin } = useAuth();
+  const { user, logout, loading } = useAuth();
   const pathname = usePathname();
   const router = useRouter();
   const [open, setOpen] = useState(false);
-
-  const isAdminRoute = pathname?.startsWith("/admin");
 
   const links = useMemo(
     () => [
@@ -61,7 +59,6 @@ export function SiteHeader() {
   const isAuthPage = Boolean(pathname && isAuthOnlyPath(pathname));
   const logoHref = isAuthPage ? "/login" : "/";
 
-  if (isAdminRoute) return null;
 
   return (
     <header className="sticky top-0 z-40 w-full min-w-0 overflow-x-clip border-b border-border/60 bg-background/80 pt-[env(safe-area-inset-top,0px)] backdrop-blur-xl">
@@ -286,9 +283,6 @@ export function SiteHeader() {
                       Wishlist
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => router.push("/cart")}>Cart</DropdownMenuItem>
-                    {isAdmin ? (
-                      <DropdownMenuItem onClick={() => router.push("/admin")}>Admin</DropdownMenuItem>
-                    ) : null}
                     <DropdownMenuSeparator />
                     <DropdownMenuItem
                       onClick={async () => {

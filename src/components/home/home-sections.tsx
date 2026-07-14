@@ -3,9 +3,6 @@
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowUpRight, Play } from "lucide-react";
-import { CATEGORIES } from "@/lib/data/categories";
-import { DUMMY_PRODUCTS } from "@/lib/data/products";
-import { TESTIMONIALS } from "@/lib/data/testimonials";
 import { ProductCard } from "@/components/product/product-card";
 import { CatalogProductPanel } from "@/components/product/catalog-product-panel";
 import { catalogPhotoCropWidth } from "@/components/product/catalog-product-photo";
@@ -14,14 +11,17 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import toast from "react-hot-toast";
-
-const feed = DUMMY_PRODUCTS.slice(0, 8).flatMap((p) => p.images).slice(0, 12);
+import { useShopData } from "@/hooks/use-shop-data";
+import { TESTIMONIALS } from "@/lib/data/testimonials";
 
 export function HomeSections() {
-  const trending = DUMMY_PRODUCTS.filter((p) => p.trending).slice(0, 4);
-  const arrivals = DUMMY_PRODUCTS.filter((p) => p.newArrival).slice(0, 4);
-  const wedding = DUMMY_PRODUCTS.filter((p) => p.wedding).slice(0, 3);
-  const suits = DUMMY_PRODUCTS.filter((p) => p.categorySlug === "suits").slice(0, 2);
+  const { products, categories } = useShopData();
+
+  const trending = products.filter((p) => p.trending).slice(0, 4);
+  const arrivals = products.filter((p) => p.newArrival).slice(0, 4);
+  const wedding = products.filter((p) => p.wedding).slice(0, 3);
+  const suits = products.filter((p) => p.categorySlug === "suits").slice(0, 2);
+  const feed = products.slice(0, 8).flatMap((p) => p.images).slice(0, 12);
 
   return (
     <>
@@ -43,7 +43,7 @@ export function HomeSections() {
             </div>
           </Reveal>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {CATEGORIES.slice(0, 8).map((c, i) => (
+            {categories.slice(0, 8).map((c, i) => (
               <Reveal key={c.slug} delay={i * 0.05}>
                 <Link href={`/category/${c.slug}`} className="group block">
                   <Card className="overflow-hidden border-border/60 bg-card/80 shadow-sm transition-all hover:-translate-y-1 hover:shadow-xl">
@@ -118,7 +118,7 @@ export function HomeSections() {
                 </Reveal>
               ))
             ) : (
-              DUMMY_PRODUCTS.slice(0, 4).map((p, i) => (
+              products.slice(0, 4).map((p, i) => (
                 <Reveal key={p.id} delay={i * 0.06}>
                   <ProductCard product={p} />
                 </Reveal>
@@ -267,7 +267,7 @@ export function HomeSections() {
             <p className="text-sm text-muted-foreground">A moodboard in motion — new drops weekly.</p>
           </Reveal>
           <div className="mt-8 grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-2 md:grid-cols-6">
-            {DUMMY_PRODUCTS.slice(0, 6).map((p) => (
+            {products.slice(0, 6).map((p) => (
               <Link key={p.id} href={`/product/${p.slug}`} className="relative aspect-square overflow-hidden">
                 <Image
                   src={p.images[0]!}

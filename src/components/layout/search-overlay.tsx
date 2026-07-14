@@ -12,7 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useUiStore } from "@/store/ui-store";
 import { useDebounce } from "@/hooks/use-debounce";
-import { DUMMY_PRODUCTS } from "@/lib/data/products";
+import { useShopData } from "@/hooks/use-shop-data";
 import Image from "next/image";
 import { formatInr } from "@/lib/format";
 
@@ -21,17 +21,18 @@ export function SearchOverlay() {
   const setOpen = useUiStore((s) => s.setSearchOpen);
   const [q, setQ] = useState("");
   const debounced = useDebounce(q, 200);
+  const { products } = useShopData();
 
   const results = useMemo(() => {
     const t = debounced.trim().toLowerCase();
-    if (!t) return DUMMY_PRODUCTS.slice(0, 6);
-    return DUMMY_PRODUCTS.filter(
+    if (!t) return products.slice(0, 6);
+    return products.filter(
       (p) =>
         p.name.toLowerCase().includes(t) ||
         p.tags.some((tag) => tag.includes(t)) ||
         p.category.toLowerCase().includes(t),
     ).slice(0, 8);
-  }, [debounced]);
+  }, [debounced, products]);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -109,3 +110,4 @@ export function SearchOverlay() {
     </Dialog>
   );
 }
+

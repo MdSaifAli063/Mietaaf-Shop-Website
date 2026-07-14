@@ -2,7 +2,6 @@
 
 import { useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { DUMMY_PRODUCTS } from "@/lib/data/products";
 import type { CategorySlug } from "@/types";
 import type { SortValue } from "@/lib/constants";
 import { SORT_OPTIONS } from "@/lib/constants";
@@ -23,6 +22,7 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { SlidersHorizontal } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useShopData } from "@/hooks/use-shop-data";
 
 const ALL_CATEGORIES: { slug: CategorySlug | "all"; label: string }[] = [
   { slug: "all", label: "All" },
@@ -36,6 +36,7 @@ const ALL_CATEGORIES: { slug: CategorySlug | "all"; label: string }[] = [
 ];
 
 export function ShopExplorer() {
+  const { products, loading } = useShopData();
   const sp = useSearchParams();
   const initialCat = (sp.get("category") as CategorySlug | null) ?? "all";
   const [category, setCategory] = useState<CategorySlug | "all">(
@@ -49,7 +50,7 @@ export function ShopExplorer() {
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 100000]);
 
   const filtered = useMemo(() => {
-    let list = [...DUMMY_PRODUCTS];
+    let list = [...products];
     if (category !== "all") {
       list = list.filter((p) => p.categorySlug === category);
     }
@@ -82,7 +83,7 @@ export function ShopExplorer() {
         break;
     }
     return list;
-  }, [category, q, sort, minRating, priceRange]);
+  }, [category, q, sort, minRating, priceRange, products]);
 
   const filterPanel = (
     <div className="space-y-8">
@@ -186,7 +187,11 @@ export function ShopExplorer() {
         <div className="flex min-w-0 gap-6 lg:gap-10">
           <aside className="hidden w-64 shrink-0 lg:block">{filterPanel}</aside>
           <div className="min-w-0 flex-1">
-            {filtered.length === 0 ? (
+            {loading ? (
+              <div className="rounded-2xl border border-dashed border-border/80 bg-muted/30 py-24 text-center">
+                <p className="font-heading text-xl text-muted-foreground">Loading products...</p>
+              </div>
+            ) : filtered.length === 0 ? (
               <div className="rounded-2xl border border-dashed border-border/80 bg-muted/30 py-24 text-center">
                 <p className="font-heading text-xl">No pieces match</p>
                 <p className="mt-2 text-sm text-muted-foreground">

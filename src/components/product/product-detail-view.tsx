@@ -5,8 +5,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { Minus, Plus, Share2, ShoppingBag, MessageCircle } from "lucide-react";
 import type { Product } from "@/types";
-import { DUMMY_PRODUCTS } from "@/lib/data/products";
 import { reviewsForProduct } from "@/lib/data/reviews";
+import { useShopData } from "@/hooks/use-shop-data";
 import { formatInr } from "@/lib/format";
 import { buildProductInquiryWhatsAppUrl } from "@/lib/whatsapp";
 import { Button } from "@/components/ui/button";
@@ -42,17 +42,19 @@ export function ProductDetailView({ product }: { product: Product }) {
     pushRecent(product.slug);
   }, [product.slug, pushRecent]);
 
+  const { products: allProducts } = useShopData();
+
   const similar = useMemo(
     () =>
-      DUMMY_PRODUCTS.filter(
+      allProducts.filter(
         (p) => p.categorySlug === product.categorySlug && p.id !== product.id,
       ).slice(0, 4),
-    [product.categorySlug, product.id],
+    [product.categorySlug, product.id, allProducts],
   );
 
   const recentSlugs = useRecentStore((s) => s.slugs).filter((s) => s !== product.slug);
   const recentProducts = recentSlugs
-    .map((slug) => DUMMY_PRODUCTS.find((p) => p.slug === slug))
+    .map((slug) => allProducts.find((p) => p.slug === slug))
     .filter(Boolean) as Product[];
 
   const reviews = reviewsForProduct(product.id);
