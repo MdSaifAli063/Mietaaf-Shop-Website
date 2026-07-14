@@ -28,8 +28,9 @@ const pillars = [
 export default function AboutPage() {
   return (
     <PageEnter>
+      <div className="min-h-screen bg-[#fbf8f2] dark:bg-[#181613]">
       <div className={`${PAGE_CONTAINER} ${PAGE_PY} min-w-0`}>
-        <div className="grid items-center gap-8 lg:grid-cols-2 lg:gap-12 xl:gap-16">
+        <div className="grid items-center gap-8 rounded-[2rem] border border-border/60 bg-[#eee4d6] p-6 shadow-[0_22px_60px_rgba(58,48,38,0.06)] sm:p-8 lg:grid-cols-2 lg:gap-12 lg:p-10 xl:gap-16 dark:bg-[#201d19]">
           <div className="max-w-xl lg:max-w-none">
             <p className="text-xs font-semibold uppercase tracking-[0.4em] text-primary">About</p>
             <h1 className="mt-3 font-heading text-3xl sm:text-4xl md:text-5xl xl:text-[3.25rem]">
@@ -69,7 +70,7 @@ export default function AboutPage() {
           </div>
         </div>
 
-        <section className="mt-14 sm:mt-16 md:mt-20 md:grid md:grid-cols-2 md:gap-10 md:rounded-2xl md:border md:border-border/50 md:bg-muted/30 md:p-8 lg:gap-14 lg:p-10 dark:md:bg-muted/15">
+        <section className="mt-14 rounded-[2rem] border border-border/50 bg-[#eee4d6] p-6 sm:mt-16 sm:p-8 md:mt-20 md:grid md:grid-cols-2 md:gap-10 lg:gap-14 lg:p-10 dark:bg-[#201d19]">
           <div className="relative aspect-16/11 overflow-hidden rounded-2xl bg-muted ring-1 ring-black/5 md:aspect-auto md:min-h-[340px] dark:ring-white/10">
             <Image
               src={craft}
@@ -131,7 +132,7 @@ export default function AboutPage() {
           </div>
         </div>
 
-        <aside className="mt-14 rounded-2xl border border-border/60 bg-muted/40 px-6 py-8 text-center sm:mt-16 md:mt-20 md:px-10 dark:bg-muted/15">
+        <aside className="mt-14 rounded-[2rem] border border-border/60 bg-[#eee4d6] px-6 py-8 text-center sm:mt-16 md:mt-20 md:px-10 dark:bg-[#201d19]">
           <p className="font-heading text-xl text-foreground sm:text-2xl">
             Ready for a conversation?
           </p>
@@ -143,6 +144,7 @@ export default function AboutPage() {
             <Link href="/contact">Contact concierge</Link>
           </Button>
         </aside>
+      </div>
       </div>
     </PageEnter>
   );

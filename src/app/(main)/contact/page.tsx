@@ -38,8 +38,9 @@ export default function ContactPage() {
 
   return (
     <PageEnter>
+      <div className="min-h-screen bg-[#fbf8f2] dark:bg-[#181613]">
       <div className={`${PAGE_CONTAINER} ${PAGE_PY} min-w-0`}>
-        <header className="max-w-2xl">
+        <header className="max-w-3xl rounded-[2rem] border border-border/60 bg-[#eee4d6] px-6 py-8 sm:px-9 sm:py-10 dark:bg-[#201d19]">
           <p className="text-xs font-semibold uppercase tracking-[0.4em] text-primary">Contact</p>
           <h1 className="mt-2 font-heading text-3xl sm:text-4xl md:text-[2.65rem]">Concierge desk</h1>
           <p className="mt-3 text-base leading-relaxed text-muted-foreground sm:text-lg">
@@ -47,31 +48,6 @@ export default function ContactPage() {
             India. We arrange visits by appointment so every fitting gets the attention it deserves.
           </p>
         </header>
-
-        <section aria-label="Map" className="mt-8 sm:mt-10">
-          <div className="overflow-hidden rounded-2xl border border-border/60 bg-muted/30 shadow-sm ring-1 ring-black/5 dark:ring-white/10">
-            <div className="relative aspect-4/3 min-h-[220px] w-full sm:aspect-21/9 sm:min-h-[280px] md:min-h-[320px]">
-              <iframe
-                title={`Map — ${SITE_ADDRESS_DISPLAY}`}
-                src={mapSrc}
-                className="absolute inset-0 h-full w-full border-0"
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-              />
-            </div>
-            <div className="flex flex-col gap-2 border-t border-border/50 bg-card/90 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-5">
-              <p className="text-sm text-muted-foreground">{SITE_ADDRESS_DISPLAY}</p>
-              <Link
-                href={SITE_GOOGLE_MAPS_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm font-medium text-primary underline-offset-4 hover:underline"
-              >
-                Open in Google Maps
-              </Link>
-            </div>
-          </div>
-        </section>
 
         <div className="mt-10 grid gap-8 lg:mt-12 lg:grid-cols-2 lg:gap-10 xl:gap-12">
           <div className="space-y-4">
@@ -98,6 +74,32 @@ export default function ContactPage() {
           </div>
           <ContactForm />
         </div>
+
+        <section aria-label="Map" className="mt-12 sm:mt-16">
+          <div className="overflow-hidden rounded-[1.75rem] border border-border/60 bg-card/80 shadow-sm ring-1 ring-black/5 dark:ring-white/10">
+            <div className="relative aspect-4/3 min-h-[240px] w-full sm:aspect-21/9 sm:min-h-[300px] md:min-h-[360px]">
+              <iframe
+                title={`Map — ${SITE_ADDRESS_DISPLAY}`}
+                src={mapSrc}
+                className="absolute inset-0 h-full w-full border-0"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
+            </div>
+            <div className="flex flex-col gap-2 border-t border-border/50 bg-[#eee4d6] px-5 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6 dark:bg-[#201d19]">
+              <p className="text-sm text-muted-foreground">{SITE_ADDRESS_DISPLAY}</p>
+              <Link
+                href={SITE_GOOGLE_MAPS_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm font-medium text-primary underline-offset-4 hover:underline"
+              >
+                Open in Google Maps
+              </Link>
+            </div>
+          </div>
+        </section>
+      </div>
       </div>
     </PageEnter>
   );
