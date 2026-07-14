@@ -8,37 +8,57 @@ import { BANNERS as DUMMY_BANNERS } from "@/lib/data/banners";
 import { getFirebaseDb } from "@/firebase/client";
 import type { Product, Category, Banner } from "@/types";
 
+type RemoteShopData = {
+  products: Product[];
+  categories: Category[];
+  banners: Banner[];
+};
+
+let remoteShopDataPromise: Promise<RemoteShopData> | null = null;
+
+/**
+ * The storefront is local-first. Firestore content is an optional enhancement,
+ * so a stale deployment of security rules must never break or flood the console.
+ * One shared request also avoids React development mode loading every collection twice.
+ */
+function loadRemoteShopData(): Promise<RemoteShopData> {
+  if (!remoteShopDataPromise) {
+    remoteShopDataPromise = Promise.allSettled([
+      getProducts(),
+      getCategories(),
+      getBanners(),
+    ]).then(([products, categories, banners]) => ({
+      products: products.status === "fulfilled" ? products.value : [],
+      categories: categories.status === "fulfilled" ? categories.value : [],
+      banners: banners.status === "fulfilled" ? banners.value : [],
+    }));
+  }
+  return remoteShopDataPromise;
+}
+
 export function useShopData() {
   const [products, setProducts] = useState<Product[]>(DUMMY_PRODUCTS);
   const [categories, setCategories] = useState<Category[]>(DUMMY_CATEGORIES);
   const [banners, setBanners] = useState<Banner[]>(DUMMY_BANNERS);
-  const [loading, setLoading] = useState(true);
+  const loading = false;
   const db = getFirebaseDb();
 
   useEffect(() => {
-    if (!db) {
-      setLoading(false);
-      return;
-    }
+    if (!db) return;
+    let active = true;
 
     async function load() {
-      try {
-        const [prod, cat, ban] = await Promise.all([
-          getProducts(),
-          getCategories(),
-          getBanners(),
-        ]);
-        if (prod.length > 0) setProducts(prod);
-        if (cat.length > 0) setCategories(cat);
-        if (ban.length > 0) setBanners(ban);
-      } catch (err) {
-        console.error("Error loading remote shop data", err);
-      } finally {
-        setLoading(false);
-      }
+      const remote = await loadRemoteShopData();
+      if (!active) return;
+      if (remote.products.length > 0) setProducts(remote.products);
+      if (remote.categories.length > 0) setCategories(remote.categories);
+      if (remote.banners.length > 0) setBanners(remote.banners);
     }
 
     void load();
+    return () => {
+      active = false;
+    };
   }, [db]);
 
   return { products, categories, banners, loading };
