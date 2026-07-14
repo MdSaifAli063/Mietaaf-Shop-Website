@@ -28,7 +28,7 @@ export function HeroCarousel() {
                 alt={b.title}
                 fill
                 priority={index === 0}
-                className="object-cover opacity-88 saturate-[0.92] contrast-[0.96]"
+                className="object-cover object-[72%_center] opacity-88 saturate-[0.92] contrast-[0.96] sm:object-center"
                 sizes="100vw"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[rgb(45_39_35/0.9)] via-[rgb(74_69_63/0.35)] to-transparent" />
