@@ -12,11 +12,11 @@ const HeroCarousel = dynamic(
     ssr: true,
     loading: () => (
       <div
-        className="flex h-[min(100dvh,900px)] w-full flex-col items-center justify-center bg-black text-center text-muted-foreground"
+          className="flex h-[min(100dvh,900px)] w-full flex-col items-center justify-center bg-background text-center text-muted-foreground"
         aria-busy="true"
       >
         <span className="sr-only">Loading hero</span>
-        <span className="text-xs uppercase tracking-[0.35em] text-white/60" aria-hidden>
+        <span className="text-xs uppercase tracking-[0.35em] text-muted-foreground/70" aria-hidden>
           Mietaaf — luxury men’s ethnic and formal wear
         </span>
       </div>

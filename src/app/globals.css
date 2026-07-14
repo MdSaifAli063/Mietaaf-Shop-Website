@@ -5,10 +5,10 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --color-mietaaf-gold: oklch(0.78 0.14 85);
-  --color-mietaaf-gold-deep: oklch(0.62 0.12 75);
-  --color-mietaaf-cream: oklch(0.98 0.015 95);
-  --color-mietaaf-charcoal: oklch(0.2 0.02 95);
+  --color-mietaaf-gold: oklch(0.62 0.08 58);
+  --color-mietaaf-gold-deep: oklch(0.5 0.06 52);
+  --color-mietaaf-cream: oklch(0.98 0.01 84);
+  --color-mietaaf-charcoal: oklch(0.255 0.025 70);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-dm-sans), ui-sans-serif, system-ui;
@@ -53,25 +53,25 @@
 }
 
 :root {
-  /* Mietaaf — premium gold on cream / white */
-  --background: oklch(0.99 0.01 95);
-  --foreground: oklch(0.22 0.02 95);
-  --card: oklch(1 0.005 95);
-  --card-foreground: oklch(0.22 0.02 95);
-  --popover: oklch(1 0.005 95);
-  --popover-foreground: oklch(0.22 0.02 95);
-  --primary: oklch(0.72 0.14 85);
-  --primary-foreground: oklch(0.18 0.02 95);
-  --secondary: oklch(0.96 0.02 95);
-  --secondary-foreground: oklch(0.25 0.02 95);
-  --muted: oklch(0.95 0.015 95);
-  --muted-foreground: oklch(0.45 0.02 95);
-  --accent: oklch(0.94 0.04 90);
-  --accent-foreground: oklch(0.22 0.02 95);
+  /* Mietaaf — warm menswear luxury inspired by the reference */
+  --background: oklch(0.965 0.015 84);
+  --foreground: oklch(0.245 0.022 68);
+  --card: oklch(0.988 0.01 82);
+  --card-foreground: oklch(0.255 0.025 70);
+  --popover: oklch(0.988 0.01 82);
+  --popover-foreground: oklch(0.245 0.022 68);
+  --primary: oklch(0.62 0.08 58);
+  --primary-foreground: oklch(0.985 0.005 84);
+  --secondary: oklch(0.915 0.018 78);
+  --secondary-foreground: oklch(0.285 0.02 66);
+  --muted: oklch(0.9 0.015 80);
+  --muted-foreground: oklch(0.505 0.02 66);
+  --accent: oklch(0.89 0.02 74);
+  --accent-foreground: oklch(0.245 0.022 66);
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.9 0.02 95);
-  --input: oklch(0.9 0.02 95);
-  --ring: oklch(0.72 0.14 85);
+  --border: oklch(0.83 0.018 74);
+  --input: oklch(0.83 0.018 74);
+  --ring: oklch(0.62 0.08 58);
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);
@@ -89,24 +89,24 @@
 }
 
 .dark {
-  --background: oklch(0.14 0.02 95);
-  --foreground: oklch(0.97 0.01 95);
-  --card: oklch(0.18 0.02 95);
-  --card-foreground: oklch(0.97 0.01 95);
-  --popover: oklch(0.18 0.02 95);
-  --popover-foreground: oklch(0.97 0.01 95);
-  --primary: oklch(0.78 0.14 85);
-  --primary-foreground: oklch(0.16 0.02 95);
-  --secondary: oklch(0.24 0.02 95);
-  --secondary-foreground: oklch(0.97 0.01 95);
-  --muted: oklch(0.24 0.02 95);
-  --muted-foreground: oklch(0.72 0.02 95);
-  --accent: oklch(0.26 0.03 95);
-  --accent-foreground: oklch(0.97 0.01 95);
+  --background: oklch(0.165 0.02 70);
+  --foreground: oklch(0.955 0.01 84);
+  --card: oklch(0.215 0.018 68);
+  --card-foreground: oklch(0.955 0.01 84);
+  --popover: oklch(0.215 0.018 68);
+  --popover-foreground: oklch(0.955 0.01 84);
+  --primary: oklch(0.77 0.09 60);
+  --primary-foreground: oklch(0.16 0.02 70);
+  --secondary: oklch(0.255 0.02 68);
+  --secondary-foreground: oklch(0.96 0.01 84);
+  --muted: oklch(0.245 0.02 68);
+  --muted-foreground: oklch(0.75 0.02 78);
+  --accent: oklch(0.28 0.03 66);
+  --accent-foreground: oklch(0.96 0.01 84);
   --destructive: oklch(0.704 0.191 22.216);
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 12%);
-  --ring: oklch(0.78 0.14 85);
+  --ring: oklch(0.77 0.09 60);
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);
@@ -135,6 +135,10 @@
 
   body {
     @apply bg-background text-foreground antialiased break-words;
+    background:
+      radial-gradient(circle at top left, oklch(0.93 0.03 72 / 0.6), transparent 32%),
+      radial-gradient(circle at top right, oklch(0.9 0.02 62 / 0.42), transparent 24%),
+      linear-gradient(180deg, oklch(0.982 0.01 84), oklch(0.965 0.014 80));
     overflow-x: clip;
   }
 }
@@ -161,14 +165,14 @@
 }
 
 .glass-panel {
-  @apply border border-white/10 bg-white/5 backdrop-blur-xl dark:bg-black/30 dark:border-white/10;
+  @apply border border-border/70 bg-background/80 backdrop-blur-xl dark:bg-black/25 dark:border-white/10;
 }
 
 .text-gradient-gold {
   background: linear-gradient(120deg,
-      oklch(0.88 0.12 88),
-      oklch(0.72 0.14 85),
-      oklch(0.58 0.1 75));
+      oklch(0.76 0.06 74),
+      oklch(0.62 0.08 58),
+      oklch(0.48 0.05 50));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;

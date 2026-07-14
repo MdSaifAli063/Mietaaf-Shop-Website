@@ -61,7 +61,7 @@ export function SiteHeader() {
 
 
   return (
-    <header className="sticky top-0 z-40 w-full min-w-0 overflow-x-clip border-b border-border/60 bg-background/80 pt-[env(safe-area-inset-top,0px)] backdrop-blur-xl">
+    <header className="sticky top-0 z-40 w-full min-w-0 overflow-x-clip border-b border-border/70 bg-background/85 pt-[env(safe-area-inset-top,0px)] backdrop-blur-xl">
       <div className="relative mx-auto flex h-16 w-full min-w-0 max-w-7xl items-center justify-between gap-1 px-2 sm:h-[4.5rem] sm:gap-2 sm:px-4 md:h-[5.5rem] lg:h-24 lg:px-8">
         {/* Left: menu + logo (flush left) */}
         <div className="relative z-20 flex min-w-0 items-center gap-1.5 sm:gap-2">
@@ -79,7 +79,7 @@ export function SiteHeader() {
               side="left"
               className="flex h-dvh max-h-dvh w-[min(100dvw,420px)] max-w-[min(85vw,420px)] flex-col gap-0 overflow-hidden p-0"
             >
-              <div className="shrink-0 border-b border-border/60 px-4 pb-4 pt-[max(1rem,env(safe-area-inset-top))] pr-12">
+              <div className="shrink-0 border-b border-border/70 px-4 pb-4 pt-[max(1rem,env(safe-area-inset-top))] pr-12">
                 <Logo
                   href={logoHref}
                   variant="drawer"
@@ -95,21 +95,21 @@ export function SiteHeader() {
                   <>
                     <Link
                       href="/login"
-                      className="rounded-lg px-3 py-3 text-base font-medium hover:bg-muted sm:py-2 sm:text-sm"
+                      className="rounded-full px-3 py-3 text-[0.78rem] font-medium uppercase tracking-[0.24em] hover:bg-muted/70 sm:py-2 sm:text-[0.72rem]"
                       onClick={() => setOpen(false)}
                     >
                       Sign in
                     </Link>
                     <Link
                       href="/signup"
-                      className="rounded-lg px-3 py-3 text-base font-medium hover:bg-muted sm:py-2 sm:text-sm"
+                      className="rounded-full px-3 py-3 text-[0.78rem] font-medium uppercase tracking-[0.24em] hover:bg-muted/70 sm:py-2 sm:text-[0.72rem]"
                       onClick={() => setOpen(false)}
                     >
                       Create account
                     </Link>
                     <Link
                       href="/forgot-password"
-                      className="rounded-lg px-3 py-3 text-base hover:bg-muted sm:py-2 sm:text-sm"
+                      className="rounded-full px-3 py-3 text-[0.78rem] uppercase tracking-[0.22em] hover:bg-muted/70 sm:py-2 sm:text-[0.72rem]"
                       onClick={() => setOpen(false)}
                     >
                       Forgot password
@@ -121,21 +121,21 @@ export function SiteHeader() {
                       <Link
                         key={l.href}
                         href={l.href}
-                        className="rounded-lg px-3 py-3 text-base font-medium hover:bg-muted sm:py-2 sm:text-sm"
+                        className="rounded-full px-3 py-3 text-[0.78rem] font-medium uppercase tracking-[0.22em] hover:bg-muted/70 sm:py-2 sm:text-[0.72rem]"
                         onClick={() => setOpen(false)}
                       >
                         {l.label}
                       </Link>
                     ))}
-                    <div className="my-2 border-t border-border/60" />
-                    <p className="px-3 text-[10px] font-semibold uppercase tracking-[0.3em] text-muted-foreground">
+                    <div className="my-2 border-t border-border/70" />
+                    <p className="px-3 text-[10px] font-semibold uppercase tracking-[0.34em] text-muted-foreground">
                       Categories
                     </p>
                     {NAV_CATEGORIES.map((c) => (
                       <Link
                         key={c.slug}
                         href={`/category/${c.slug}`}
-                        className="rounded-lg px-3 py-3 text-base hover:bg-muted sm:py-2 sm:text-sm"
+                        className="rounded-full px-3 py-3 text-[0.78rem] uppercase tracking-[0.22em] hover:bg-muted/70 sm:py-2 sm:text-[0.72rem]"
                         onClick={() => setOpen(false)}
                       >
                         {c.label}
@@ -175,7 +175,7 @@ export function SiteHeader() {
                 <DropdownMenuTrigger
                   className={cn(
                     buttonVariants({ variant: "ghost" }),
-                    "shrink-0 text-sm font-medium text-muted-foreground",
+                    "shrink-0 text-[0.78rem] font-medium uppercase tracking-[0.22em] text-muted-foreground",
                   )}
                 >
                   Categories
@@ -186,9 +186,9 @@ export function SiteHeader() {
                       <Link
                         key={c.slug}
                         href={`/category/${c.slug}`}
-                        className="rounded-xl border border-border/60 bg-card/60 p-3 text-sm transition-colors hover:border-primary/50 hover:bg-accent/40"
+                        className="rounded-2xl border border-border/70 bg-card/80 p-3 text-sm transition-colors hover:border-primary/50 hover:bg-accent/35"
                       >
-                        <div className="font-heading text-base">{c.label}</div>
+                        <div className="font-heading text-base tracking-[0.04em]">{c.label}</div>
                         <p className="mt-1 text-xs text-muted-foreground">Explore collection</p>
                       </Link>
                     ))}

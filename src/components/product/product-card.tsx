@@ -59,7 +59,7 @@ export function ProductCard({ product }: { product: Product }) {
   }
 
   return (
-    <Card className="group relative flex min-w-0 flex-col overflow-hidden border-border/60 bg-card/80 shadow-sm backdrop-blur-sm transition-all hover:-translate-y-1 hover:shadow-xl">
+    <Card className="group relative flex min-w-0 flex-col overflow-hidden border-border/70 bg-card/90 shadow-[0_18px_45px_rgba(58,48,38,0.06)] backdrop-blur-sm transition-all hover:-translate-y-1 hover:shadow-[0_22px_55px_rgba(58,48,38,0.1)]">
       <div className="relative aspect-[3/4] overflow-hidden bg-muted">
         <Link href={`/product/${product.slug}`} className="absolute inset-0 z-0" />
         <Image
@@ -78,7 +78,7 @@ export function ProductCard({ product }: { product: Product }) {
           className="object-cover opacity-0 transition-opacity duration-500 [@media(hover:hover)]:group-hover:opacity-100"
         />
         {discount ? (
-          <Badge className="absolute left-3 top-3 bg-primary text-primary-foreground">
+          <Badge className="absolute left-3 top-3 bg-[rgb(95_107_84/0.18)] text-[rgb(72_82_64)]">
             {discount}% off
           </Badge>
         ) : null}
@@ -88,7 +88,7 @@ export function ProductCard({ product }: { product: Product }) {
             size="icon"
             variant="secondary"
             className={cn(
-              "h-10 w-10 touch-manipulation rounded-full bg-background/80 shadow-md backdrop-blur sm:h-9 sm:w-9",
+              "h-10 w-10 touch-manipulation rounded-full bg-background/80 shadow-sm backdrop-blur-sm sm:h-9 sm:w-9",
               hasWish && "text-primary",
             )}
             onClick={(e) => {
@@ -103,7 +103,7 @@ export function ProductCard({ product }: { product: Product }) {
             type="button"
             size="icon"
             variant="secondary"
-            className="h-10 w-10 touch-manipulation rounded-full bg-background/80 shadow-md backdrop-blur sm:h-9 sm:w-9"
+            className="h-10 w-10 touch-manipulation rounded-full bg-background/80 shadow-sm backdrop-blur-sm sm:h-9 sm:w-9"
             onClick={(e) => {
               e.preventDefault();
               setQuick(product.slug);
@@ -113,7 +113,7 @@ export function ProductCard({ product }: { product: Product }) {
           </Button>
         </div>
         {/* Desktop hover tray */}
-        <div className="absolute inset-x-0 bottom-0 z-10 hidden translate-y-full bg-gradient-to-t from-background/95 to-transparent p-3 transition-transform duration-300 [@media(hover:hover)]:group-hover:translate-y-0 lg:block">
+        <div className="absolute inset-x-0 bottom-0 z-10 hidden translate-y-full bg-gradient-to-t from-[rgb(245_241_234/0.96)] to-transparent p-3 transition-transform duration-300 [@media(hover:hover)]:group-hover:translate-y-0 lg:block">
           <div className="flex gap-2">
             <Button className="h-10 flex-1 touch-manipulation rounded-full" onClick={addToCart}>
               <ShoppingBag className="mr-2 h-4 w-4" />
@@ -132,13 +132,15 @@ export function ProductCard({ product }: { product: Product }) {
       </div>
       <div className="flex min-w-0 flex-1 flex-col space-y-2 p-3 sm:p-4">
         <Link href={`/product/${product.slug}`} className="block min-w-0">
-          <h3 className="font-heading text-base leading-snug text-foreground transition-colors hover:text-primary sm:text-lg">
+          <h3 className="font-heading text-base leading-snug tracking-[0.03em] text-foreground transition-colors hover:text-primary sm:text-lg">
             {product.name}
           </h3>
         </Link>
         <StarRating value={product.rating} count={product.reviewCount} />
         <div className="flex flex-wrap items-baseline gap-2">
-          <span className="text-base font-semibold sm:text-lg">{formatInr(product.price)}</span>
+          <span className="text-base font-semibold text-foreground sm:text-lg">
+            {formatInr(product.price)}
+          </span>
           {product.compareAtPrice ? (
             <span className="text-sm text-muted-foreground line-through">
               {formatInr(product.compareAtPrice)}

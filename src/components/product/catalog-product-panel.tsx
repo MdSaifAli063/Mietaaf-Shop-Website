@@ -40,21 +40,23 @@ export function CatalogProductPanel({
         priority={priority}
       />
 
-      <div className="flex min-w-0 flex-col justify-center text-foreground">
+        <div className="flex min-w-0 flex-col justify-center text-foreground">
         {isListing ? (
           <Link href={href} className="group">
-            <h2 className="font-sans text-lg font-bold uppercase tracking-wide group-hover:text-primary sm:text-xl">
+            <h2 className="font-heading text-lg font-medium tracking-[0.06em] group-hover:text-primary sm:text-xl">
               {title}
             </h2>
           </Link>
         ) : (
-          <h1 className="font-sans text-xl font-bold uppercase tracking-wide sm:text-2xl">{title}</h1>
+          <h1 className="font-heading text-xl font-medium tracking-[0.06em] sm:text-2xl">{title}</h1>
         )}
 
         {bullets.length > 0 ? (
           <div className="mt-4 sm:mt-5">
-            <p className="font-sans text-sm font-bold sm:text-base">Description</p>
-            <ul className="mt-2 list-disc space-y-1 pl-5 font-sans text-sm leading-relaxed sm:text-[15px]">
+            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground sm:text-sm">
+              Description
+            </p>
+            <ul className="mt-3 list-disc space-y-1 pl-5 text-sm leading-relaxed text-foreground/90 sm:text-[15px]">
               {bullets.map((line) => (
                 <li key={line}>{line}</li>
               ))}
@@ -62,18 +64,18 @@ export function CatalogProductPanel({
           </div>
         ) : null}
 
-        <p className="mt-4 font-sans text-sm font-bold sm:mt-5 sm:text-base">
+        <p className="mt-4 text-sm font-semibold uppercase tracking-[0.18em] text-muted-foreground sm:mt-5 sm:text-base">
           Size- {product.sizes.join(", ")}
         </p>
-        <p className="mt-2 font-sans text-sm font-bold sm:text-base">
+        <p className="mt-2 text-sm font-semibold uppercase tracking-[0.18em] text-muted-foreground sm:text-base">
           MRP-{" "}
           {product.compareAtPrice != null ? (
-            <span className="font-normal">{formatInr(product.compareAtPrice)}</span>
+            <span className="font-normal text-foreground">{formatInr(product.compareAtPrice)}</span>
           ) : (
             "—"
           )}
         </p>
-        <p className="mt-1 font-sans text-sm font-bold sm:text-base">
+        <p className="mt-1 text-sm font-semibold uppercase tracking-[0.18em] text-muted-foreground sm:text-base">
           Selling Price- <span className="font-normal">{formatInr(product.price)}</span>
         </p>
 
