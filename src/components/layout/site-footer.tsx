@@ -13,7 +13,7 @@ import toast from "react-hot-toast";
 export function SiteFooter() {
   return (
     <footer className="border-t border-border/70 bg-background text-foreground dark:bg-card">
-      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
+      <div className="mx-auto max-w-7xl px-4 pb-[max(3rem,env(safe-area-inset-bottom))] pt-12 sm:px-6 sm:py-16 lg:px-8">
         <div className="grid gap-8 sm:gap-10 md:grid-cols-2 md:gap-12 lg:grid-cols-[minmax(0,1.35fr)_repeat(3,minmax(0,1fr))] lg:gap-10 xl:gap-12">
           {/* Brand: logo + blurb + social — left column, contained width */}
           <div className="flex min-w-0 max-w-full flex-col items-start gap-4 lg:pr-4">
@@ -127,11 +127,11 @@ export function SiteFooter() {
               </Button>
             </form>
             <div className="space-y-2 pt-2 text-sm text-muted-foreground">
-              <p className="flex items-center gap-2">
-                <Phone className="h-4 w-4 text-primary" /> {SITE_PHONE_DISPLAY}
+              <p className="flex min-w-0 items-center gap-2">
+                <Phone className="h-4 w-4 shrink-0 text-primary" /> <span>{SITE_PHONE_DISPLAY}</span>
               </p>
-              <p className="flex items-center gap-2">
-                <Mail className="h-4 w-4 text-primary" /> {SITE_EMAIL_DISPLAY}
+              <p className="flex min-w-0 items-center gap-2">
+                <Mail className="h-4 w-4 shrink-0 text-primary" /> <span className="break-all">{SITE_EMAIL_DISPLAY}</span>
               </p>
               <p className="flex items-start gap-2">
                 <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-primary" />

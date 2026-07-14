@@ -2,14 +2,15 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { useTheme } from "next-themes";
 import {
   ChevronDown,
+  CircleHelp,
+  LogOut,
   Menu,
-  Moon,
+  PackageCheck,
   Search,
+  Settings,
   ShoppingBag,
-  Sun,
   User2,
   Heart,
 } from "lucide-react";
@@ -39,7 +40,6 @@ export function SiteHeader() {
   );
   const wishCount = useWishlistStore((s) => s.ids.length);
   const setSearch = useUiStore((s) => s.setSearchOpen);
-  const { theme, setTheme } = useTheme();
   const { user, logout, loading } = useAuth();
   const pathname = usePathname();
   const router = useRouter();
@@ -71,7 +71,7 @@ export function SiteHeader() {
             <SheetTrigger
               className={cn(
                 buttonVariants({ variant: "ghost", size: "icon" }),
-                "shrink-0 lg:hidden",
+                "shrink-0 xl:hidden",
               )}
               aria-label="Open menu"
             >
@@ -131,6 +131,47 @@ export function SiteHeader() {
                     ))}
                     <div className="my-2 border-t border-border/70" />
                     <p className="px-3 text-[10px] font-semibold uppercase tracking-[0.34em] text-muted-foreground">
+                      Quick access
+                    </p>
+                    <button
+                      type="button"
+                      className="flex min-h-11 items-center gap-3 rounded-full px-3 py-2 text-left text-[0.78rem] uppercase tracking-[0.2em] hover:bg-muted/70 sm:text-[0.72rem]"
+                      onClick={() => {
+                        setOpen(false);
+                        setSearch(true);
+                      }}
+                    >
+                      <Search className="size-4 shrink-0" aria-hidden="true" />
+                      Search
+                    </button>
+                    <Link
+                      href="/wishlist"
+                      className="flex min-h-11 items-center gap-3 rounded-full px-3 py-2 text-[0.78rem] uppercase tracking-[0.2em] hover:bg-muted/70 sm:text-[0.72rem]"
+                      onClick={() => setOpen(false)}
+                    >
+                      <Heart className="size-4 shrink-0" aria-hidden="true" />
+                      Wishlist
+                      {wishCount > 0 ? <span className="ml-auto text-xs">{wishCount}</span> : null}
+                    </Link>
+                    <Link
+                      href="/cart"
+                      className="flex min-h-11 items-center gap-3 rounded-full px-3 py-2 text-[0.78rem] uppercase tracking-[0.2em] hover:bg-muted/70 sm:text-[0.72rem]"
+                      onClick={() => setOpen(false)}
+                    >
+                      <ShoppingBag className="size-4 shrink-0" aria-hidden="true" />
+                      Shopping bag
+                      {cartCount > 0 ? <span className="ml-auto text-xs">{cartCount}</span> : null}
+                    </Link>
+                    <Link
+                      href={user ? "/profile" : "/login"}
+                      className="flex min-h-11 items-center gap-3 rounded-full px-3 py-2 text-[0.78rem] uppercase tracking-[0.2em] hover:bg-muted/70 sm:text-[0.72rem]"
+                      onClick={() => setOpen(false)}
+                    >
+                      <User2 className="size-4 shrink-0" aria-hidden="true" />
+                      {user ? "My account" : "Sign in"}
+                    </Link>
+                    <div className="my-2 border-t border-border/70" />
+                    <p className="px-3 text-[10px] font-semibold uppercase tracking-[0.34em] text-muted-foreground">
                       Categories
                     </p>
                     {NAV_CATEGORIES.map((c) => (
@@ -155,7 +196,7 @@ export function SiteHeader() {
         {!isAuthPage ? (
           <nav
             className={cn(
-              "pointer-events-none absolute inset-x-0 top-1/2 z-30 hidden -translate-y-1/2 lg:flex",
+              "pointer-events-none absolute inset-x-0 top-1/2 z-30 hidden -translate-y-1/2 xl:flex",
               "items-center justify-center",
             )}
             aria-label="Primary"
@@ -229,7 +270,7 @@ export function SiteHeader() {
               <Button
                 variant="ghost"
                 size="icon"
-                className="h-10 w-10 shrink-0 sm:h-11 sm:w-11"
+                className="hidden h-10 w-10 shrink-0 sm:inline-flex sm:h-11 sm:w-11"
                 onClick={() => setSearch(true)}
                 aria-label="Search"
               >
@@ -241,7 +282,7 @@ export function SiteHeader() {
                 aria-label="Wishlist"
                 className={cn(
                   buttonVariants({ variant: "ghost", size: "icon" }),
-                  "relative h-10 w-10 shrink-0 sm:h-11 sm:w-11",
+                  "relative hidden h-10 w-10 shrink-0 sm:inline-flex sm:h-11 sm:w-11",
                 )}
               >
                 <Heart className="h-5 w-5" />
@@ -270,17 +311,6 @@ export function SiteHeader() {
             </>
           ) : null}
 
-          <Button
-            variant="ghost"
-            size="icon"
-            className="relative h-10 w-10 shrink-0 sm:h-11 sm:w-11"
-            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-            aria-label="Toggle theme"
-          >
-            <Sun className="h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-            <Moon className="absolute h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-          </Button>
-
           {!isAuthPage ? (
             <DropdownMenu>
               <DropdownMenuTrigger
@@ -300,18 +330,36 @@ export function SiteHeader() {
                 {user ? (
                   <>
                     <DropdownMenuItem onClick={() => router.push("/profile")}>
+                      <User2 className="size-4" aria-hidden="true" />
                       Profile
                     </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => router.push("/profile#orders")}>
+                      <PackageCheck className="size-4" aria-hidden="true" />
+                      My orders
+                    </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => router.push("/wishlist")}>
+                      <Heart className="size-4" aria-hidden="true" />
                       Wishlist
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => router.push("/cart")}>Cart</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => router.push("/cart")}>
+                      <ShoppingBag className="size-4" aria-hidden="true" />
+                      Cart
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => router.push("/profile#settings")}>
+                      <Settings className="size-4" aria-hidden="true" />
+                      Settings
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => router.push("/profile#help")}>
+                      <CircleHelp className="size-4" aria-hidden="true" />
+                      Help center
+                    </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem
                       onClick={async () => {
                         await logout();
                       }}
                     >
+                      <LogOut className="size-4" aria-hidden="true" />
                       Log out
                     </DropdownMenuItem>
                   </>

@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { Eye, Heart, ShoppingBag } from "lucide-react";
 import type { Product } from "@/types";
@@ -15,6 +14,7 @@ import { useUiStore } from "@/store/ui-store";
 import { useCompareStore } from "@/store/compare-store";
 import toast from "react-hot-toast";
 import { cn } from "@/lib/utils";
+import { ProductThumbnailImage } from "@/components/product/catalog-product-photo";
 
 export function ProductCard({ product }: { product: Product }) {
   const toggleWish = useWishlistStore((s) => s.toggle);
@@ -62,20 +62,18 @@ export function ProductCard({ product }: { product: Product }) {
     <Card className="group relative flex min-w-0 flex-col overflow-hidden border-border/70 bg-card/90 shadow-[0_18px_45px_rgba(58,48,38,0.06)] backdrop-blur-sm transition-all hover:-translate-y-1 hover:shadow-[0_22px_55px_rgba(58,48,38,0.1)]">
       <div className="relative aspect-[3/4] overflow-hidden bg-muted">
         <Link href={`/product/${product.slug}`} className="absolute inset-0 z-0" />
-        <Image
+        <ProductThumbnailImage
           src={primary}
           alt={product.name}
-          fill
-          sizes="(max-width:768px) 50vw, 25vw"
-          className="object-cover transition-opacity duration-500 [@media(hover:hover)]:group-hover:opacity-0"
+          sizes="(max-width:639px) 100vw, (max-width:1024px) 50vw, 25vw"
+          className="transition-opacity duration-500 [@media(hover:hover)]:group-hover:opacity-0"
           priority={false}
         />
-        <Image
+        <ProductThumbnailImage
           src={secondary}
           alt=""
-          fill
-          sizes="(max-width:768px) 50vw, 25vw"
-          className="object-cover opacity-0 transition-opacity duration-500 [@media(hover:hover)]:group-hover:opacity-100"
+          sizes="(max-width:639px) 100vw, (max-width:1024px) 50vw, 25vw"
+          className="opacity-0 transition-opacity duration-500 [@media(hover:hover)]:group-hover:opacity-100"
         />
         {discount ? (
           <Badge className="absolute left-3 top-3 bg-[rgb(95_107_84/0.18)] text-[rgb(72_82_64)]">
@@ -96,6 +94,7 @@ export function ProductCard({ product }: { product: Product }) {
               toggleWish(product.id);
               toast.success(hasWish ? "Removed from wishlist" : "Saved to wishlist");
             }}
+            aria-label={hasWish ? `Remove ${product.name} from wishlist` : `Save ${product.name} to wishlist`}
           >
             <Heart className={cn("h-4 w-4", hasWish && "fill-primary")} />
           </Button>
@@ -108,6 +107,7 @@ export function ProductCard({ product }: { product: Product }) {
               e.preventDefault();
               setQuick(product.slug);
             }}
+            aria-label={`Quick view ${product.name}`}
           >
             <Eye className="h-4 w-4" />
           </Button>
