@@ -93,7 +93,6 @@ export default async function CategoryPage({
                   className="object-cover transition-transform duration-700 hover:scale-[1.02]"
                   sizes="(max-width:1024px) 100vw, 45vw"
                 />
-                <div className="absolute inset-0 bg-linear-to-t from-black/30 via-transparent to-transparent" />
               </div>
               <div className="flex flex-col justify-center px-6 py-8 sm:px-10 sm:py-10 lg:px-12">
                 <p className="text-xs font-semibold uppercase tracking-[0.4em] text-primary">

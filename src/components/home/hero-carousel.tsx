@@ -28,11 +28,11 @@ export function HeroCarousel() {
                 alt={b.title}
                 fill
                 priority={index === 0}
-                className="object-cover object-[72%_center] opacity-88 saturate-[0.92] contrast-[0.96] sm:object-center"
+                className="object-cover object-[72%_center] sm:object-center"
                 sizes="100vw"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[rgb(45_39_35/0.9)] via-[rgb(74_69_63/0.35)] to-transparent" />
-              <div className="absolute inset-0 bg-gradient-to-r from-[rgb(74_69_63/0.82)] via-[rgb(74_69_63/0.18)] to-transparent" />
+              <div className="pointer-events-none absolute inset-y-0 left-0 w-full bg-gradient-to-r from-black/45 via-black/10 to-transparent sm:w-3/4" />
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/35 to-transparent" />
               <div className="absolute inset-0 flex flex-col justify-end px-4 pb-[max(6rem,env(safe-area-inset-bottom))] sm:px-12 sm:pb-28 lg:px-16 lg:pb-32">
                 <div className="max-w-xl space-y-6">
                   <p className="text-[10px] font-semibold uppercase tracking-[0.48em] text-mietaaf-cream/80">
@@ -60,7 +60,7 @@ export function HeroCarousel() {
                       asChild
                       size="lg"
                       variant="outline"
-                      className="rounded-full border-mietaaf-cream/35 bg-[rgb(245_241_234/0.08)] text-mietaaf-cream backdrop-blur"
+                      className="rounded-full border-mietaaf-cream/35 bg-black/10 text-mietaaf-cream"
                     >
                       <Link href="/shop">Shop all</Link>
                     </Button>

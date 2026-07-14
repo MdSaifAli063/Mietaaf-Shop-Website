@@ -15,10 +15,7 @@ import {
 } from "lucide-react";
 import { ProductCard } from "@/components/product/product-card";
 import { CatalogProductPanel } from "@/components/product/catalog-product-panel";
-import {
-  catalogPhotoCropWidth,
-  ProductThumbnailImage,
-} from "@/components/product/catalog-product-photo";
+import { ProductThumbnailImage } from "@/components/product/catalog-product-photo";
 import { Reveal } from "@/components/motion/reveal";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -86,37 +83,21 @@ export function HomeSections() {
             {categories.slice(0, 8).map((c, i) => (
               <Reveal key={c.slug} delay={i * 0.05}>
                 <Link href={`/category/${c.slug}`} className="group block">
-                  <Card className="overflow-hidden border-border/60 bg-card/80 shadow-sm transition-all hover:-translate-y-1 hover:shadow-xl">
+                  <Card className="gap-0 overflow-hidden border-border/60 bg-card py-0 shadow-sm backdrop-blur-none transition-all hover:-translate-y-1 hover:shadow-xl">
                     <div className="relative aspect-[4/5] overflow-hidden">
-                      {c.slug === "suits" ? (
-                        <div
-                          className="absolute inset-y-0 left-0 h-full transition-transform duration-700 group-hover:scale-105"
-                          style={{ width: catalogPhotoCropWidth }}
-                        >
-                          <Image
-                            src={c.image}
-                            alt={c.name}
-                            fill
-                            className="object-cover object-left"
-                            sizes="(max-width:639px) 100vw, (max-width:1024px) 50vw, 25vw"
-                          />
-                        </div>
-                      ) : (
-                        <Image
-                          src={c.image}
-                          alt={c.name}
-                          fill
-                          className="object-cover transition-transform duration-700 group-hover:scale-105"
-                          sizes="(max-width:639px) 100vw, (max-width:1024px) 50vw, 25vw"
-                        />
-                      )}
-                      <div className="absolute inset-0 bg-gradient-to-t from-background/90 to-transparent" />
-                      <div className="absolute bottom-4 left-4 right-4">
-                        <h3 className="font-heading text-xl">{c.name}</h3>
-                        <p className="mt-1 line-clamp-2 text-xs text-muted-foreground">
-                          {c.description}
-                        </p>
-                      </div>
+                      <Image
+                        src={c.image}
+                        alt={c.name}
+                        fill
+                        className="object-cover transition-transform duration-700 group-hover:scale-105"
+                        sizes="(max-width:639px) 100vw, (max-width:1024px) 50vw, 25vw"
+                      />
+                    </div>
+                    <div className="min-h-24 bg-card px-4 py-4">
+                      <h3 className="font-heading text-xl">{c.name}</h3>
+                      <p className="mt-1 line-clamp-2 text-xs text-muted-foreground">
+                        {c.description}
+                      </p>
                     </div>
                   </Card>
                 </Link>
