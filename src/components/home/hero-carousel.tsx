@@ -11,7 +11,7 @@ import "swiper/css/pagination";
 
 export function HeroCarousel() {
   return (
-    <section className="relative h-[min(calc(100dvh-4rem),820px)] w-full overflow-hidden bg-background sm:h-[min(calc(100dvh-4.5rem),860px)] lg:h-[min(100dvh,900px)]">
+    <section className="relative h-[calc(100svh-6.25rem)] min-h-[450px] w-full overflow-hidden bg-background sm:h-[calc(100svh-7.25rem)] sm:min-h-[520px] lg:h-[calc(100svh-8.25rem)] lg:min-h-[600px]">
       <Swiper
         modules={[Autoplay, Pagination]}
         speed={520}
@@ -28,13 +28,13 @@ export function HeroCarousel() {
                 alt={b.title}
                 fill
                 priority={index === 0}
-                className="object-cover object-[72%_center] sm:object-center"
+                className="object-cover object-[72%_18%] sm:object-[center_18%]"
                 sizes="100vw"
               />
               <div className="pointer-events-none absolute inset-y-0 left-0 w-full bg-gradient-to-r from-black/45 via-black/10 to-transparent sm:w-3/4" />
               <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/35 to-transparent" />
-              <div className="absolute inset-0 flex flex-col justify-end px-4 pb-[max(6rem,env(safe-area-inset-bottom))] sm:px-12 sm:pb-28 lg:px-16 lg:pb-32">
-                <div className="max-w-xl space-y-6">
+              <div className="absolute inset-0 flex flex-col justify-end px-4 pb-[max(2rem,env(safe-area-inset-bottom))] sm:px-12 sm:pb-12 lg:px-16 lg:pb-10">
+                <div className="max-w-xl space-y-4 sm:space-y-5">
                   <p className="text-[10px] font-semibold uppercase tracking-[0.48em] text-mietaaf-cream/80">
                     Mietaaf Atelier
                   </p>
@@ -42,7 +42,7 @@ export function HeroCarousel() {
                     {b.title}
                   </h1>
                   {b.subtitle ? (
-                    <p className="max-w-lg text-lg leading-7 text-mietaaf-cream/80 sm:text-xl">
+                    <p className="max-w-lg text-base leading-6 text-mietaaf-cream/80 sm:text-lg lg:text-xl lg:leading-7">
                       {b.subtitle}
                     </p>
                   ) : null}
