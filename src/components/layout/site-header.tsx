@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import {
   ChevronLeft,
@@ -68,7 +68,7 @@ export function SiteHeader() {
     {
       text: "Our Bengaluru studio is open by appointment.",
       cta: "Book a visit",
-      href: "/contact",
+      href: "/appointment",
     },
     {
       text: "For personalised assistance, reach us on WhatsApp at",
@@ -83,6 +83,15 @@ export function SiteHeader() {
   const showNextAnnouncement = () =>
     setAnnouncementIndex((current) => (current + 1) % announcements.length);
 
+  useEffect(() => {
+    if (isAuthPage || announcements.length < 2) return;
+
+    const timer = window.setInterval(() => {
+      setAnnouncementIndex((current) => (current + 1) % announcements.length);
+    }, 3000);
+
+    return () => window.clearInterval(timer);
+  }, [announcements.length, isAuthPage]);
 
   return (
     <header className="sticky top-0 z-40 w-full min-w-0 overflow-x-clip border-b border-border/70 bg-background/85 pt-[env(safe-area-inset-top,0px)] backdrop-blur-xl">
