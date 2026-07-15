@@ -8,21 +8,7 @@ import {
   useMemo,
   useState,
 } from "react";
-import {
-  GoogleAuthProvider,
-  browserLocalPersistence,
-  createUserWithEmailAndPassword,
-  onAuthStateChanged,
-  sendPasswordResetEmail,
-  setPersistence,
-  signInWithEmailAndPassword,
-  signInWithPopup,
-  signOut,
-  updateProfile,
-  type User,
-} from "firebase/auth";
-import { doc, getDoc, serverTimestamp, setDoc } from "firebase/firestore";
-import { getFirebaseAuth, getFirebaseDb } from "@/firebase/client";
+import type { User } from "firebase/auth";
 import { isFirebaseConfigured } from "@/firebase/config";
 import { syncShoppingGate } from "@/lib/shopping-gate";
 import { useCartStore } from "@/store/cart-store";
@@ -55,17 +41,32 @@ function parseAdminEmails(): string[] {
     .filter(Boolean);
 }
 
+async function getAuthClient() {
+  const [{ getFirebaseAuth }, authModule] = await Promise.all([
+    import("@/firebase/client"),
+    import("firebase/auth"),
+  ]);
+  return { auth: getFirebaseAuth(), authModule };
+}
+
+async function getFirestoreClient() {
+  const [{ getFirebaseDb }, firestoreModule] = await Promise.all([
+    import("@/firebase/client"),
+    import("firebase/firestore"),
+  ]);
+  return { db: getFirebaseDb(), firestoreModule };
+}
+
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
 
   const firebaseReady = isFirebaseConfigured();
-  const auth = getFirebaseAuth();
-  const db = getFirebaseDb();
 
   const loadProfile = useCallback(
     async (u: User) => {
+      const { db, firestoreModule } = await getFirestoreClient();
       if (!db) {
         setProfile({
           uid: u.uid,
@@ -78,6 +79,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         });
         return;
       }
+      const { doc, getDoc, serverTimestamp, setDoc } = firestoreModule;
       const ref = doc(db, "users", u.uid);
       const emailLower = (u.email ?? "").toLowerCase();
       const envAdmin = parseAdminEmails().includes(emailLower);
@@ -133,23 +135,43 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         });
       }
     },
-    [db],
+    [],
   );
 
   useEffect(() => {
-    if (!auth) {
+    if (!firebaseReady) {
       setLoading(false);
       return;
     }
-    void setPersistence(auth, browserLocalPersistence);
-    const unsub = onAuthStateChanged(auth, async (u) => {
-      setUser(u);
-      if (u) await loadProfile(u);
-      else setProfile(null);
-      setLoading(false);
-    });
-    return () => unsub();
-  }, [auth, loadProfile]);
+
+    let unsubscribe: (() => void) | undefined;
+    let cancelled = false;
+
+    async function listenForUser() {
+      const { auth, authModule } = await getAuthClient();
+      if (cancelled) return;
+      if (!auth) {
+        setLoading(false);
+        return;
+      }
+
+      const { browserLocalPersistence, onAuthStateChanged, setPersistence } = authModule;
+      void setPersistence(auth, browserLocalPersistence);
+      unsubscribe = onAuthStateChanged(auth, async (u) => {
+        setUser(u);
+        if (u) await loadProfile(u);
+        else setProfile(null);
+        setLoading(false);
+      });
+    }
+
+    void listenForUser();
+
+    return () => {
+      cancelled = true;
+      unsubscribe?.();
+    };
+  }, [firebaseReady, loadProfile]);
 
   /** Guest persisted carts must not apply when Firebase auth is required. */
   useEffect(() => {
@@ -167,18 +189,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signInEmail = useCallback(
     async (email: string, password: string) => {
+      const { auth, authModule } = await getAuthClient();
       if (!auth) throw new Error("Firebase is not configured");
-      await signInWithEmailAndPassword(auth, email, password);
+      await authModule.signInWithEmailAndPassword(auth, email, password);
     },
-    [auth],
+    [],
   );
 
   const signUpEmail = useCallback(
     async (email: string, password: string, displayName: string) => {
+      const { auth, authModule } = await getAuthClient();
       if (!auth) throw new Error("Firebase is not configured");
-      const cred = await createUserWithEmailAndPassword(auth, email, password);
-      await updateProfile(cred.user, { displayName });
+      const cred = await authModule.createUserWithEmailAndPassword(auth, email, password);
+      await authModule.updateProfile(cred.user, { displayName });
+      const { db, firestoreModule } = await getFirestoreClient();
       if (db) {
+        const { doc, serverTimestamp, setDoc } = firestoreModule;
         await setDoc(doc(db, "users", cred.user.uid), {
           uid: cred.user.uid,
           email,
@@ -189,14 +215,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         });
       }
     },
-    [auth, db],
+    [],
   );
 
   const signInGoogle = useCallback(async () => {
+    const { auth, authModule } = await getAuthClient();
     if (!auth) throw new Error("Firebase is not configured");
-    const provider = new GoogleAuthProvider();
-    const cred = await signInWithPopup(auth, provider);
+    const provider = new authModule.GoogleAuthProvider();
+    const cred = await authModule.signInWithPopup(auth, provider);
+    const { db, firestoreModule } = await getFirestoreClient();
     if (db) {
+      const { doc, getDoc, serverTimestamp, setDoc } = firestoreModule;
       const ref = doc(db, "users", cred.user.uid);
       const snap = await getDoc(ref);
       if (!snap.exists()) {
@@ -214,20 +243,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         });
       }
     }
-  }, [auth, db]);
+  }, []);
 
   const resetPassword = useCallback(
     async (email: string) => {
+      const { auth, authModule } = await getAuthClient();
       if (!auth) throw new Error("Firebase is not configured");
-      await sendPasswordResetEmail(auth, email);
+      await authModule.sendPasswordResetEmail(auth, email);
     },
-    [auth],
+    [],
   );
 
   const logout = useCallback(async () => {
+    const { auth, authModule } = await getAuthClient();
     if (!auth) return;
-    await signOut(auth);
-  }, [auth]);
+    await authModule.signOut(auth);
+  }, []);
 
   const isAdmin =
     profile?.role === "admin" ||
