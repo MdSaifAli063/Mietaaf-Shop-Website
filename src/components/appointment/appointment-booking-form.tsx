@@ -10,7 +10,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { SITE_EMAIL_DISPLAY } from "@/lib/site-contact";
 
 const EMAILJS_SERVICE_ID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
-const EMAILJS_TEMPLATE_ID = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
+const EMAILJS_APPOINTMENT_TEMPLATE_ID =
+  process.env.NEXT_PUBLIC_EMAILJS_APPOINTMENT_TEMPLATE_ID ||
+  process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
 const EMAILJS_PUBLIC_KEY = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
 
 const serviceTypes = [
@@ -96,14 +98,9 @@ export function AppointmentBookingForm() {
         ].join("\n");
 
         const subject = `Mietaaf appointment request - ${name}`;
-        const openMailDraft = () => {
-          window.location.href = `mailto:${SITE_EMAIL_DISPLAY}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(message)}`;
-        };
-
         try {
-          if (!EMAILJS_SERVICE_ID || !EMAILJS_TEMPLATE_ID || !EMAILJS_PUBLIC_KEY) {
-            openMailDraft();
-            toast.success("EmailJS is not configured yet, so an email draft opened.");
+          if (!EMAILJS_SERVICE_ID || !EMAILJS_APPOINTMENT_TEMPLATE_ID || !EMAILJS_PUBLIC_KEY) {
+            toast.error("Appointment email service is not configured yet.");
             return;
           }
 
@@ -114,7 +111,7 @@ export function AppointmentBookingForm() {
             },
             body: JSON.stringify({
               service_id: EMAILJS_SERVICE_ID,
-              template_id: EMAILJS_TEMPLATE_ID,
+              template_id: EMAILJS_APPOINTMENT_TEMPLATE_ID,
               user_id: EMAILJS_PUBLIC_KEY,
               template_params: {
                 to_email: SITE_EMAIL_DISPLAY,
@@ -146,8 +143,7 @@ export function AppointmentBookingForm() {
           toast.success("Appointment request sent to Mietaaf email.");
           formElement.reset();
         } catch {
-          openMailDraft();
-          toast.error("EmailJS could not send right now, so an email draft opened.");
+          toast.error("We could not send your appointment. Please try again shortly.");
         } finally {
           setSubmitting(false);
         }

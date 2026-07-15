@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
-import { HomeSections } from "@/components/home/home-sections";
 import { homePageMetadata } from "@/lib/seo";
 
 const HeroCarousel = dynamic(
@@ -21,6 +20,17 @@ const HeroCarousel = dynamic(
         </span>
       </div>
     ),
+  },
+);
+
+const HomeSections = dynamic(
+  () =>
+    import("@/components/home/home-sections").then((m) => ({
+      default: m.HomeSections,
+    })),
+  {
+    ssr: true,
+    loading: () => <div className="min-h-96 bg-[#eee4d6] dark:bg-[#201d19]" aria-busy="true" />,
   },
 );
 
