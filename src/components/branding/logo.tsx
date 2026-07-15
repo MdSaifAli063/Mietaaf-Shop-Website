@@ -25,7 +25,6 @@ export function Logo({
 }: LogoProps) {
   const settingsLogo = useSettingsStore((s) => s.settings.logoUrl);
   const activeLogo = src || settingsLogo || SITE_LOGO_URL;
-  const remote = typeof activeLogo === "string" && /^https?:\/\//i.test(activeLogo);
 
   const box =
     variant === "footer"
@@ -34,7 +33,7 @@ export function Logo({
         ? "h-20 w-44 sm:h-24 sm:w-52"
       : variant === "drawer"
         ? "h-28 w-[min(96vw,420px)] sm:h-32 sm:w-[min(96vw,520px)]"
-        : "h-[3.75rem] w-[min(calc(100dvw-9.5rem),280px)] sm:h-[4.25rem] sm:w-[min(calc(100dvw-11rem),360px)] lg:h-[5.375rem] lg:w-[min(44vw,480px)] xl:h-24 xl:w-80 2xl:w-96";
+        : "h-14 w-[min(calc(100dvw-14rem),150px)] min-w-20 sm:h-[4.25rem] sm:w-[min(calc(100dvw-17rem),260px)] md:w-[min(calc(100dvw-19rem),360px)] lg:h-[5.375rem] lg:w-[min(44vw,480px)] xl:h-24 xl:w-80 2xl:w-96";
 
   return (
     <Link
@@ -66,7 +65,6 @@ export function Logo({
           )}
           sizes={variant === "auth" ? "260px" : "(max-width: 480px) 260px, (max-width: 640px) 300px, (max-width: 1024px) 400px, 620px"}
           priority={priority}
-          unoptimized={remote}
         />
       </span>
     </Link>
