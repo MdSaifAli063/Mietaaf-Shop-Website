@@ -3,7 +3,9 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import {
+  ChevronLeft,
   ChevronDown,
+  ChevronRight,
   CircleHelp,
   LogOut,
   Menu,
@@ -33,6 +35,7 @@ import { useAuth } from "@/context/auth-context";
 import { cn } from "@/lib/utils";
 import { usePathname, useRouter } from "next/navigation";
 import { isAuthOnlyPath } from "@/lib/auth-public-paths";
+import { SITE_PHONE_E164_PLUS, SITE_WHATSAPP_E164_DIGITS } from "@/lib/site-contact";
 
 export function SiteHeader() {
   const cartCount = useCartStore((s) =>
@@ -45,6 +48,7 @@ export function SiteHeader() {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [categoriesOpen, setCategoriesOpen] = useState(false);
+  const [announcementIndex, setAnnouncementIndex] = useState(0);
 
   const links = useMemo(
     () => [
@@ -60,10 +64,61 @@ export function SiteHeader() {
 
   const isAuthPage = Boolean(pathname && isAuthOnlyPath(pathname));
   const logoHref = isAuthPage ? "/login" : "/";
+  const announcements = [
+    {
+      text: "Our Bengaluru studio is open by appointment.",
+      cta: "Book a visit",
+      href: "/contact",
+    },
+    {
+      text: "For personalised assistance, reach us on WhatsApp at",
+      cta: SITE_PHONE_E164_PLUS,
+      href: `https://wa.me/${SITE_WHATSAPP_E164_DIGITS}`,
+      external: true,
+    },
+  ];
+  const announcement = announcements[announcementIndex]!;
+  const showPreviousAnnouncement = () =>
+    setAnnouncementIndex((current) => (current === 0 ? announcements.length - 1 : current - 1));
+  const showNextAnnouncement = () =>
+    setAnnouncementIndex((current) => (current + 1) % announcements.length);
 
 
   return (
     <header className="sticky top-0 z-40 w-full min-w-0 overflow-x-clip border-b border-border/70 bg-background/85 pt-[env(safe-area-inset-top,0px)] backdrop-blur-xl">
+      {!isAuthPage ? (
+        <div className="bg-[#1f1f1d] text-white">
+          <div className="mx-auto flex min-h-10 w-full max-w-7xl items-center justify-center gap-2 px-3 py-2 sm:min-h-12 sm:gap-5 sm:px-6">
+            <button
+              type="button"
+              onClick={showPreviousAnnouncement}
+              className="flex size-8 shrink-0 items-center justify-center rounded-full text-white/70 transition-colors hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
+              aria-label="Previous announcement"
+            >
+              <ChevronLeft className="size-4" aria-hidden="true" />
+            </button>
+            <p className="min-w-0 flex-1 text-center text-[10px] font-bold uppercase leading-5 tracking-[0.18em] text-white sm:text-xs sm:tracking-[0.26em]">
+              <span>{announcement.text}</span>{" "}
+              <Link
+                href={announcement.href}
+                target={announcement.external ? "_blank" : undefined}
+                rel={announcement.external ? "noopener noreferrer" : undefined}
+                className="whitespace-nowrap underline underline-offset-4 transition-colors hover:text-primary"
+              >
+                {announcement.cta} {announcement.external ? null : "->"}
+              </Link>
+            </p>
+            <button
+              type="button"
+              onClick={showNextAnnouncement}
+              className="flex size-8 shrink-0 items-center justify-center rounded-full text-white/70 transition-colors hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
+              aria-label="Next announcement"
+            >
+              <ChevronRight className="size-4" aria-hidden="true" />
+            </button>
+          </div>
+        </div>
+      ) : null}
       <div className="relative mx-auto flex h-16 w-full min-w-0 max-w-7xl items-center justify-between gap-1 px-2 sm:h-[4.5rem] sm:gap-2 sm:px-4 md:h-[5.5rem] lg:h-24 lg:px-8">
         {/* Left: menu + logo (flush left) */}
         <div className="relative z-20 flex min-w-0 items-center gap-1.5 sm:gap-2">
