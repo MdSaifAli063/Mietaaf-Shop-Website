@@ -1,6 +1,6 @@
 import type { Product } from "@/types";
 
-const img = (page: number) => `/catalog/catalog-page-${String(page).padStart(2, "0")}.png`;
+const img = (page: number) => `/catalog-photos/catalog-page-${String(page).padStart(2, "0")}.webp`;
 
 const sizes = ["S", "M", "L", "XL"] as const;
 
