@@ -10,11 +10,6 @@ import {
 } from "react";
 import type { User } from "firebase/auth";
 import { isFirebaseConfigured } from "@/firebase/config";
-import { syncShoppingGate } from "@/lib/shopping-gate";
-import { useCartStore } from "@/store/cart-store";
-import { useWishlistStore } from "@/store/wishlist-store";
-import { useCompareStore } from "@/store/compare-store";
-import { useRecentStore } from "@/store/recent-store";
 import type { UserProfile } from "@/types";
 
 type AuthContextValue = {
@@ -173,16 +168,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     };
   }, [firebaseReady, loadProfile]);
 
-  /** Guest persisted carts must not apply when Firebase auth is required. */
-  useEffect(() => {
-    if (!firebaseReady || loading) return;
-    if (user) return;
-    useCartStore.getState().clear();
-    useWishlistStore.getState().clear();
-    useCompareStore.getState().clear();
-    useRecentStore.getState().clear();
-  }, [firebaseReady, loading, user]);
-
   const refreshProfile = useCallback(async () => {
     if (user) await loadProfile(user);
   }, [loadProfile, user]);
@@ -293,12 +278,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       isAdmin,
     ],
   );
-
-  syncShoppingGate({
-    firebaseReady,
-    loading,
-    hasUser: Boolean(user),
-  });
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

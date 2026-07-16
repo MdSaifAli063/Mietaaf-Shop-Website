@@ -103,7 +103,7 @@ function SignupForm() {
               Create account
             </h1>
             <p className="mx-auto mt-1.5 max-w-[38ch] text-sm leading-5 text-muted-foreground">
-              Join to track orders, save favorites, and get a smoother checkout.
+              Create an account to complete checkout, track orders, and manage delivery details.
             </p>
           </div>
 

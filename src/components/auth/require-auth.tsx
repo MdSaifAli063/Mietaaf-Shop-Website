@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { useAuth } from "@/context/auth-context";
-import { isAuthOnlyPath, isGuestHomePath } from "@/lib/auth-public-paths";
+import { isAuthOnlyPath, isCheckoutPath } from "@/lib/auth-public-paths";
 
 function SessionSkeleton() {
   return (
@@ -24,8 +24,8 @@ function RedirectingToLogin() {
 
 /**
  * - `/login`, `/signup`, `/forgot-password`: always open.
- * - `/` (home): guests may open it; other routes need sign-in (redirect to `/login`).
- * - Protected routes without Firebase env or without a user: redirect to `/login` (no intermediate setup screen).
+ * - Every storefront route is open to guests.
+ * - `/checkout` requires sign-in and returns the customer there after authentication.
  */
 export function RequireAuth({ children }: { children: React.ReactNode }) {
   const [mounted, setMounted] = useState(false);
@@ -33,8 +33,8 @@ export function RequireAuth({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
   const authPage = isAuthOnlyPath(pathname);
-  const guestHome = isGuestHomePath(pathname);
-  const openWithoutLogin = authPage || guestHome;
+  const checkoutPage = isCheckoutPath(pathname);
+  const openWithoutLogin = authPage || !checkoutPage;
 
   useEffect(() => {
     setMounted(true);
@@ -59,7 +59,7 @@ export function RequireAuth({ children }: { children: React.ReactNode }) {
     return <>{children}</>;
   }
 
-  if (guestHome) {
+  if (!checkoutPage) {
     return <>{children}</>;
   }
 

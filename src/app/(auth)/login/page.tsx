@@ -96,7 +96,7 @@ function LoginForm() {
               Sign in
             </h1>
             <p className="mx-auto mt-1.5 max-w-[38ch] text-sm leading-5 text-muted-foreground">
-              Sign in to browse collections, save pieces, and place orders.
+              Sign in to complete checkout, manage orders, and save your account details.
             </p>
           </div>
 
