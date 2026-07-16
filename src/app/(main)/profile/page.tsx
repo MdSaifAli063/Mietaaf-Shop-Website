@@ -47,6 +47,7 @@ import {
 } from "@/components/ui/accordion";
 import { useCartStore } from "@/store/cart-store";
 import { useWishlistStore } from "@/store/wishlist-store";
+import { useHasMounted } from "@/hooks/use-has-mounted";
 import { formatInr } from "@/lib/format";
 import {
   SITE_EMAIL_DISPLAY,
@@ -128,8 +129,13 @@ function statusClass(status: AccountOrder["status"]): string {
 export default function ProfilePage() {
   const { user, profile, loading, firebaseReady, refreshProfile, resetPassword, logout } = useAuth();
   const { resolvedTheme, setTheme } = useTheme();
-  const cartCount = useCartStore((state) => state.items.reduce((total, item) => total + item.quantity, 0));
-  const wishCount = useWishlistStore((state) => state.ids.length);
+  const storedCartCount = useCartStore((state) =>
+    state.items.reduce((total, item) => total + item.quantity, 0),
+  );
+  const storedWishCount = useWishlistStore((state) => state.ids.length);
+  const mounted = useHasMounted();
+  const cartCount = mounted ? storedCartCount : 0;
+  const wishCount = mounted ? storedWishCount : 0;
   const [activeSection, setActiveSection] = useState<AccountSection>("profile");
   const [orders, setOrders] = useState<AccountOrder[]>([]);
   const [ordersLoading, setOrdersLoading] = useState(true);

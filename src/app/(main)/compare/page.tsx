@@ -9,12 +9,15 @@ import { formatInr } from "@/lib/format";
 import { PAGE_CONTAINER, PAGE_PY } from "@/lib/layout";
 import type { Product } from "@/types";
 import { useShopData } from "@/hooks/use-shop-data";
+import { useHasMounted } from "@/hooks/use-has-mounted";
 
 export default function ComparePage() {
-  const slugs = useCompareStore((s) => s.slugs);
+  const storedSlugs = useCompareStore((s) => s.slugs);
   const remove = useCompareStore((s) => s.remove);
   const clear = useCompareStore((s) => s.clear);
   const { products: allProducts } = useShopData();
+  const mounted = useHasMounted();
+  const slugs = mounted ? storedSlugs : [];
   const products = slugs
     .map((slug) => allProducts.find((p) => p.slug === slug))
     .filter(Boolean) as Product[];
