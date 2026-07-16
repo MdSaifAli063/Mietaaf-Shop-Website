@@ -6,6 +6,23 @@ import { ThemeProvider } from "@/providers/theme-provider";
 import { ToasterProvider } from "@/providers/toaster-provider";
 import { useEffect } from "react";
 import { useSettingsStore, type SiteSettings } from "@/store/settings-store";
+import { useCartStore } from "@/store/cart-store";
+import { useCompareStore } from "@/store/compare-store";
+import { useRecentStore } from "@/store/recent-store";
+import { useWishlistStore } from "@/store/wishlist-store";
+
+function PersistedShoppingHydrator() {
+  useEffect(() => {
+    void Promise.all([
+      useCartStore.persist.rehydrate(),
+      useWishlistStore.persist.rehydrate(),
+      useCompareStore.persist.rehydrate(),
+      useRecentStore.persist.rehydrate(),
+    ]);
+  }, []);
+
+  return null;
+}
 
 function GlobalSettingsListener() {
   const setSettings = useSettingsStore((s) => s.setSettings);
@@ -56,6 +73,7 @@ export function AppProviders({ children }: { children: React.ReactNode }) {
   return (
     <ThemeProvider>
       <AuthProvider>
+        <PersistedShoppingHydrator />
         <GlobalSettingsListener />
         <TooltipProvider delay={200}>
           {children}
