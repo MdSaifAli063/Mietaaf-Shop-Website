@@ -50,7 +50,12 @@ export function useShopData() {
     async function load() {
       const remote = await loadRemoteShopData();
       if (!active) return;
-      if (remote.products.length > 0) setProducts(remote.products);
+      if (remote.products.length > 0) {
+        const mergedProducts = new Map(
+          [...DUMMY_PRODUCTS, ...remote.products].map((product) => [product.id, product]),
+        );
+        setProducts(Array.from(mergedProducts.values()));
+      }
       if (remote.categories.length > 0) setCategories(remote.categories);
       if (remote.banners.length > 0) setBanners(remote.banners);
     }

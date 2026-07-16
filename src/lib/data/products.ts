@@ -1,6 +1,7 @@
 import type { Product } from "@/types";
 import { unsplashImageUrl } from "@/lib/unsplash-images";
 import { CATALOG_SUIT_PRODUCTS } from "@/lib/data/catalog-suits";
+import { createCategoryDemoProducts } from "@/lib/data/category-demo-products";
 
 const img = (id: string) => unsplashImageUrl(id, 900);
 
@@ -520,11 +521,16 @@ const DEMO_COLLECTION_PRODUCTS: Product[] = [
   },
 ];
 
-/** Shop inventory: catalog suits + all other categories. */
-export const DUMMY_PRODUCTS: Product[] = [
+const CORE_PRODUCTS: Product[] = [
   ...BASE_PRODUCTS,
   ...DEMO_COLLECTION_PRODUCTS,
   ...CATALOG_SUIT_PRODUCTS,
+];
+
+/** Shop inventory: every category always contains at least eight demo products. */
+export const DUMMY_PRODUCTS: Product[] = [
+  ...CORE_PRODUCTS,
+  ...createCategoryDemoProducts(CORE_PRODUCTS),
 ];
 
 export function getProductBySlug(slug: string): Product | undefined {
