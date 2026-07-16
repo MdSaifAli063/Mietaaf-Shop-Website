@@ -24,6 +24,9 @@ export const useWishlistStore = create<WishlistState>()(
       has: (id) => get().ids.includes(id),
       clear: () => set({ ids: [] }),
     }),
-    { name: "mietaaf-wishlist" },
+    {
+      name: "mietaaf-wishlist",
+      skipHydration: true,
+    },
   ),
 );

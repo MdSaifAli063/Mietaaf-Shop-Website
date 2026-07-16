@@ -19,6 +19,9 @@ export const useRecentStore = create<RecentState>()(
       },
       clear: () => set({ slugs: [] }),
     }),
-    { name: "mietaaf-recent" },
+    {
+      name: "mietaaf-recent",
+      skipHydration: true,
+    },
   ),
 );
