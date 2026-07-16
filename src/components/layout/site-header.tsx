@@ -60,6 +60,7 @@ export function SiteHeader() {
       { href: "/category/wedding-collection", label: "Wedding" },
       { href: "/category/premium-collection", label: "Premium" },
       { href: "/lookbook", label: "Lookbook" },
+      { href: "/fabrics", label: "Fabrics" },
       { href: "/about", label: "About" },
       { href: "/contact", label: "Contact" },
     ],
