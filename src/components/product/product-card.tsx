@@ -15,13 +15,22 @@ import { useCompareStore } from "@/store/compare-store";
 import toast from "react-hot-toast";
 import { cn } from "@/lib/utils";
 import { ProductThumbnailImage } from "@/components/product/catalog-product-photo";
+import { useHasMounted } from "@/hooks/use-has-mounted";
 
-export function ProductCard({ product }: { product: Product }) {
+export function ProductCard({
+  product,
+  compact = false,
+}: {
+  product: Product;
+  compact?: boolean;
+}) {
   const toggleWish = useWishlistStore((s) => s.toggle);
-  const hasWish = useWishlistStore((s) => s.has(product.id));
+  const storedHasWish = useWishlistStore((s) => s.has(product.id));
   const addItem = useCartStore((s) => s.addItem);
   const setQuick = useUiStore((s) => s.setQuickView);
   const addCompare = useCompareStore((s) => s.add);
+  const mounted = useHasMounted();
+  const hasWish = mounted && storedHasWish;
 
   const primary = product.images[0]!;
   const secondary = product.images[1] ?? primary;
@@ -60,19 +69,32 @@ export function ProductCard({ product }: { product: Product }) {
 
   return (
     <Card className="group relative flex min-w-0 flex-col overflow-hidden border-border/70 bg-card/90 shadow-[0_18px_45px_rgba(58,48,38,0.06)] backdrop-blur-sm transition-all hover:-translate-y-1 hover:shadow-[0_22px_55px_rgba(58,48,38,0.1)]">
-      <div className="relative aspect-[3/4] overflow-hidden bg-muted">
+      <div
+        className={cn(
+          "relative overflow-hidden bg-muted",
+          compact ? "aspect-[4/5]" : "aspect-[3/4]",
+        )}
+      >
         <Link href={`/product/${product.slug}`} className="absolute inset-0 z-0" />
         <ProductThumbnailImage
           src={primary}
           alt={product.name}
-          sizes="(max-width:639px) 100vw, (max-width:1024px) 50vw, 25vw"
+          sizes={
+            compact
+              ? "(max-width:639px) 92vw, (max-width:1024px) 45vw, 280px"
+              : "(max-width:639px) 100vw, (max-width:1024px) 50vw, 25vw"
+          }
           className="transition-opacity duration-500 [@media(hover:hover)]:group-hover:opacity-0"
           priority={false}
         />
         <ProductThumbnailImage
           src={secondary}
           alt=""
-          sizes="(max-width:639px) 100vw, (max-width:1024px) 50vw, 25vw"
+          sizes={
+            compact
+              ? "(max-width:639px) 92vw, (max-width:1024px) 45vw, 280px"
+              : "(max-width:639px) 100vw, (max-width:1024px) 50vw, 25vw"
+          }
           className="opacity-0 transition-opacity duration-500 [@media(hover:hover)]:group-hover:opacity-100"
         />
         {discount ? (

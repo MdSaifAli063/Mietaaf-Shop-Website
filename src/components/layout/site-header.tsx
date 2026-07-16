@@ -36,14 +36,18 @@ import { cn } from "@/lib/utils";
 import { usePathname, useRouter } from "next/navigation";
 import { isAuthOnlyPath } from "@/lib/auth-public-paths";
 import { SITE_PHONE_E164_PLUS, SITE_WHATSAPP_E164_DIGITS } from "@/lib/site-contact";
+import { useHasMounted } from "@/hooks/use-has-mounted";
 
 export function SiteHeader() {
-  const cartCount = useCartStore((s) =>
+  const storedCartCount = useCartStore((s) =>
     s.items.reduce((n, i) => n + i.quantity, 0),
   );
-  const wishCount = useWishlistStore((s) => s.ids.length);
+  const storedWishCount = useWishlistStore((s) => s.ids.length);
   const setSearch = useUiStore((s) => s.setSearchOpen);
   const { user, logout, loading } = useAuth();
+  const mounted = useHasMounted();
+  const cartCount = mounted ? storedCartCount : 0;
+  const wishCount = mounted ? storedWishCount : 0;
   const pathname = usePathname();
   const router = useRouter();
   const [open, setOpen] = useState(false);
