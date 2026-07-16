@@ -2,8 +2,6 @@
 
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { isShoppingOpen } from "@/lib/shopping-gate";
-import toast from "react-hot-toast";
 
 interface WishlistState {
   ids: string[];
@@ -17,10 +15,6 @@ export const useWishlistStore = create<WishlistState>()(
     (set, get) => ({
       ids: [],
       toggle: (id) => {
-        if (!isShoppingOpen()) {
-          toast.error("Sign in to use your wishlist.");
-          return;
-        }
         set({
           ids: get().ids.includes(id)
             ? get().ids.filter((x) => x !== id)
