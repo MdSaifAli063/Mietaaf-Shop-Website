@@ -27,6 +27,9 @@ export const useCompareStore = create<CompareState>()(
         set({ slugs: get().slugs.filter((s) => s !== slug) }),
       clear: () => set({ slugs: [] }),
     }),
-    { name: "mietaaf-compare" },
+    {
+      name: "mietaaf-compare",
+      skipHydration: true,
+    },
   ),
 );

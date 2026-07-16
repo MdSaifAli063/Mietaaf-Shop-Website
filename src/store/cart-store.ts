@@ -53,7 +53,10 @@ export const useCartStore = create<CartState>()(
       },
       clear: () => set({ items: [] }),
     }),
-    { name: "mietaaf-cart" },
+    {
+      name: "mietaaf-cart",
+      skipHydration: true,
+    },
   ),
 );
 
