@@ -16,6 +16,7 @@ import { StarRating } from "@/components/product/star-rating";
 import { ProductCard } from "@/components/product/product-card";
 import { useCartStore } from "@/store/cart-store";
 import { useRecentStore } from "@/store/recent-store";
+import { useHasMounted } from "@/hooks/use-has-mounted";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -33,6 +34,7 @@ const waNumber = () =>
 export function ProductDetailView({ product }: { product: Product }) {
   const addItem = useCartStore((s) => s.addItem);
   const pushRecent = useRecentStore((s) => s.push);
+  const mounted = useHasMounted();
   const [imgIdx, setImgIdx] = useState(0);
   const [size, setSize] = useState(product.sizes[0]!);
   const [color, setColor] = useState(product.colors[0]!.name);
@@ -52,7 +54,10 @@ export function ProductDetailView({ product }: { product: Product }) {
     [product.categorySlug, product.id, allProducts],
   );
 
-  const recentSlugs = useRecentStore((s) => s.slugs).filter((s) => s !== product.slug);
+  const storedRecentSlugs = useRecentStore((s) => s.slugs);
+  const recentSlugs = (mounted ? storedRecentSlugs : []).filter(
+    (slug) => slug !== product.slug,
+  );
   const recentProducts = recentSlugs
     .map((slug) => allProducts.find((p) => p.slug === slug))
     .filter(Boolean) as Product[];
