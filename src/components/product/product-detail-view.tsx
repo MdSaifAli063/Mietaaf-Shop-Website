@@ -131,7 +131,7 @@ export function ProductDetailView({ product }: { product: Product }) {
             {product.images.map((src, i) => (
               <button
                 type="button"
-                key={src}
+                key={`${product.id}-${i}-${src}`}
                 onClick={() => setImgIdx(i)}
                 className={cn(
                   "relative h-20 w-16 shrink-0 overflow-hidden rounded-lg ring-2 ring-offset-2 ring-offset-background transition-all",
