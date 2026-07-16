@@ -2,8 +2,6 @@
 
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import toast from "react-hot-toast";
-import { isShoppingOpen } from "@/lib/shopping-gate";
 import type { CartItem } from "@/types";
 
 interface CartState {
@@ -23,10 +21,6 @@ export const useCartStore = create<CartState>()(
     (set, get) => ({
       items: [],
       addItem: (item) => {
-        if (!isShoppingOpen()) {
-          toast.error("Sign in to add items to your bag.");
-          return;
-        }
         const key = lineKey(item);
         const existing = get().items.find(
           (x) => lineKey(x) === key,
@@ -44,14 +38,9 @@ export const useCartStore = create<CartState>()(
         }
       },
       removeItem: (key) => {
-        if (!isShoppingOpen()) return;
         set({ items: get().items.filter((x) => lineKey(x) !== key) });
       },
       updateQty: (key, qty) => {
-        if (!isShoppingOpen()) {
-          toast.error("Sign in to manage your bag.");
-          return;
-        }
         if (qty < 1) {
           set({ items: get().items.filter((x) => lineKey(x) !== key) });
           return;

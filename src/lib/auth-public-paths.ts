@@ -7,10 +7,10 @@ export function isAuthOnlyPath(pathname: string): boolean {
   );
 }
 
-/** Landing page: guests may view it; every other route still requires sign-in. */
-export function isGuestHomePath(pathname: string | null | undefined): boolean {
+/** Checkout is the only storefront step that requires an account. */
+export function isCheckoutPath(pathname: string | null | undefined): boolean {
   if (!pathname) return false;
-  return pathname === "/";
+  return pathname === "/checkout" || pathname.startsWith("/checkout/");
 }
 
 /** Safe internal redirect target after login (same-origin path only). */
