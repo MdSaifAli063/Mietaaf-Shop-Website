@@ -35,7 +35,7 @@ export function HeroCarousel() {
         <div className="absolute inset-0 flex flex-col justify-end px-4 pb-[max(2rem,env(safe-area-inset-bottom))] sm:px-12 sm:pb-12 lg:px-16 lg:pb-10">
           <div className="max-w-xl space-y-4 sm:space-y-5">
             <p className="text-[10px] font-semibold uppercase tracking-[0.48em] text-mietaaf-cream/80">
-              Mietaaf Atelier
+              Mietaaf Couture
             </p>
             <h1 className="max-w-lg font-heading text-3xl leading-[0.95] tracking-[0.01em] text-mietaaf-cream sm:text-5xl lg:text-6xl">
               {activeBanner.title}
