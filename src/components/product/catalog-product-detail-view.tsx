@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { Minus, Plus, ShoppingBag, MessageCircle } from "lucide-react";
 import type { Product } from "@/types";
 import { CatalogProductPanel } from "@/components/product/catalog-product-panel";
@@ -10,6 +11,7 @@ import { buildProductInquiryWhatsAppUrl } from "@/lib/whatsapp";
 import { useCartStore } from "@/store/cart-store";
 import { useRecentStore } from "@/store/recent-store";
 import { SITE_WHATSAPP_E164_DIGITS } from "@/lib/site-contact";
+import { normalizeProductImageParam } from "@/lib/product-links";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -23,7 +25,16 @@ import toast from "react-hot-toast";
 const waNumber = () =>
   process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? SITE_WHATSAPP_E164_DIGITS;
 
-export function CatalogProductDetailView({ product }: { product: Product }) {
+export function CatalogProductDetailView({ product: originalProduct }: { product: Product }) {
+  const searchParams = useSearchParams();
+  const selectedImage = normalizeProductImageParam(searchParams.get("image"));
+  const product = useMemo(
+    () =>
+      selectedImage
+        ? { ...originalProduct, images: [selectedImage] }
+        : originalProduct,
+    [originalProduct, selectedImage],
+  );
   const addItem = useCartStore((s) => s.addItem);
   const pushRecent = useRecentStore((s) => s.push);
   const [size, setSize] = useState(product.sizes[0]!);

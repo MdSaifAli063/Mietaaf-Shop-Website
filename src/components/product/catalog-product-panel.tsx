@@ -4,6 +4,7 @@ import type { Product } from "@/types";
 import { CatalogProductPhoto } from "@/components/product/catalog-product-photo";
 import { formatInr } from "@/lib/format";
 import { cn } from "@/lib/utils";
+import { buildProductHref } from "@/lib/product-links";
 
 type CatalogProductPanelProps = {
   product: Product;
@@ -23,7 +24,7 @@ export function CatalogProductPanel({
 }: CatalogProductPanelProps) {
   const title = product.catalogTitle ?? product.name;
   const bullets = product.catalogBullets ?? [];
-  const href = `/product/${product.slug}`;
+  const href = buildProductHref(product.slug, product.images[0]);
   const isListing = variant === "listing";
   const isShowcase = variant === "showcase";
   const isLinked = variant !== "detail";

@@ -15,6 +15,7 @@ import { useDebounce } from "@/hooks/use-debounce";
 import { useShopData } from "@/hooks/use-shop-data";
 import { formatInr } from "@/lib/format";
 import { ProductThumbnailImage } from "@/components/product/catalog-product-photo";
+import { buildProductHref } from "@/lib/product-links";
 
 export function SearchOverlay() {
   const open = useUiStore((s) => s.searchOpen);
@@ -75,7 +76,7 @@ export function SearchOverlay() {
             results.map((p) => (
               <Link
                 key={p.id}
-                href={`/product/${p.slug}`}
+                href={buildProductHref(p.slug, p.images[0])}
                 onClick={() => setOpen(false)}
                 className="flex min-w-0 items-center gap-3 rounded-xl border border-transparent p-2 transition-colors hover:border-border hover:bg-muted/60"
               >
