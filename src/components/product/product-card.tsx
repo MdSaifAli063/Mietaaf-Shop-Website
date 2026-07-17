@@ -62,7 +62,7 @@ export function ProductCard({
 
   function addToCompare(e: React.MouseEvent) {
     e.preventDefault();
-    const ok = addCompare(product.slug);
+    const ok = addCompare(product.slug, primary);
     toast[ok ? "success" : "error"](
       ok ? "Added to compare" : "Compare list is full (max 4)",
     );

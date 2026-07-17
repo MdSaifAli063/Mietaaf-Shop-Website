@@ -30,6 +30,7 @@ import toast from "react-hot-toast";
 import { cn } from "@/lib/utils";
 import { SITE_WHATSAPP_E164_DIGITS } from "@/lib/site-contact";
 import { normalizeProductImageParam } from "@/lib/product-links";
+import { CATEGORY_IMAGE_LINKS } from "@/lib/data/image-links/category-images";
 const waNumber = () =>
   process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? SITE_WHATSAPP_E164_DIGITS;
 
@@ -52,8 +53,8 @@ export function ProductDetailView({ product: originalProduct }: { product: Produ
   const [qty, setQty] = useState(1);
 
   useEffect(() => {
-    pushRecent(product.slug);
-  }, [product.slug, pushRecent]);
+    pushRecent(product.slug, product.images[0]);
+  }, [product.slug, product.images, pushRecent]);
 
   const { products: allProducts } = useShopData();
 
@@ -66,12 +67,19 @@ export function ProductDetailView({ product: originalProduct }: { product: Produ
   );
 
   const storedRecentSlugs = useRecentStore((s) => s.slugs);
+  const storedRecentImages = useRecentStore((s) => s.images);
   const recentSlugs = (mounted ? storedRecentSlugs : []).filter(
     (slug) => slug !== product.slug,
   );
   const recentProducts = recentSlugs
     .map((slug) => allProducts.find((p) => p.slug === slug))
-    .filter(Boolean) as Product[];
+    .filter(Boolean)
+    .map((recentProduct) => {
+      const product = recentProduct as Product;
+      const image =
+        storedRecentImages[product.slug] ?? CATEGORY_IMAGE_LINKS[product.categorySlug];
+      return { ...product, images: [image] };
+    });
 
   const reviews = reviewsForProduct(product.id);
 
