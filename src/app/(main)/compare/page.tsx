@@ -11,9 +11,11 @@ import type { Product } from "@/types";
 import { useShopData } from "@/hooks/use-shop-data";
 import { useHasMounted } from "@/hooks/use-has-mounted";
 import { buildProductHref } from "@/lib/product-links";
+import { CATEGORY_IMAGE_LINKS } from "@/lib/data/image-links/category-images";
 
 export default function ComparePage() {
   const storedSlugs = useCompareStore((s) => s.slugs);
+  const storedImages = useCompareStore((s) => s.images);
   const remove = useCompareStore((s) => s.remove);
   const clear = useCompareStore((s) => s.clear);
   const { products: allProducts } = useShopData();
@@ -21,7 +23,12 @@ export default function ComparePage() {
   const slugs = mounted ? storedSlugs : [];
   const products = slugs
     .map((slug) => allProducts.find((p) => p.slug === slug))
-    .filter(Boolean) as Product[];
+    .filter(Boolean)
+    .map((compareProduct) => {
+      const product = compareProduct as Product;
+      const image = storedImages[product.slug] ?? CATEGORY_IMAGE_LINKS[product.categorySlug];
+      return { ...product, images: [image] };
+    });
 
   if (products.length === 0) {
     return (

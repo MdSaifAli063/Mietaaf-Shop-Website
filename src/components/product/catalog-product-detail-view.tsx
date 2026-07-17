@@ -41,8 +41,8 @@ export function CatalogProductDetailView({ product: originalProduct }: { product
   const [qty, setQty] = useState(1);
 
   useEffect(() => {
-    pushRecent(product.slug);
-  }, [product.slug, pushRecent]);
+    pushRecent(product.slug, product.images[0]);
+  }, [product.slug, product.images, pushRecent]);
 
   const color = product.colors[0]!.name;
 
