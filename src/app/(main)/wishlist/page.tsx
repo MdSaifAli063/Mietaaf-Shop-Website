@@ -10,14 +10,21 @@ import { Button } from "@/components/ui/button";
 import { PAGE_CONTAINER, PAGE_PY } from "@/lib/layout";
 import { useShopData } from "@/hooks/use-shop-data";
 import { useHasMounted } from "@/hooks/use-has-mounted";
+import { CATEGORY_IMAGE_LINKS } from "@/lib/data/image-links/category-images";
 
 export default function WishlistPage() {
   const storedIds = useWishlistStore((state) => state.ids);
+  const storedImages = useWishlistStore((state) => state.images);
   const clear = useWishlistStore((state) => state.clear);
   const { products: allProducts } = useShopData();
   const mounted = useHasMounted();
   const ids = mounted ? storedIds : [];
-  const products = allProducts.filter((product) => ids.includes(product.id));
+  const products = allProducts
+    .filter((product) => ids.includes(product.id))
+    .map((product) => {
+      const savedImage = storedImages[product.id] ?? CATEGORY_IMAGE_LINKS[product.categorySlug];
+      return { ...product, images: [savedImage] };
+    });
 
   if (products.length === 0) {
     return (

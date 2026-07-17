@@ -7,6 +7,7 @@ import { ProductThumbnailImage } from "@/components/product/catalog-product-phot
 import { PAGE_CONTAINER, PAGE_PY } from "@/lib/layout";
 import { useShopData } from "@/hooks/use-shop-data";
 import { cn } from "@/lib/utils";
+import { buildProductHref } from "@/lib/product-links";
 
 export default function LookbookPage() {
   const { products } = useShopData();
@@ -41,7 +42,7 @@ export default function LookbookPage() {
               {looks.map((product, index) => (
                 <Link
                   key={product.id}
-                  href={`/product/${product.slug}`}
+                  href={buildProductHref(product.slug, product.images[0])}
                   className={cn(
                     "group relative overflow-hidden rounded-2xl bg-muted outline-none ring-offset-background focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
                     (index === 0 || index === 5) && "col-span-2 row-span-2",

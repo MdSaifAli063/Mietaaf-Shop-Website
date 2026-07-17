@@ -30,17 +30,44 @@ import {
 import toast from "react-hot-toast";
 import { useShopData } from "@/hooks/use-shop-data";
 import { TESTIMONIALS } from "@/lib/data/testimonials";
+import { HOME_SECTION_IMAGE_LINKS } from "@/lib/data/image-links/home-section-images";
 import { cn } from "@/lib/utils";
-import { UNSPLASH_PHOTOS, unsplashImageUrl } from "@/lib/unsplash-images";
+import type { Product } from "@/types";
+import { buildProductHref } from "@/lib/product-links";
+
+function withSectionImage(product: Product, image?: string): Product {
+  if (!image) return product;
+  return { ...product, images: [image, ...product.images.slice(1)] };
+}
 
 export function HomeSections() {
   const { products, categories } = useShopData();
 
-  const trending = products.filter((p) => p.trending).slice(0, 4);
-  const arrivals = products.filter((p) => p.newArrival).slice(0, 4);
-  const wedding = products.filter((p) => p.wedding).slice(0, 3);
-  const suits = products.filter((p) => p.categorySlug === "suits").slice(0, 2);
-  const feed = products.slice(0, 8).flatMap((p) => p.images).slice(0, 12);
+  const trending = products
+    .filter((p) => p.trending)
+    .slice(0, 4)
+    .map((product, index) =>
+      withSectionImage(product, HOME_SECTION_IMAGE_LINKS.trending[index]),
+    );
+  const arrivals = products
+    .filter((p) => p.newArrival)
+    .slice(0, 4)
+    .map((product, index) =>
+      withSectionImage(product, HOME_SECTION_IMAGE_LINKS.newArrivals[index]),
+    );
+  const wedding = products
+    .filter((p) => p.wedding)
+    .slice(0, 3)
+    .map((product, index) =>
+      withSectionImage(product, HOME_SECTION_IMAGE_LINKS.weddingCollection[index]),
+    );
+  const suits = products
+    .filter((p) => p.categorySlug === "suits")
+    .slice(0, 2)
+    .map((product, index) =>
+      withSectionImage(product, HOME_SECTION_IMAGE_LINKS.premiumSuits[index]),
+    );
+  const feed = [...HOME_SECTION_IMAGE_LINKS.fashionGallery];
   const feedProducts = products.slice(0, 6);
   const [activeGalleryIndex, setActiveGalleryIndex] = useState<number | null>(null);
   const activeGalleryImage =
@@ -141,7 +168,9 @@ export function HomeSections() {
             ) : (
               products.slice(0, 4).map((p, i) => (
                 <Reveal key={p.id} delay={i * 0.06}>
-                  <ProductCard product={p} />
+                  <ProductCard
+                    product={withSectionImage(p, HOME_SECTION_IMAGE_LINKS.newArrivals[i])}
+                  />
                 </Reveal>
               ))
             )}
@@ -316,7 +345,7 @@ export function HomeSections() {
       <section className="relative overflow-hidden bg-[#eee4d6] py-14 sm:py-20 md:py-24 dark:bg-[#201d19]">
         <div className="absolute inset-0">
           <Image
-            src={unsplashImageUrl(UNSPLASH_PHOTOS.tailoring, 1600, 80)}
+            src={HOME_SECTION_IMAGE_LINKS.mietaafStory}
             alt=""
             fill
             className="object-cover opacity-30"
@@ -424,7 +453,10 @@ export function HomeSections() {
             {feedProducts.map((product, index) => (
               <Link
                 key={product.id}
-                href={`/product/${product.slug}`}
+                href={buildProductHref(
+                  product.slug,
+                  HOME_SECTION_IMAGE_LINKS.feed[index] ?? product.images[0],
+                )}
                 className={cn(
                   "group relative overflow-hidden rounded-2xl bg-muted shadow-sm outline-none ring-offset-background transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
                   index === 0 && "col-span-2 row-span-2",
@@ -433,7 +465,7 @@ export function HomeSections() {
                 )}
               >
                 <ProductThumbnailImage
-                  src={product.images[0]!}
+                  src={HOME_SECTION_IMAGE_LINKS.feed[index] ?? product.images[0]!}
                   alt={product.name}
                   sizes={
                     index === 0
