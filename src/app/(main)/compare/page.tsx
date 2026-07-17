@@ -10,6 +10,7 @@ import { PAGE_CONTAINER, PAGE_PY } from "@/lib/layout";
 import type { Product } from "@/types";
 import { useShopData } from "@/hooks/use-shop-data";
 import { useHasMounted } from "@/hooks/use-has-mounted";
+import { buildProductHref } from "@/lib/product-links";
 
 export default function ComparePage() {
   const storedSlugs = useCompareStore((s) => s.slugs);
@@ -65,7 +66,7 @@ export default function ComparePage() {
                     <div className="relative mb-2 aspect-[3/4] w-full max-w-[140px] overflow-hidden rounded-lg bg-muted">
                       <Image src={p.images[0]!} alt={p.name} fill className="object-cover" sizes="140px" />
                     </div>
-                    <Link href={`/product/${p.slug}`} className="font-heading text-base hover:text-primary">
+                    <Link href={buildProductHref(p.slug, p.images[0])} className="font-heading text-base hover:text-primary">
                       {p.name}
                     </Link>
                     <Button variant="ghost" size="sm" className="mt-1 h-9" onClick={() => remove(p.slug)}>

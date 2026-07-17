@@ -2,13 +2,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { PageEnter } from "@/components/motion/page-enter";
 import { Button } from "@/components/ui/button";
+import { PAGE_IMAGE_LINKS } from "@/lib/data/image-links/page-images";
 import { PAGE_CONTAINER, PAGE_PY } from "@/lib/layout";
-import { UNSPLASH_PHOTOS, unsplashImageUrl } from "@/lib/unsplash-images";
 
-const hero = unsplashImageUrl(UNSPLASH_PHOTOS.weddingSherwani, 1600, 80);
-const craft = unsplashImageUrl(UNSPLASH_PHOTOS.designer, 1200, 80);
-const stitch = unsplashImageUrl(UNSPLASH_PHOTOS.festiveGold, 1200, 80);
-const studio = unsplashImageUrl(UNSPLASH_PHOTOS.tailoring, 1100, 80);
+const { hero, craft, stitch, studio } = PAGE_IMAGE_LINKS.about;
 
 const pillars = [
   {

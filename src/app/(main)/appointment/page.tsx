@@ -17,6 +17,7 @@ import { AppointmentBookingForm } from "@/components/appointment/appointment-boo
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { PageEnter } from "@/components/motion/page-enter";
+import { PAGE_IMAGE_LINKS } from "@/lib/data/image-links/page-images";
 import { PAGE_CONTAINER } from "@/lib/layout";
 import { SITE_PHONE_DISPLAY } from "@/lib/site-contact";
 
@@ -74,7 +75,7 @@ export default function AppointmentPage() {
         <section className="relative isolate overflow-hidden bg-[#171512] text-white">
           <div className="absolute inset-0">
             <Image
-              src="/hero/premium-suits.webp"
+              src={PAGE_IMAGE_LINKS.appointment.hero}
               alt="Mietaaf premium menswear consultation"
               fill
               priority

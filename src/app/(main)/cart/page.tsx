@@ -21,6 +21,7 @@ import { PageEnter } from "@/components/motion/page-enter";
 import { Separator } from "@/components/ui/separator";
 import { MOBILE_STICKY_BAR, MOBILE_STICKY_OFFSET } from "@/lib/layout";
 import { useHasMounted } from "@/hooks/use-has-mounted";
+import { buildProductHref } from "@/lib/product-links";
 
 const cartBenefits = [
   {
@@ -112,7 +113,7 @@ export default function CartPage() {
                   className="flex min-w-0 flex-row gap-3 border-border/60 bg-card/75 p-3 shadow-[0_16px_45px_rgba(58,48,38,0.06)] sm:gap-5 sm:p-5"
                 >
                   <Link
-                    href={`/product/${item.slug}`}
+                    href={buildProductHref(item.slug, item.image)}
                     className="relative h-36 w-24 shrink-0 overflow-hidden rounded-2xl bg-white sm:h-44 sm:w-32"
                   >
                     <ProductThumbnailImage
@@ -128,7 +129,7 @@ export default function CartPage() {
                         Mietaaf selection
                       </p>
                       <Link
-                        href={`/product/${item.slug}`}
+                        href={buildProductHref(item.slug, item.image)}
                         className="font-heading text-lg leading-snug transition-colors hover:text-primary sm:text-2xl"
                       >
                         {item.name}
