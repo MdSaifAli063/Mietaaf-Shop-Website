@@ -1,70 +1,71 @@
 import type { Category } from "@/types";
+import { CATEGORY_IMAGE_LINKS } from "@/lib/data/image-links/category-images";
 
 export const CATEGORIES: Category[] = [
   {
     slug: "sherwani",
     name: "Sherwani",
     description: "Regal silhouettes for celebrations and weddings.",
-    image: "/categories/sherwani.webp",
+    image: CATEGORY_IMAGE_LINKS.sherwani,
   },
   {
     slug: "blazer",
     name: "Blazer",
     description: "Structured tailoring with a contemporary edge.",
-    image: "/categories/blazer.webp",
+    image: CATEGORY_IMAGE_LINKS.blazer,
   },
   {
     slug: "coat",
     name: "Coat",
     description: "Layered luxury for cooler evenings and galas.",
-    image: "/categories/coat.webp",
+    image: CATEGORY_IMAGE_LINKS.coat,
   },
   {
     slug: "suits",
     name: "Suits",
     description: "Precision-cut suits for boardrooms and banquets.",
-    image: "/categories/suits.webp",
+    image: CATEGORY_IMAGE_LINKS.suits,
   },
   {
     slug: "kurta",
     name: "Kurta",
     description: "Effortless elegance in premium fabrics.",
-    image: "/categories/kurta.webp",
+    image: CATEGORY_IMAGE_LINKS.kurta,
   },
   {
     slug: "pants",
     name: "Pants",
     description: "Tailored trousers with impeccable drape.",
-    image: "/categories/pants.webp",
+    image: CATEGORY_IMAGE_LINKS.pants,
   },
   {
     slug: "designer-dresses",
     name: "Designer Dresses",
     description: "Statement designer pieces for spotlight moments.",
-    image: "/categories/designer-dresses.webp",
+    image: CATEGORY_IMAGE_LINKS["designer-dresses"],
   },
   {
     slug: "indo-western",
     name: "Indo-Western",
     description: "Fusion tailoring — global form, Indian soul.",
-    image: "/categories/indo-western.webp",
+    image: CATEGORY_IMAGE_LINKS["indo-western"],
   },
   {
     slug: "wedding-collection",
     name: "Wedding Collection",
     description: "Ceremonial grandeur for the groom and his circle.",
-    image: "/categories/wedding-collection.webp",
+    image: CATEGORY_IMAGE_LINKS["wedding-collection"],
   },
   {
     slug: "festive-collection",
     name: "Festive Collection",
     description: "Rich tones and textures for festive gatherings.",
-    image: "/categories/festive-collection.webp",
+    image: CATEGORY_IMAGE_LINKS["festive-collection"],
   },
   {
     slug: "premium-collection",
     name: "Premium Collection",
     description: "Our finest curation — limited, elevated, iconic.",
-    image: "/categories/premium-collection.webp",
+    image: CATEGORY_IMAGE_LINKS["premium-collection"],
   },
 ];

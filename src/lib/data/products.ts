@@ -2,6 +2,7 @@ import type { Product } from "@/types";
 import { unsplashImageUrl } from "@/lib/unsplash-images";
 import { CATALOG_SUIT_PRODUCTS } from "@/lib/data/catalog-suits";
 import { createCategoryDemoProducts } from "@/lib/data/category-demo-products";
+import { applyProductImageLinks } from "@/lib/data/image-links/product-images";
 
 const img = (id: string) => unsplashImageUrl(id, 900);
 
@@ -531,7 +532,7 @@ const CORE_PRODUCTS: Product[] = [
 export const DUMMY_PRODUCTS: Product[] = [
   ...CORE_PRODUCTS,
   ...createCategoryDemoProducts(CORE_PRODUCTS),
-];
+].map(applyProductImageLinks);
 
 export function getProductBySlug(slug: string): Product | undefined {
   return DUMMY_PRODUCTS.find((p) => p.slug === slug);
