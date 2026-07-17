@@ -24,9 +24,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { ProductThumbnailImage } from "@/components/product/catalog-product-photo";
+import { buildProductHref } from "@/lib/product-links";
 
 export function QuickViewDialog() {
   const slug = useUiStore((s) => s.quickViewSlug);
+  const imageOverride = useUiStore((s) => s.quickViewImage);
   const setQuick = useUiStore((s) => s.setQuickView);
   const addItem = useCartStore((s) => s.addItem);
   const product = useMemo(
@@ -55,7 +57,7 @@ export function QuickViewDialog() {
     );
   }
 
-  const img = product.images[0]!;
+  const img = imageOverride ?? product.images[0]!;
   const selSize = size ?? product.sizes[0]!;
   const selColor = color ?? product.colors[0]!.name;
 
@@ -149,7 +151,7 @@ export function QuickViewDialog() {
                 Add to cart
               </Button>
               <Button variant="outline" className="flex-1 rounded-full" asChild>
-                <Link href={`/product/${product.slug}`} onClick={() => setQuick(null)}>
+                <Link href={buildProductHref(product.slug, img)} onClick={() => setQuick(null)}>
                   View details
                 </Link>
               </Button>

@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useSearchParams } from "next/navigation";
 import { Minus, Plus, Share2, ShoppingBag, MessageCircle } from "lucide-react";
 import type { Product } from "@/types";
 import { reviewsForProduct } from "@/lib/data/reviews";
@@ -28,10 +29,20 @@ import {
 import toast from "react-hot-toast";
 import { cn } from "@/lib/utils";
 import { SITE_WHATSAPP_E164_DIGITS } from "@/lib/site-contact";
+import { normalizeProductImageParam } from "@/lib/product-links";
 const waNumber = () =>
   process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? SITE_WHATSAPP_E164_DIGITS;
 
-export function ProductDetailView({ product }: { product: Product }) {
+export function ProductDetailView({ product: originalProduct }: { product: Product }) {
+  const searchParams = useSearchParams();
+  const selectedImage = normalizeProductImageParam(searchParams.get("image"));
+  const product = useMemo(
+    () =>
+      selectedImage
+        ? { ...originalProduct, images: [selectedImage] }
+        : originalProduct,
+    [originalProduct, selectedImage],
+  );
   const addItem = useCartStore((s) => s.addItem);
   const pushRecent = useRecentStore((s) => s.push);
   const mounted = useHasMounted();

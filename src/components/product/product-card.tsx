@@ -16,6 +16,7 @@ import toast from "react-hot-toast";
 import { cn } from "@/lib/utils";
 import { ProductThumbnailImage } from "@/components/product/catalog-product-photo";
 import { useHasMounted } from "@/hooks/use-has-mounted";
+import { buildProductHref } from "@/lib/product-links";
 
 export function ProductCard({
   product,
@@ -33,7 +34,7 @@ export function ProductCard({
   const hasWish = mounted && storedHasWish;
 
   const primary = product.images[0]!;
-  const secondary = product.images[1] ?? primary;
+  const productHref = buildProductHref(product.slug, primary);
   const discount =
     product.discountPercent ??
     (product.compareAtPrice
@@ -75,7 +76,7 @@ export function ProductCard({
           compact ? "aspect-[4/5]" : "aspect-[3/4]",
         )}
       >
-        <Link href={`/product/${product.slug}`} className="absolute inset-0 z-0" />
+        <Link href={productHref} className="absolute inset-0 z-0" />
         <ProductThumbnailImage
           src={primary}
           alt={product.name}
@@ -84,18 +85,8 @@ export function ProductCard({
               ? "(max-width:639px) 92vw, (max-width:1024px) 45vw, 280px"
               : "(max-width:639px) 100vw, (max-width:1024px) 50vw, 25vw"
           }
-          className="transition-opacity duration-500 [@media(hover:hover)]:group-hover:opacity-0"
+          className="transition-transform duration-500 [@media(hover:hover)]:group-hover:scale-[1.02]"
           priority={false}
-        />
-        <ProductThumbnailImage
-          src={secondary}
-          alt=""
-          sizes={
-            compact
-              ? "(max-width:639px) 92vw, (max-width:1024px) 45vw, 280px"
-              : "(max-width:639px) 100vw, (max-width:1024px) 50vw, 25vw"
-          }
-          className="opacity-0 transition-opacity duration-500 [@media(hover:hover)]:group-hover:opacity-100"
         />
         {discount ? (
           <Badge className="absolute left-3 top-3 bg-[rgb(95_107_84/0.18)] text-[rgb(72_82_64)]">
@@ -113,7 +104,7 @@ export function ProductCard({
             )}
             onClick={(e) => {
               e.preventDefault();
-              toggleWish(product.id);
+              toggleWish(product.id, primary);
               toast.success(hasWish ? "Removed from wishlist" : "Saved to wishlist");
             }}
             aria-label={hasWish ? `Remove ${product.name} from wishlist` : `Save ${product.name} to wishlist`}
@@ -127,7 +118,7 @@ export function ProductCard({
             className="h-10 w-10 touch-manipulation rounded-full bg-background/80 shadow-sm backdrop-blur-sm sm:h-9 sm:w-9"
             onClick={(e) => {
               e.preventDefault();
-              setQuick(product.slug);
+              setQuick(product.slug, primary);
             }}
             aria-label={`Quick view ${product.name}`}
           >
@@ -153,7 +144,7 @@ export function ProductCard({
         </div>
       </div>
       <div className="flex min-w-0 flex-1 flex-col space-y-2 p-3 sm:p-4">
-        <Link href={`/product/${product.slug}`} className="block min-w-0">
+        <Link href={productHref} className="block min-w-0">
           <h3 className="font-heading text-base leading-snug tracking-[0.03em] text-foreground transition-colors hover:text-primary sm:text-lg">
             {product.name}
           </h3>
