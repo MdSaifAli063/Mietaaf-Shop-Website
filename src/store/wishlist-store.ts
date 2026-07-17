@@ -5,7 +5,8 @@ import { persist } from "zustand/middleware";
 
 interface WishlistState {
   ids: string[];
-  toggle: (id: string) => void;
+  images: Record<string, string>;
+  toggle: (id: string, image?: string) => void;
   has: (id: string) => boolean;
   clear: () => void;
 }
@@ -14,15 +15,24 @@ export const useWishlistStore = create<WishlistState>()(
   persist(
     (set, get) => ({
       ids: [],
-      toggle: (id) => {
+      images: {},
+      toggle: (id, image) => {
+        const isSaved = get().ids.includes(id);
+        const nextImages = { ...get().images };
+
+        if (isSaved) {
+          delete nextImages[id];
+        } else if (image) {
+          nextImages[id] = image;
+        }
+
         set({
-          ids: get().ids.includes(id)
-            ? get().ids.filter((x) => x !== id)
-            : [...get().ids, id],
+          ids: isSaved ? get().ids.filter((x) => x !== id) : [...get().ids, id],
+          images: nextImages,
         });
       },
       has: (id) => get().ids.includes(id),
-      clear: () => set({ ids: [] }),
+      clear: () => set({ ids: [], images: {} }),
     }),
     {
       name: "mietaaf-wishlist",
