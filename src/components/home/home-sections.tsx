@@ -31,44 +31,76 @@ import toast from "react-hot-toast";
 import { useShopData } from "@/hooks/use-shop-data";
 import { TESTIMONIALS } from "@/lib/data/testimonials";
 import { HOME_SECTION_IMAGE_LINKS } from "@/lib/data/image-links/home-section-images";
+import { HOME_PRODUCT_SECTIONS } from "@/lib/data/home-product-sections";
 import { cn } from "@/lib/utils";
 import type { Product } from "@/types";
 import { buildProductHref } from "@/lib/product-links";
 
-function withSectionImage(product: Product, image?: string): Product {
-  if (!image) return product;
-  return { ...product, images: [image, ...product.images.slice(1)] };
+function takeUniqueProducts(
+  preferredSlugs: readonly string[],
+  fallback: Product[],
+  count: number,
+  usedIds: Set<string>,
+  usedNames: Set<string>,
+): Product[] {
+  const selected: Product[] = [];
+  const preferred = preferredSlugs
+    .map((slug) => fallback.find((product) => product.slug === slug))
+    .filter((product): product is Product => Boolean(product));
+
+  for (const product of [...preferred, ...fallback]) {
+    const normalizedName = product.name.trim().toLocaleLowerCase();
+    if (usedIds.has(product.id) || usedNames.has(normalizedName)) continue;
+    selected.push(product);
+    usedIds.add(product.id);
+    usedNames.add(normalizedName);
+    if (selected.length === count) break;
+  }
+
+  return selected;
 }
 
 export function HomeSections() {
   const { products, categories } = useShopData();
 
-  const trending = products
-    .filter((p) => p.trending)
-    .slice(0, 4)
-    .map((product, index) =>
-      withSectionImage(product, HOME_SECTION_IMAGE_LINKS.trending[index]),
-    );
-  const arrivals = products
-    .filter((p) => p.newArrival)
-    .slice(0, 4)
-    .map((product, index) =>
-      withSectionImage(product, HOME_SECTION_IMAGE_LINKS.newArrivals[index]),
-    );
-  const wedding = products
-    .filter((p) => p.wedding)
-    .slice(0, 3)
-    .map((product, index) =>
-      withSectionImage(product, HOME_SECTION_IMAGE_LINKS.weddingCollection[index]),
-    );
-  const suits = products
-    .filter((p) => p.categorySlug === "suits")
-    .slice(0, 2)
-    .map((product, index) =>
-      withSectionImage(product, HOME_SECTION_IMAGE_LINKS.premiumSuits[index]),
-    );
+  const usedHomepageProductIds = new Set<string>();
+  const usedHomepageProductNames = new Set<string>();
+  const trending = takeUniqueProducts(
+    HOME_PRODUCT_SECTIONS.trending,
+    products,
+    4,
+    usedHomepageProductIds,
+    usedHomepageProductNames,
+  );
+  const arrivals = takeUniqueProducts(
+    HOME_PRODUCT_SECTIONS.newArrivals,
+    products,
+    4,
+    usedHomepageProductIds,
+    usedHomepageProductNames,
+  );
+  const wedding = takeUniqueProducts(
+    HOME_PRODUCT_SECTIONS.weddingCollection,
+    products,
+    3,
+    usedHomepageProductIds,
+    usedHomepageProductNames,
+  );
+  const suits = takeUniqueProducts(
+    HOME_PRODUCT_SECTIONS.premiumSuits,
+    products,
+    2,
+    usedHomepageProductIds,
+    usedHomepageProductNames,
+  );
   const feed = [...HOME_SECTION_IMAGE_LINKS.fashionGallery];
-  const feedProducts = products.slice(0, 6);
+  const feedProducts = takeUniqueProducts(
+    HOME_PRODUCT_SECTIONS.feed,
+    products,
+    6,
+    usedHomepageProductIds,
+    usedHomepageProductNames,
+  );
   const [activeGalleryIndex, setActiveGalleryIndex] = useState<number | null>(null);
   const activeGalleryImage =
     activeGalleryIndex == null ? undefined : feed[activeGalleryIndex];
@@ -159,21 +191,11 @@ export function HomeSections() {
             <h2 className="font-heading text-3xl md:text-4xl">New arrivals</h2>
           </Reveal>
           <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {arrivals.length ? (
-              arrivals.map((p, i) => (
-                <Reveal key={p.id} delay={i * 0.06}>
-                  <ProductCard product={p} />
-                </Reveal>
-              ))
-            ) : (
-              products.slice(0, 4).map((p, i) => (
-                <Reveal key={p.id} delay={i * 0.06}>
-                  <ProductCard
-                    product={withSectionImage(p, HOME_SECTION_IMAGE_LINKS.newArrivals[i])}
-                  />
-                </Reveal>
-              ))
-            )}
+            {arrivals.map((p, i) => (
+              <Reveal key={p.id} delay={i * 0.06}>
+                <ProductCard product={p} />
+              </Reveal>
+            ))}
           </div>
         </div>
       </section>
@@ -453,10 +475,7 @@ export function HomeSections() {
             {feedProducts.map((product, index) => (
               <Link
                 key={product.id}
-                href={buildProductHref(
-                  product.slug,
-                  HOME_SECTION_IMAGE_LINKS.feed[index] ?? product.images[0],
-                )}
+                href={buildProductHref(product.slug, product.images[0])}
                 className={cn(
                   "group relative overflow-hidden rounded-2xl bg-muted shadow-sm outline-none ring-offset-background transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
                   index === 0 && "col-span-2 row-span-2",
@@ -465,7 +484,7 @@ export function HomeSections() {
                 )}
               >
                 <ProductThumbnailImage
-                  src={HOME_SECTION_IMAGE_LINKS.feed[index] ?? product.images[0]!}
+                  src={product.images[0]!}
                   alt={product.name}
                   sizes={
                     index === 0

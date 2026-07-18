@@ -7,7 +7,7 @@ import { CATEGORIES as DUMMY_CATEGORIES } from "@/lib/data/categories";
 import { BANNERS as DUMMY_BANNERS } from "@/lib/data/banners";
 import { applyCategoryImageLink } from "@/lib/data/image-links/category-images";
 import { applyHeroImageLink } from "@/lib/data/image-links/hero-images";
-import { applyProductImageLinks } from "@/lib/data/image-links/product-images";
+import { applyNumberedCategoryProductDetails } from "@/lib/data/category-product-builder";
 import { getFirebaseDb } from "@/firebase/client";
 import type { Product, Category, Banner } from "@/types";
 
@@ -57,10 +57,10 @@ export function useShopData() {
         const mergedProducts = new Map(
           [...DUMMY_PRODUCTS, ...remote.products].map((product) => [
             product.id,
-            applyProductImageLinks(product),
+            product,
           ]),
         );
-        setProducts(Array.from(mergedProducts.values()));
+        setProducts(applyNumberedCategoryProductDetails(Array.from(mergedProducts.values())));
       }
       if (remote.categories.length > 0) {
         setCategories(remote.categories.map(applyCategoryImageLink));
