@@ -94,7 +94,7 @@ function SearchBody() {
             </Button>
           </div>
         ) : results.length > 0 ? (
-          <div className="mt-8 grid min-w-0 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 xl:grid-cols-4">
+          <div className="mt-8 grid min-w-0 grid-cols-2 gap-x-2.5 gap-y-5 sm:gap-6 lg:grid-cols-3 xl:grid-cols-4">
             {results.map((p) => (
               <ProductCard key={p.id} product={p} />
             ))}
@@ -110,7 +110,7 @@ function SearchFallback() {
     <div className={`${PAGE_CONTAINER} ${PAGE_PY}`}>
       <Skeleton className="h-10 w-48" />
       <Skeleton className="mt-6 h-11 w-full max-w-xl rounded-full" />
-      <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mt-10 grid grid-cols-2 gap-x-2.5 gap-y-5 sm:gap-6 lg:grid-cols-4">
         {Array.from({ length: 4 }).map((_, i) => (
           <Skeleton key={i} className="aspect-[3/4] rounded-xl" />
         ))}
@@ -126,4 +126,3 @@ export default function SearchPage() {
     </Suspense>
   );
 }
-

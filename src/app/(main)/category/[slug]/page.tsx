@@ -65,8 +65,8 @@ export default async function CategoryPage({
             </BreadcrumbList>
           </Breadcrumb>
 
-          <header className="grid overflow-hidden rounded-[2rem] border border-border/60 bg-[#eee4d6] shadow-[0_22px_60px_rgba(58,48,38,0.07)] lg:grid-cols-[0.9fr_1.1fr] dark:bg-[#201d19]">
-            <div className="relative aspect-[4/3] overflow-hidden bg-muted lg:aspect-auto lg:min-h-[420px]">
+          <header className="grid overflow-hidden rounded-[1.5rem] border border-border/60 bg-[#eee4d6] shadow-[0_22px_60px_rgba(58,48,38,0.07)] sm:rounded-[2rem] lg:grid-cols-[0.9fr_1.1fr] dark:bg-[#201d19]">
+            <div className="relative aspect-[16/9] overflow-hidden bg-muted sm:aspect-[4/3] lg:aspect-auto lg:min-h-[420px]">
               <Image
                 src={category.image}
                 alt={category.name}
@@ -76,14 +76,14 @@ export default async function CategoryPage({
                 sizes="(max-width:1024px) 100vw, 45vw"
               />
             </div>
-            <div className="flex flex-col justify-center px-6 py-8 sm:px-10 sm:py-10 lg:px-12">
-              <p className="text-xs font-semibold uppercase tracking-[0.4em] text-primary">
+            <div className="flex flex-col justify-center px-5 py-6 sm:px-10 sm:py-10 lg:px-12">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.32em] text-primary sm:text-xs sm:tracking-[0.4em]">
                 Mietaaf collection
               </p>
               <h1 className="mt-2 font-heading text-3xl sm:text-4xl md:text-5xl">
                 {category.name}
               </h1>
-              <p className="mt-4 max-w-xl text-base leading-7 text-muted-foreground">
+              <p className="mt-3 line-clamp-2 max-w-xl text-sm leading-6 text-muted-foreground sm:mt-4 sm:text-base sm:leading-7">
                 {category.description}
               </p>
               <p className="mt-4 text-sm font-medium text-foreground/75">
@@ -91,14 +91,14 @@ export default async function CategoryPage({
               </p>
               <Link
                 href="/shop"
-                className="mt-7 inline-flex w-fit items-center rounded-full border border-border bg-background/70 px-5 py-2.5 text-sm font-semibold text-foreground transition-colors hover:border-primary/40 hover:bg-background"
+                className="mt-5 inline-flex w-fit items-center rounded-full border border-border bg-background/70 px-4 py-2 text-xs font-semibold text-foreground transition-colors hover:border-primary/40 hover:bg-background sm:mt-7 sm:px-5 sm:py-2.5 sm:text-sm"
               >
                 Browse all collections <span className="ml-2" aria-hidden="true">→</span>
               </Link>
             </div>
           </header>
 
-          <section className="mt-12 sm:mt-16">
+          <section className="mt-9 sm:mt-16">
             <div className="mb-7 flex items-end justify-between gap-4 border-b border-border/60 pb-5">
               <div>
                 <p className="text-xs font-semibold uppercase tracking-[0.35em] text-primary">
@@ -110,7 +110,7 @@ export default async function CategoryPage({
               </div>
               <p className="text-sm text-muted-foreground">{products.length} products</p>
             </div>
-            <div className="grid gap-5 sm:grid-cols-2 lg:gap-6 xl:grid-cols-4">
+            <div className="grid grid-cols-2 gap-x-2.5 gap-y-5 sm:gap-6 xl:grid-cols-4">
               {products.map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}

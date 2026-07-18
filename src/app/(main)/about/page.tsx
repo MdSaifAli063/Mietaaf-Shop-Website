@@ -115,7 +115,7 @@ export default function AboutPage() {
           <div className="relative aspect-4/5 overflow-hidden rounded-2xl bg-muted md:col-span-2 md:aspect-auto md:min-h-[300px] lg:col-span-1 lg:aspect-4/5 lg:min-h-0">
             <Image src={stitch} alt="Gold thread and occasion wear" fill sizes="(max-width:768px) 100vw, 33vw" className="object-cover" />
           </div>
-          <div className="relative overflow-hidden rounded-2xl bg-muted md:col-span-2 lg:col-span-2 lg:min-h-[300px]">
+          <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-muted md:col-span-2 md:aspect-[16/9] lg:col-span-2 lg:min-h-[300px]">
             <Image src={studio} alt="Tailoring workspace" fill sizes="(max-width:1024px) 100vw, 66vw" className="object-cover" />
             <div className="absolute inset-0 flex flex-col justify-end bg-linear-to-t from-black/60 via-black/20 to-transparent p-6 sm:p-8">
               <p className="max-w-xl text-lg font-heading text-white drop-shadow">
