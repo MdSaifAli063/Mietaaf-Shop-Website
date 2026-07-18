@@ -138,23 +138,23 @@ export function HomeSections() {
               </Button>
             </div>
           </Reveal>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
             {categories.slice(0, 8).map((c, i) => (
               <Reveal key={c.slug} delay={i * 0.05}>
-                <Link href={`/category/${c.slug}`} className="group block">
-                  <Card className="gap-0 overflow-hidden border-border/60 bg-card py-0 shadow-sm backdrop-blur-none transition-all hover:-translate-y-1 hover:shadow-xl">
+                <Link href={`/category/${c.slug}`} className="group block h-full">
+                  <Card className="h-full gap-0 overflow-hidden border-border/60 bg-card py-0 shadow-sm backdrop-blur-none transition-all hover:-translate-y-1 hover:shadow-xl">
                     <div className="relative aspect-[4/5] overflow-hidden">
                       <Image
                         src={c.image}
                         alt={c.name}
                         fill
                         className="object-cover transition-transform duration-700 group-hover:scale-105"
-                        sizes="(max-width:639px) 100vw, (max-width:1024px) 50vw, 25vw"
+                        sizes="(max-width:639px) 50vw, (max-width:1024px) 50vw, 25vw"
                       />
                     </div>
-                    <div className="min-h-24 bg-card px-4 py-4">
-                      <h3 className="font-heading text-xl">{c.name}</h3>
-                      <p className="mt-1 line-clamp-2 text-xs text-muted-foreground">
+                    <div className="min-h-20 bg-card px-3 py-3 sm:min-h-24 sm:px-4 sm:py-4">
+                      <h3 className="font-heading text-base leading-tight sm:text-xl">{c.name}</h3>
+                      <p className="mt-1 line-clamp-2 text-[10px] leading-4 text-muted-foreground sm:text-xs">
                         {c.description}
                       </p>
                     </div>
@@ -175,7 +175,7 @@ export function HomeSections() {
               evenings.
             </p>
           </Reveal>
-          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-7 grid grid-cols-2 gap-x-2.5 gap-y-5 sm:mt-10 sm:gap-6 lg:grid-cols-4">
             {trending.map((p, i) => (
               <Reveal key={p.id} delay={i * 0.06}>
                 <ProductCard product={p} />
@@ -190,7 +190,7 @@ export function HomeSections() {
           <Reveal>
             <h2 className="font-heading text-3xl md:text-4xl">New arrivals</h2>
           </Reveal>
-          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-7 grid grid-cols-2 gap-x-2.5 gap-y-5 sm:mt-10 sm:gap-6 lg:grid-cols-4">
             {arrivals.map((p, i) => (
               <Reveal key={p.id} delay={i * 0.06}>
                 <ProductCard product={p} />
@@ -216,7 +216,7 @@ export function HomeSections() {
               </Button>
             </div>
           </Reveal>
-          <div className="grid gap-6 lg:grid-cols-3">
+          <div className="grid grid-cols-2 gap-x-2.5 gap-y-5 sm:gap-6 lg:grid-cols-3">
             {wedding.map((p, i) => (
               <Reveal key={p.id} delay={i * 0.08}>
                 <ProductCard product={p} />
