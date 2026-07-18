@@ -33,15 +33,15 @@ export function FloatingWhatsApp() {
   if (pathname === "/cart" || pathname === "/checkout") return null;
 
   return (
-    <div className="fixed bottom-[max(1.25rem,env(safe-area-inset-bottom,0px))] right-[max(1.25rem,env(safe-area-inset-right,0px))] z-50 max-w-dvw touch-manipulation animate-in fade-in zoom-in duration-300 md:bottom-[max(2rem,env(safe-area-inset-bottom,0px))] md:right-[max(2rem,env(safe-area-inset-right,0px))]">
+    <div className="fixed bottom-[max(0.75rem,env(safe-area-inset-bottom,0px))] right-[max(0.75rem,env(safe-area-inset-right,0px))] z-50 max-w-dvw touch-manipulation animate-in fade-in zoom-in duration-300 sm:bottom-[max(1.25rem,env(safe-area-inset-bottom,0px))] sm:right-[max(1.25rem,env(safe-area-inset-right,0px))] md:bottom-[max(2rem,env(safe-area-inset-bottom,0px))] md:right-[max(2rem,env(safe-area-inset-right,0px))]">
       <Link
         href={href}
         target="_blank"
         rel="noopener noreferrer"
-        className="group flex h-14 w-14 items-center justify-center rounded-full border border-black/25 bg-[#25D366] text-white shadow-2xl shadow-black/35 ring-2 ring-white/40 transition-transform hover:scale-105 md:h-16 md:w-16"
+        className="group flex h-12 w-12 items-center justify-center rounded-full border border-black/25 bg-[#25D366] text-white shadow-2xl shadow-black/35 ring-2 ring-white/40 transition-transform hover:scale-105 sm:h-14 sm:w-14 md:h-16 md:w-16"
         aria-label="Chat on WhatsApp"
       >
-        <WhatsAppIcon className="h-9 w-9 text-white transition-transform group-hover:rotate-6 md:h-10 md:w-10" />
+        <WhatsAppIcon className="h-8 w-8 text-white transition-transform group-hover:rotate-6 sm:h-9 sm:w-9 md:h-10 md:w-10" />
       </Link>
     </div>
   );

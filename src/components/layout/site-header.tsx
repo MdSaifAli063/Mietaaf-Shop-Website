@@ -72,11 +72,13 @@ export function SiteHeader() {
   const announcements = [
     {
       text: "Our Bengaluru studio is open by appointment.",
+      mobileText: "Bengaluru studio by appointment.",
       cta: "Book a visit",
       href: "/appointment",
     },
     {
       text: "For personalised assistance, reach us on WhatsApp at",
+      mobileText: "Personal styling on WhatsApp",
       cta: SITE_PHONE_E164_PLUS,
       href: `https://wa.me/${SITE_WHATSAPP_E164_DIGITS}`,
       external: true,
@@ -111,8 +113,9 @@ export function SiteHeader() {
             >
               <ChevronLeft className="size-3.5 sm:size-4" aria-hidden="true" />
             </button>
-            <p className="min-w-0 flex-1 text-center text-[8px] font-bold uppercase leading-3 tracking-[0.16em] text-white sm:text-xs sm:leading-5 sm:tracking-[0.26em]">
-              <span>{announcement.text}</span>{" "}
+            <p className="min-w-0 flex-1 text-center text-[7px] font-bold uppercase leading-3 tracking-[0.12em] text-white sm:text-xs sm:leading-5 sm:tracking-[0.26em]">
+              <span className="sm:hidden">{announcement.mobileText}</span>
+              <span className="hidden sm:inline">{announcement.text}</span>{" "}
               <Link
                 href={announcement.href}
                 target={announcement.external ? "_blank" : undefined}
@@ -133,14 +136,14 @@ export function SiteHeader() {
           </div>
         </div>
       ) : null}
-      <div className="relative mx-auto flex h-16 w-full min-w-0 max-w-7xl items-center justify-between gap-0.5 px-1.5 sm:h-[4.5rem] sm:gap-2 sm:px-4 md:h-[5.5rem] lg:h-24 lg:px-8">
+      <div className="relative mx-auto grid h-14 w-full min-w-0 max-w-7xl grid-cols-[minmax(0,1fr)_auto] items-center gap-0.5 px-1.5 sm:h-[4.5rem] sm:gap-2 sm:px-4 md:h-[5.5rem] lg:h-24 lg:px-8">
         {/* Left: menu + logo (flush left) */}
         <div className="relative z-20 flex min-w-0 items-center gap-0.5 sm:gap-2">
           <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger
               className={cn(
                 buttonVariants({ variant: "ghost", size: "icon" }),
-                "h-9 w-9 shrink-0 sm:h-10 sm:w-10 xl:hidden",
+                "h-8 w-8 shrink-0 sm:h-10 sm:w-10 xl:hidden",
               )}
               aria-label="Open menu"
             >
@@ -339,7 +342,7 @@ export function SiteHeader() {
               <Button
                 variant="ghost"
                 size="icon"
-                className="inline-flex h-9 w-9 shrink-0 sm:h-11 sm:w-11"
+                className="inline-flex h-8 w-8 shrink-0 sm:h-11 sm:w-11"
                 onClick={() => setSearch(true)}
                 aria-label="Search"
               >
@@ -351,7 +354,7 @@ export function SiteHeader() {
                 aria-label="Wishlist"
                 className={cn(
                   buttonVariants({ variant: "ghost", size: "icon" }),
-                  "relative inline-flex h-9 w-9 shrink-0 sm:h-11 sm:w-11",
+                  "relative inline-flex h-8 w-8 shrink-0 sm:h-11 sm:w-11",
                 )}
               >
                 <Heart className="h-[18px] w-[18px] sm:h-5 sm:w-5" />
@@ -367,7 +370,7 @@ export function SiteHeader() {
                 aria-label="Cart"
                 className={cn(
                   buttonVariants({ variant: "ghost", size: "icon" }),
-                  "relative h-9 w-9 shrink-0 sm:h-11 sm:w-11",
+                  "relative h-8 w-8 shrink-0 sm:h-11 sm:w-11",
                 )}
               >
                 <ShoppingBag className="h-[18px] w-[18px] sm:h-5 sm:w-5" />
@@ -385,7 +388,7 @@ export function SiteHeader() {
               <DropdownMenuTrigger
                 className={cn(
                   buttonVariants({ variant: "ghost", size: "icon" }),
-                  "h-9 w-9 shrink-0 sm:h-11 sm:w-11",
+                  "h-8 w-8 shrink-0 sm:h-11 sm:w-11",
                 )}
                 aria-label="Account"
               >
