@@ -22,5 +22,5 @@ export const DUMMY_REVIEWS: Review[] = [
 ];
 
 export function reviewsForProduct(productId: string): Review[] {
-  return DUMMY_REVIEWS.filter((r) => r.productId === productId);
+  return DUMMY_REVIEWS.filter((review) => review.productId === productId);
 }
