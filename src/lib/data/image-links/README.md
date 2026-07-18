@@ -1,29 +1,26 @@
-# Mietaaf image links
+# Mietaaf editable storefront data
 
-This is the only folder you need when changing website images.
+Use these files when changing storefront content. No page/component edits are required.
 
+- `../category-products.ts` — all eight numbered products per category: name, image, price, original price, discount, rating, and reviews
+- `../category-products/wedding-products.ts` — Wedding category products 1-8
+- `../category-products/premium-products.ts` — Premium category products 1-8
+- `../home-product-sections.ts` — unique product placement for Trending, New Arrivals, Wedding, Premium Suits, and Feed
 - `hero-images.ts` — homepage carousel banners
-- `category-images.ts` — Featured Categories and category pages
-- `home-section-images.ts` — Trending, New Arrivals, Wedding, Premium Suits, Fashion Gallery, Mietaaf Story, and Feed
+- `category-images.ts` — Featured Categories and category page covers
+- `home-section-images.ts` — Fashion Gallery and Mietaaf Story images
 - `client-story-images.ts` — Client Stories profile photos
 - `page-images.ts` — About and Appointment page images
-- `product-images.ts` — optional image overrides for any shop product
 
 ## Add an online image
 
-Paste the complete image URL:
+Paste the complete image URL into the product row:
 
 ```ts
-hero: "https://example.com/my-image.jpg",
+product(1, "Product name", "https://example.com/image.jpg", 45999, 52999, 13, 4.9, 128)
 ```
 
 ## Add an image from this project
 
-Place the file inside `public`, for example `public/uploads/my-image.webp`, then use:
-
-```ts
-hero: "/uploads/my-image.webp",
-```
-
-Do not include `public` in the link. Save the file and the website will update automatically.
-
+Place the file inside `public`, for example `public/uploads/look-1.webp`, then use
+`/uploads/look-1.webp`. Do not include `public` in the path.
