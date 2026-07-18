@@ -345,7 +345,7 @@ export function ProductDetailView({ product: originalProduct }: { product: Produ
       {recentProducts.length > 0 ? (
         <section className="mt-12 sm:mt-16 md:mt-20">
           <h2 className="font-heading text-2xl">Recently viewed</h2>
-          <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-6 grid grid-cols-2 gap-x-2.5 gap-y-5 sm:mt-8 sm:gap-6 lg:grid-cols-4">
             {recentProducts.slice(0, 4).map((p) => (
               <ProductCard key={p.id} product={p} />
             ))}
@@ -355,7 +355,7 @@ export function ProductDetailView({ product: originalProduct }: { product: Produ
 
       <section className="mt-12 sm:mt-16 md:mt-20">
         <h2 className="font-heading text-2xl">You may also like</h2>
-        <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-6 grid grid-cols-2 gap-x-2.5 gap-y-5 sm:mt-8 sm:gap-6 lg:grid-cols-4">
           {similar.map((p) => (
             <ProductCard key={p.id} product={p} />
           ))}

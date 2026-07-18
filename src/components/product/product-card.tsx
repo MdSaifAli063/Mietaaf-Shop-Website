@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Eye, Heart, ShoppingBag } from "lucide-react";
+import { Eye, GitCompareArrows, Heart, ShoppingBag } from "lucide-react";
 import type { Product } from "@/types";
 import { formatInr } from "@/lib/format";
 import { Button } from "@/components/ui/button";
@@ -69,7 +69,7 @@ export function ProductCard({
   }
 
   return (
-    <Card className="group relative flex min-w-0 flex-col overflow-hidden border-border/70 bg-card/90 shadow-[0_18px_45px_rgba(58,48,38,0.06)] backdrop-blur-sm transition-all hover:-translate-y-1 hover:shadow-[0_22px_55px_rgba(58,48,38,0.1)]">
+    <Card className="group relative flex h-full min-w-0 flex-col gap-0 overflow-hidden rounded-2xl border-border/70 bg-card/90 py-0 shadow-[0_12px_30px_rgba(58,48,38,0.06)] backdrop-blur-sm transition-all hover:-translate-y-1 hover:shadow-[0_22px_55px_rgba(58,48,38,0.1)] sm:rounded-[1.4rem]">
       <div
         className={cn(
           "relative overflow-hidden bg-muted",
@@ -82,24 +82,24 @@ export function ProductCard({
           alt={product.name}
           sizes={
             compact
-              ? "(max-width:639px) 92vw, (max-width:1024px) 45vw, 280px"
-              : "(max-width:639px) 100vw, (max-width:1024px) 50vw, 25vw"
+              ? "(max-width:639px) 50vw, (max-width:1024px) 45vw, 280px"
+              : "(max-width:639px) 50vw, (max-width:1024px) 50vw, 25vw"
           }
           className="transition-transform duration-500 [@media(hover:hover)]:group-hover:scale-[1.02]"
           priority={false}
         />
         {discount ? (
-          <Badge className="absolute left-3 top-3 bg-[rgb(95_107_84/0.18)] text-[rgb(72_82_64)]">
+          <Badge className="absolute left-1.5 top-1.5 px-1.5 py-0.5 text-[9px] leading-4 bg-[rgb(95_107_84/0.18)] text-[rgb(72_82_64)] sm:left-3 sm:top-3 sm:px-2.5 sm:text-xs">
             {discount}% off
           </Badge>
         ) : null}
-        <div className="absolute right-2 top-2 z-10 flex flex-col gap-2 sm:right-3 sm:top-3">
+        <div className="absolute right-1.5 top-1.5 z-10 flex flex-col gap-1.5 sm:right-3 sm:top-3 sm:gap-2">
           <Button
             type="button"
             size="icon"
             variant="secondary"
             className={cn(
-              "h-10 w-10 touch-manipulation rounded-full bg-background/80 shadow-sm backdrop-blur-sm sm:h-9 sm:w-9",
+              "h-8 w-8 touch-manipulation rounded-full bg-background/85 shadow-sm backdrop-blur-sm sm:h-9 sm:w-9",
               hasWish && "text-primary",
             )}
             onClick={(e) => {
@@ -109,20 +109,20 @@ export function ProductCard({
             }}
             aria-label={hasWish ? `Remove ${product.name} from wishlist` : `Save ${product.name} to wishlist`}
           >
-            <Heart className={cn("h-4 w-4", hasWish && "fill-primary")} />
+            <Heart className={cn("h-3.5 w-3.5 sm:h-4 sm:w-4", hasWish && "fill-primary")} />
           </Button>
           <Button
             type="button"
             size="icon"
             variant="secondary"
-            className="h-10 w-10 touch-manipulation rounded-full bg-background/80 shadow-sm backdrop-blur-sm sm:h-9 sm:w-9"
+            className="h-8 w-8 touch-manipulation rounded-full bg-background/85 shadow-sm backdrop-blur-sm sm:h-9 sm:w-9"
             onClick={(e) => {
               e.preventDefault();
               setQuick(product.slug, primary);
             }}
             aria-label={`Quick view ${product.name}`}
           >
-            <Eye className="h-4 w-4" />
+            <Eye className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
           </Button>
         </div>
         {/* Desktop hover tray */}
@@ -143,39 +143,42 @@ export function ProductCard({
           </div>
         </div>
       </div>
-      <div className="flex min-w-0 flex-1 flex-col space-y-2 p-3 sm:p-4">
+      <div className="flex min-w-0 flex-1 flex-col space-y-1.5 p-2.5 sm:space-y-2 sm:p-4">
         <Link href={productHref} className="block min-w-0">
-          <h3 className="font-heading text-base leading-snug tracking-[0.03em] text-foreground transition-colors hover:text-primary sm:text-lg">
+          <h3 className="line-clamp-2 min-h-[2.5rem] font-heading text-sm leading-5 tracking-[0.02em] text-foreground transition-colors hover:text-primary sm:min-h-0 sm:text-lg sm:leading-snug sm:tracking-[0.03em]">
             {product.name}
           </h3>
         </Link>
         <StarRating value={product.rating} count={product.reviewCount} />
-        <div className="flex flex-wrap items-baseline gap-2">
-          <span className="text-base font-semibold text-foreground sm:text-lg">
+        <div className="flex flex-wrap items-baseline gap-x-1.5 gap-y-0.5 sm:gap-2">
+          <span className="text-sm font-semibold text-foreground sm:text-lg">
             {formatInr(product.price)}
           </span>
           {product.compareAtPrice ? (
-            <span className="text-sm text-muted-foreground line-through">
+            <span className="text-[10px] text-muted-foreground line-through sm:text-sm">
               {formatInr(product.compareAtPrice)}
             </span>
           ) : null}
         </div>
         {/* Mobile / touch: always-visible actions (same as desktop hover) */}
-        <div className="flex gap-2 pt-1 lg:hidden">
+        <div className="mt-auto flex items-center gap-1.5 pt-1 sm:gap-2 lg:hidden">
           <Button
-            className="h-11 min-h-11 flex-1 touch-manipulation rounded-full text-sm"
+            className="h-9 min-h-9 min-w-0 flex-1 touch-manipulation rounded-full px-1.5 text-[11px] sm:h-11 sm:min-h-11 sm:px-4 sm:text-sm"
             onClick={addToCart}
           >
-            <ShoppingBag className="mr-1.5 h-4 w-4 shrink-0" />
-            Add to bag
+            <ShoppingBag className="mr-1 h-3.5 w-3.5 shrink-0 sm:mr-1.5 sm:h-4 sm:w-4" />
+            <span className="md:hidden">Add</span>
+            <span className="hidden md:inline">Add to bag</span>
           </Button>
           <Button
             variant="outline"
-            className="h-11 min-h-11 shrink-0 touch-manipulation rounded-full px-3 text-sm"
+            size="icon"
+            className="h-9 min-h-9 w-9 min-w-9 shrink-0 touch-manipulation rounded-full p-0 sm:h-11 sm:min-h-11 sm:w-11 sm:min-w-11"
             type="button"
             onClick={addToCompare}
+            aria-label={`Compare ${product.name}`}
           >
-            Compare
+            <GitCompareArrows className="h-3.5 w-3.5 sm:h-4 sm:w-4" aria-hidden="true" />
           </Button>
         </div>
       </div>
