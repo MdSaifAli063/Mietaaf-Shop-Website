@@ -10,6 +10,9 @@ export type EditableCategoryProduct = {
   reviewCount: number;
 };
 
+/** Automatically shown whenever a product image link is left blank. */
+export const PRODUCT_COMING_SOON_IMAGE = "/placeholders/product-coming-soon.svg";
+
 export function product(
   number: number,
   name: string,

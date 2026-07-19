@@ -11,8 +11,8 @@ export type { EditableCategoryProduct } from "@/lib/data/category-products/produ
  * Every row is one storefront product in its category. The values are ordered as:
  * number, name, image, selling price, original price, discount %, rating, reviews.
  *
- * Keep product numbers 1-8 unique inside each category. A blank image safely falls
- * back to the category cover until you paste a local /public path or an https URL.
+ * Keep product numbers 1-8 unique inside each category. A blank image automatically
+ * shows the Coming Soon artwork until you paste a local /public path or an https URL.
  */
 export const CATEGORY_PRODUCTS: Record<CategorySlug, readonly EditableCategoryProduct[]> = {
   sherwani: [
