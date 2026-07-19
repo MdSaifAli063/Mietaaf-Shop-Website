@@ -1,24 +1,40 @@
 rules_version = '2';
-// Publish to Firebase: Firebase Console → Firestore → Rules (paste), or: firebase deploy --only firestore:rules
-// Admin access in these rules uses `users/{uid}.role == 'admin'`. The app syncs that field on sign-in (see AuthProvider).
 
+// Vercel does not publish these rules. Deploy them separately with:
+// firebase deploy --only firestore:rules,storage
 service cloud.firestore {
   match /databases/{database}/documents {
-
     function isSignedIn() {
       return request.auth != null;
     }
 
+    // This claim must be assigned from a trusted Firebase Admin SDK environment.
     function isAdmin() {
-      return isSignedIn()
-        && exists(/databases/$(database)/documents/users/$(request.auth.uid))
-        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+      return isSignedIn() && request.auth.token.admin == true;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
     }
 
     match /users/{userId} {
-      allow read: if isSignedIn() && request.auth.uid == userId;
-      allow create, update: if isSignedIn() && request.auth.uid == userId;
-      allow delete: if isSignedIn() && request.auth.uid == userId;
+      allow read: if isOwner(userId) || isAdmin();
+
+      // New accounts may only create a normal user profile. A browser can never
+      // grant itself an admin role.
+      allow create: if isOwner(userId)
+        && request.resource.data.keys().hasOnly([
+          'uid', 'email', 'displayName', 'photoURL', 'role', 'createdAt'
+        ])
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.role == 'user';
+
+      // Customers may edit profile fields only; identity and role stay immutable.
+      allow update: if isOwner(userId)
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+          'displayName', 'photoURL', 'phone', 'address', 'city', 'state', 'pincode'
+        ]);
+      allow delete: if isOwner(userId);
     }
 
     match /products/{productId} {
@@ -42,25 +58,47 @@ service cloud.firestore {
     }
 
     match /orders/{orderId} {
-      // Signed-in checkout (RequireAuth) — avoids anonymous spam
-      allow create: if isSignedIn();
+      allow create: if isSignedIn()
+        && request.resource.data.keys().hasOnly([
+          'userId', 'customerName', 'phone', 'address', 'city', 'state',
+          'pincode', 'notes', 'items', 'total', 'status', 'createdAt'
+        ])
+        && request.resource.data.keys().hasAll([
+          'userId', 'customerName', 'phone', 'address', 'city', 'state',
+          'pincode', 'items', 'total', 'status', 'createdAt'
+        ])
+        && request.resource.data.userId == request.auth.uid
+        && request.resource.data.customerName is string
+        && request.resource.data.phone is string
+        && request.resource.data.address is string
+        && request.resource.data.city is string
+        && request.resource.data.state is string
+        && request.resource.data.pincode is string
+        && request.resource.data.items is list
+        && request.resource.data.items.size() > 0
+        && request.resource.data.items.size() <= 50
+        && request.resource.data.total is number
+        && request.resource.data.total >= 0
+        && request.resource.data.status == 'pending';
+
       allow read: if isSignedIn() && (
         resource.data.userId == request.auth.uid || isAdmin()
       );
       allow update, delete: if isAdmin();
     }
 
+    // Reviews are read-only until a validated review submission flow is added.
     match /reviews/{id} {
       allow read: if true;
-      allow create: if isSignedIn();
+      allow write: if false;
     }
 
     match /wishlist/{userId} {
-      allow read, write: if isSignedIn() && request.auth.uid == userId;
+      allow read, write: if isOwner(userId);
     }
 
     match /cart/{userId} {
-      allow read, write: if isSignedIn() && request.auth.uid == userId;
+      allow read, write: if isOwner(userId);
     }
   }
 }

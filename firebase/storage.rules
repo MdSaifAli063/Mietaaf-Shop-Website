@@ -1,10 +1,17 @@
 rules_version = '2';
+
 service firebase.storage {
   match /b/{bucket}/o {
+    function isAdmin() {
+      return request.auth != null && request.auth.token.admin == true;
+    }
+
     match /products/{allPaths=**} {
       allow read: if true;
-      // Development-friendly: require auth for uploads. Tie to admin claims in production.
-      allow write: if request.auth != null;
+      allow create, update: if isAdmin()
+        && request.resource.size < 5 * 1024 * 1024
+        && request.resource.contentType.matches('image/.*');
+      allow delete: if isAdmin();
     }
   }
 }
