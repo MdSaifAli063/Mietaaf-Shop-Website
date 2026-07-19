@@ -9,5 +9,5 @@
  * - A full HTTPS URL, e.g. `https://cdn.example.com/logo.png`
  */
 export const SITE_LOGO_URL =
-	process.env.NEXT_PUBLIC_SITE_LOGO_URL ??
+	process.env.NEXT_PUBLIC_SITE_LOGO_URL?.trim() ||
 	"https://ik.imagekit.io/77nsbwefl/ChatGPT%20Image%20Jul%2014,%202026,%2007_56_57%20PM.png";

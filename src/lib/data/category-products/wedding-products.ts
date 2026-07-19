@@ -7,8 +7,8 @@ import { product, type EditableCategoryProduct } from "./product-entry";
 export const WEDDING_PRODUCTS: readonly EditableCategoryProduct[] = [
   product(1, "Ceremonial Threadwork Sherwani", "/categories/wedding-collection.webp", 52999, 60999, 13, 4.9, 74),
   product(2, "Groom Cape Sherwani", "/categories/sherwani.webp", 58999, 67999, 13, 4.8, 36),
-  product(3, "Ivory Lotus Achkan Set", "https://ik.imagekit.io/c5zhitarg/WhatsApp%20Image%202026-07-16%20at%2011.36.03%20AM.jpeg?updatedAt=1784303276701/categories/festive-collection.webp", 38999, 44999, 13, 4.8, 52),
-  product(4, "Champagne Ceremony Bandhgala", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWB0AN4qEt7M1UdH-qz-inNMwYN_wuNyc7ogb-wLion76miimgXqIgUZQ&s=10", 42999, 49999, 14, 4.7, 31),
+  product(3, "Ivory Lotus Achkan Set", "https://ik.imagekit.io/c5zhitarg/WhatsApp%20Image%202026-07-16%20at%2011.36.03%20AM.jpeg?updatedAt=1784303276701", 38999, 44999, 13, 4.8, 52),
+  product(4, "Champagne Ceremony Bandhgala", "/placeholders/product-coming-soon.svg", 42999, 49999, 14, 4.7, 31),
   product(5, "Pearl Groom Sherwani", "/categories/wedding-collection.webp", 48999, 56999, 14, 4.9, 19),
   product(6, "Rosewood Reception Set", "/categories/sherwani.webp", 32999, 37999, 13, 4.7, 24),
   product(7, "Ivory Maharaja Groom Set", "/categories/festive-collection.webp", 42999, 49999, 14, 4.8, 73),

@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { SITE_AUTH_WORDMARK_SRC } from "@/lib/auth-wordmark-src";
+import { SITE_LOGO_URL } from "@/lib/site-logo";
 
 export function AuthWordmarkLink({ className }: { className?: string }) {
-  const src = SITE_AUTH_WORDMARK_SRC.trim();
+  const src = SITE_LOGO_URL.trim();
   if (!src) return null;
 
   return (
