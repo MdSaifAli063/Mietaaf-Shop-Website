@@ -72,10 +72,10 @@ export default function CheckoutPage() {
     );
 
     const db = getFirebaseDb();
-    if (db) {
+    if (db && user) {
       try {
         await addDoc(collection(db, "orders"), {
-          userId: user?.uid ?? "guest",
+          userId: user.uid,
           customerName: data.fullName,
           phone: data.phone,
           address: data.address,

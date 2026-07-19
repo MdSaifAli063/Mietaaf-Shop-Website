@@ -28,14 +28,6 @@ type AuthContextValue = {
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
-function parseAdminEmails(): string[] {
-  const raw = process.env.NEXT_PUBLIC_ADMIN_EMAILS ?? "";
-  return raw
-    .split(",")
-    .map((s) => s.trim().toLowerCase())
-    .filter(Boolean);
-}
-
 async function getAuthClient() {
   const [{ getFirebaseAuth }, authModule] = await Promise.all([
     import("@/firebase/client"),
@@ -55,6 +47,7 @@ async function getFirestoreClient() {
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [adminClaim, setAdminClaim] = useState(false);
   const [loading, setLoading] = useState(true);
 
   const firebaseReady = isFirebaseConfigured();
@@ -68,25 +61,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           email: u.email,
           displayName: u.displayName,
           photoURL: u.photoURL,
-          role: parseAdminEmails().includes((u.email ?? "").toLowerCase())
-            ? "admin"
-            : "user",
+          role: "user",
         });
         return;
       }
       const { doc, getDoc, serverTimestamp, setDoc } = firestoreModule;
       const ref = doc(db, "users", u.uid);
-      const emailLower = (u.email ?? "").toLowerCase();
-      const envAdmin = parseAdminEmails().includes(emailLower);
-      const fallbackRole = envAdmin ? "admin" : "user";
 
       try {
         const snap = await getDoc(ref);
         if (snap.exists()) {
           const data = snap.data() as Partial<UserProfile>;
-          if (envAdmin && data.role !== "admin") {
-            await setDoc(ref, { role: "admin" }, { merge: true });
-          }
           setProfile({
             uid: u.uid,
             email: u.email,
@@ -97,7 +82,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             city: data.city,
             state: data.state,
             pincode: data.pincode,
-            role: envAdmin ? "admin" : data.role,
+            role: data.role === "admin" ? "admin" : "user",
           });
         } else {
           await setDoc(
@@ -107,7 +92,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
               email: u.email,
               displayName: u.displayName,
               photoURL: u.photoURL,
-              role: fallbackRole,
+              role: "user",
               createdAt: serverTimestamp(),
             },
             { merge: true },
@@ -117,7 +102,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             email: u.email,
             displayName: u.displayName,
             photoURL: u.photoURL,
-            role: fallbackRole,
+            role: "user",
           });
         }
       } catch {
@@ -126,7 +111,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           email: u.email,
           displayName: u.displayName,
           photoURL: u.photoURL,
-          role: fallbackRole,
+          role: "user",
         });
       }
     },
@@ -154,8 +139,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       void setPersistence(auth, browserLocalPersistence);
       unsubscribe = onAuthStateChanged(auth, async (u) => {
         setUser(u);
-        if (u) await loadProfile(u);
-        else setProfile(null);
+        if (u) {
+          const token = await u.getIdTokenResult().catch(() => null);
+          if (cancelled) return;
+          setAdminClaim(token?.claims.admin === true);
+          await loadProfile(u);
+        } else {
+          setAdminClaim(false);
+          setProfile(null);
+        }
         setLoading(false);
       });
     }
@@ -169,7 +161,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [firebaseReady, loadProfile]);
 
   const refreshProfile = useCallback(async () => {
-    if (user) await loadProfile(user);
+    if (user) {
+      const token = await user.getIdTokenResult(true).catch(() => null);
+      setAdminClaim(token?.claims.admin === true);
+      await loadProfile(user);
+    }
   }, [loadProfile, user]);
 
   const signInEmail = useCallback(
@@ -195,7 +191,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           email,
           displayName,
           photoURL: cred.user.photoURL,
-          role: parseAdminEmails().includes(email.toLowerCase()) ? "admin" : "user",
+          role: "user",
           createdAt: serverTimestamp(),
         });
       }
@@ -219,11 +215,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           email: cred.user.email,
           displayName: cred.user.displayName,
           photoURL: cred.user.photoURL,
-          role: parseAdminEmails().includes(
-            (cred.user.email ?? "").toLowerCase(),
-          )
-            ? "admin"
-            : "user",
+          role: "user",
           createdAt: serverTimestamp(),
         });
       }
@@ -245,10 +237,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     await authModule.signOut(auth);
   }, []);
 
-  const isAdmin =
-    profile?.role === "admin" ||
-    (!!user?.email &&
-      parseAdminEmails().includes(user.email.toLowerCase()));
+  // Admin authorization is based only on a server-issued Firebase custom claim.
+  // Public environment variables and editable profile documents are never trusted.
+  const isAdmin = adminClaim;
 
   const value = useMemo(
     () => ({
