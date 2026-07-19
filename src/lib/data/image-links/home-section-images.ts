@@ -11,7 +11,7 @@ export const HOME_SECTION_IMAGE_LINKS = {
     "/categories/suits.webp",
     "/categories/kurta.webp",
     "/categories/pants.webp",
-    "/categories/designer-dresses.webp",
+    "/categories/waistcoat.webp",
     "https://ik.imagekit.io/c5zhitarg/WhatsApp%20Image%202026-07-17%20at%209.57.55%20PM.jpeg?updatedAt=1784306225007",
     "/categories/wedding-collection.webp",
     "/categories/festive-collection.webp",

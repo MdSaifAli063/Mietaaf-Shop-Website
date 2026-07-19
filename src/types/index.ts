@@ -5,7 +5,7 @@ export type CategorySlug =
   | "suits"
   | "kurta"
   | "pants"
-  | "designer-dresses"
+  | "waistcoat"
   | "indo-western"
   | "wedding-collection"
   | "festive-collection"
