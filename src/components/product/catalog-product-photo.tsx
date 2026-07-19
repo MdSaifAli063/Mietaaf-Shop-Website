@@ -60,6 +60,7 @@ type ProductThumbnailImageProps = {
   sizes: string;
   priority?: boolean;
   className?: string;
+  fit?: "cover" | "contain";
 };
 
 /** Product image for cart, checkout, cards — crops catalog PNGs to the model photo only. */
@@ -69,6 +70,7 @@ export function ProductThumbnailImage({
   sizes,
   priority = false,
   className,
+  fit = "cover",
 }: ProductThumbnailImageProps) {
   if (isCatalogImageSrc(src)) {
     return (
@@ -88,7 +90,10 @@ export function ProductThumbnailImage({
       alt={alt}
       fill
       priority={priority}
-      className={cn("object-cover", className)}
+      className={cn(
+        fit === "contain" ? "object-contain object-center" : "object-cover",
+        className,
+      )}
       sizes={sizes}
     />
   );
