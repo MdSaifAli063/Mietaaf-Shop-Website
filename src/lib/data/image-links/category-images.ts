@@ -11,7 +11,7 @@ export const CATEGORY_IMAGE_LINKS: Record<CategorySlug, string> = {
   suits: "/categories/suits.webp",
   kurta: "/categories/kurta.webp",
   pants: "/categories/pants.webp",
-  "designer-dresses": "/categories/designer-dresses.webp",
+  waistcoat: "/categories/waistcoat.webp",
   "indo-western": "/categories/indo-western.webp",
   "wedding-collection": "/categories/wedding-collection.webp",
   "festive-collection": "/categories/festive-collection.webp",
@@ -19,9 +19,17 @@ export const CATEGORY_IMAGE_LINKS: Record<CategorySlug, string> = {
 };
 
 export function applyCategoryImageLink(category: Category): Category {
+  if ((category.slug as string) === "designer-dresses") {
+    return {
+      slug: "waistcoat",
+      name: "Waistcoat",
+      description: "Refined layers for celebrations and formal evenings.",
+      image: CATEGORY_IMAGE_LINKS.waistcoat,
+    };
+  }
+
   return {
     ...category,
     image: CATEGORY_IMAGE_LINKS[category.slug] ?? category.image,
   };
 }
-
