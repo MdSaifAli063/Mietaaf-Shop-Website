@@ -45,7 +45,7 @@ const dialogPositionClasses = {
   "bottom-sheet":
     "inset-x-0 bottom-0 top-auto left-0 right-0 max-h-[min(92dvh,720px)] w-full max-w-none translate-x-0 translate-y-0 rounded-t-2xl pb-[max(1rem,env(safe-area-inset-bottom))] sm:inset-x-auto sm:bottom-auto sm:left-1/2 sm:right-auto sm:top-[8%] sm:max-h-[85dvh] sm:max-w-2xl sm:-translate-x-1/2 sm:translate-y-0 sm:rounded-2xl",
   "mobile-sheet":
-    "inset-x-0 bottom-0 top-auto left-0 right-0 max-h-[min(92dvh,900px)] w-full max-w-none translate-x-0 translate-y-0 rounded-t-2xl pb-[max(1rem,env(safe-area-inset-bottom))] sm:inset-x-auto sm:bottom-auto sm:left-1/2 sm:right-auto sm:top-1/2 sm:max-h-[min(92dvh,900px)] sm:max-w-3xl sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-2xl md:max-w-4xl",
+    "inset-x-2 bottom-2 top-auto max-h-[calc(100dvh-1rem)] w-auto max-w-none translate-x-0 translate-y-0 rounded-2xl sm:inset-x-auto sm:bottom-auto sm:left-1/2 sm:right-auto sm:top-1/2 sm:max-h-[min(92dvh,900px)] sm:w-full sm:max-w-3xl sm:-translate-x-1/2 sm:-translate-y-1/2 md:max-w-4xl",
 } as const
 
 function DialogContent({
