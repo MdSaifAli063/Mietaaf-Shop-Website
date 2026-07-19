@@ -18,8 +18,8 @@ export const CATEGORY_PRODUCTS: Record<CategorySlug, readonly EditableCategoryPr
   sherwani: [
     product(1, "Royal Embroidered Sherwani", "https://ik.imagekit.io/c5zhitarg/image_ebd76a09.png?updatedAt=1784387675301", 45999, 52999, 13, 4.9, 128),
     product(2, "Ivory Palace Sherwani", "https://ik.imagekit.io/c5zhitarg/image_1811519d.png?updatedAt=1784387632919", 36999, 42899, 14, 4.7, 18),
-    product(3, "Emerald Heritage Sherwani", "", 40199, 46599, 14, 4.8, 29),
-    product(4, "Champagne Zari Sherwani", "", 43399, 50299, 14, 4.9, 40),
+    product(3, "Emerald Heritage Sherwani", "https://ik.imagekit.io/c5zhitarg/WhatsApp%20Image%202026-07-16%20at%2011.36.02%20AM%20(2).jpeg?updatedAt=1784303238199", 40199, 46599, 14, 4.8, 29),
+    product(4, "Champagne Zari Sherwani", "https://ik.imagekit.io/c5zhitarg/WhatsApp%20Image%202026-07-17%20at%209.57.54%20PM.jpeg?updatedAt=1784306208099", 43399, 50299, 14, 4.9, 40),
     product(5, "Midnight Regal Sherwani", "", 46599, 54099, 14, 4.6, 51),
     product(6, "Rosewood Groom Sherwani", "", 49799, 57799, 14, 4.7, 62),
     product(7, "Pearl Jaal Sherwani", "", 52999, 61599, 14, 4.8, 73),
@@ -57,9 +57,9 @@ export const CATEGORY_PRODUCTS: Record<CategorySlug, readonly EditableCategoryPr
   ],
   kurta: [
     product(1, "Silk Festive Kurta Set", "https://ik.imagekit.io/c5zhitarg/image_11b3b7cd.png", 8999, 10499, 14, 4.6, 210),
-    product(2, "Minimal Linen Kurta", "/categories/festive-collection.webp", 4999, 5799, 14, 4.5, 72),
-    product(3, "Sage Embroidered Kurta Set", "/categories/indo-western.webp", 5999, 6999, 14, 4.7, 29),
-    product(4, "Ivory Silk Kurta Set", "/hero/festive-gold.webp", 6899, 7999, 14, 4.8, 40),
+    product(2, "Minimal Linen Kurta", "https://ik.imagekit.io/c5zhitarg/image_3989acf6.png?updatedAt=1784387591694", 4999, 5799, 14, 4.5, 72),
+    product(3, "Sage Embroidered Kurta Set", "https://ik.imagekit.io/c5zhitarg/image_f83d279d.png?updatedAt=1784387692414", 5999, 6999, 14, 4.7, 29),
+    product(4, "Ivory Silk Kurta Set", "https://ik.imagekit.io/c5zhitarg/image_229411d4%20(1).png?updatedAt=1784387614171", 6899, 7999, 14, 4.8, 40),
     product(5, "Midnight Festive Kurta", "/categories/kurta.webp", 7799, 9099, 14, 4.9, 51),
     product(6, "Maroon Jacquard Kurta", "/categories/festive-collection.webp", 8699, 10099, 14, 4.6, 62),
     product(7, "Powder Blue Linen Kurta", "/categories/indo-western.webp", 9599, 11199, 14, 4.7, 73),
@@ -76,7 +76,7 @@ export const CATEGORY_PRODUCTS: Record<CategorySlug, readonly EditableCategoryPr
     product(8, "Cognac Relaxed Trousers", "/categories/premium-collection.webp", 8399, 9799, 14, 4.8, 84),
   ],
   "designer-dresses": [
-    product(1, "Velvet Designer Drape", "/categories/designer-dresses.webp", 19999, 23299, 14, 4.8, 41),
+    product(1, "Velvet Designer Drape", "https://ik.imagekit.io/c5zhitarg/WhatsApp%20Image%202026-07-17%20at%209.57.51%20PM.jpeg?updatedAt=1784306161280", 19999, 23299, 14, 4.8, 41),
     product(2, "Onyx Sculpted Designer Set", "/categories/premium-collection.webp", 18999, 22099, 14, 4.6, 18),
     product(3, "Midnight Drape Jacket Set", "/categories/indo-western.webp", 21399, 24899, 14, 4.7, 29),
     product(4, "Emerald Runway Bandhgala", "/categories/festive-collection.webp", 23799, 27699, 14, 4.8, 40),
@@ -93,7 +93,7 @@ export const CATEGORY_PRODUCTS: Record<CategorySlug, readonly EditableCategoryPr
     product(5, "Ivory Crossover Bandhgala", "/categories/indo-western.webp", 18799, 21899, 14, 4.9, 51),
     product(6, "Burgundy Layered Indo-Western", "/categories/designer-dresses.webp", 20699, 24099, 14, 4.6, 62),
     product(7, "Midnight Asymmetric Achkan", "/categories/festive-collection.webp", 22599, 26299, 14, 4.7, 73),
-    product(8, "Sage Contemporary Jacket Set", "/categories/wedding-collection.webp", 24499, 28499, 14, 4.8, 84),
+    product(8, "Sage Contemporary Jacket Set", "https://ik.imagekit.io/c5zhitarg/WhatsApp%20Image%202026-07-17%20at%209.57.55%20PM.jpeg?updatedAt=1784306225007", 24499, 28499, 14, 4.8, 84),
   ],
   "wedding-collection": WEDDING_PRODUCTS,
   "festive-collection": [
