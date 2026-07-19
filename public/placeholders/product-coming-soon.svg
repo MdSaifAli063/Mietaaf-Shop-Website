@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1200" role="img" aria-labelledby="title description">
+  <title id="title">Mietaaf product coming soon</title>
+  <desc id="description">An elegant cream placeholder for a product image that will be added soon.</desc>
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f8f2e8"/>
+      <stop offset="0.52" stop-color="#eadfce"/>
+      <stop offset="1" stop-color="#d9c7ad"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="38%" r="58%">
+      <stop offset="0" stop-color="#fffdf8" stop-opacity="0.94"/>
+      <stop offset="1" stop-color="#fffdf8" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="900" height="1200" fill="url(#background)"/>
+  <rect width="900" height="1200" fill="url(#glow)"/>
+  <path d="M110 214C260 92 640 92 790 214M110 986C260 1108 640 1108 790 986" fill="none" stroke="#a97948" stroke-opacity="0.26" stroke-width="2"/>
+  <path d="M164 164H310M590 164H736M164 1036H310M590 1036H736" stroke="#a97948" stroke-opacity="0.36" stroke-width="2"/>
+  <circle cx="450" cy="492" r="120" fill="none" stroke="#a97948" stroke-opacity="0.2" stroke-width="2"/>
+  <circle cx="450" cy="492" r="96" fill="none" stroke="#a97948" stroke-opacity="0.16" stroke-width="2"/>
+  <path d="M395 520V455l55 43 55-43v65" fill="none" stroke="#7c5635" stroke-linecap="round" stroke-linejoin="round" stroke-width="8"/>
+  <text x="450" y="290" fill="#795334" font-family="Arial, sans-serif" font-size="22" font-weight="700" letter-spacing="9" text-anchor="middle">MIETAAF ATELIER</text>
+  <text x="450" y="700" fill="#2f271f" font-family="Georgia, serif" font-size="70" text-anchor="middle">Coming Soon</text>
+  <text x="450" y="756" fill="#765f4c" font-family="Arial, sans-serif" font-size="21" letter-spacing="4" text-anchor="middle">THE NEXT EDIT IS IN THE MAKING</text>
+  <line x1="305" y1="822" x2="595" y2="822" stroke="#a97948" stroke-opacity="0.45" stroke-width="2"/>
+</svg>

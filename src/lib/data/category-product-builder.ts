@@ -1,6 +1,6 @@
 import type { CategorySlug, Product, ProductColor } from "@/types";
 import { CATEGORY_PRODUCTS } from "@/lib/data/category-products";
-import { CATEGORY_IMAGE_LINKS } from "@/lib/data/image-links/category-images";
+import { PRODUCT_COMING_SOON_IMAGE } from "@/lib/data/category-products/product-entry";
 
 type CategoryDetails = {
   category: string;
@@ -133,7 +133,7 @@ export function createCategoryDemoProducts(
         categorySlug,
         sizes: details.sizes,
         colors: details.colors,
-        images: [item.image || CATEGORY_IMAGE_LINKS[categorySlug]],
+        images: [item.image || PRODUCT_COMING_SOON_IMAGE],
         rating: item.rating,
         reviewCount: item.reviewCount,
         stock: 8 + item.number * 3,
@@ -167,7 +167,7 @@ export function applyNumberedCategoryProductDetails(products: Product[]): Produc
       discountPercent: item.discountPercent,
       rating: item.rating,
       reviewCount: item.reviewCount,
-      images: item.image ? [item.image] : product.images,
+      images: [item.image || PRODUCT_COMING_SOON_IMAGE],
     };
   });
 }
