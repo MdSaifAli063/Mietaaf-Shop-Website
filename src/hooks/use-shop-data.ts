@@ -54,8 +54,12 @@ export function useShopData() {
       const remote = await loadRemoteShopData();
       if (!active) return;
       if (remote.products.length > 0) {
+        // Ignore the retired category if it still exists in an older Firestore dataset.
+        const currentRemoteProducts = remote.products.filter(
+          (product) => (product.categorySlug as string) !== "designer-dresses",
+        );
         const mergedProducts = new Map(
-          [...DUMMY_PRODUCTS, ...remote.products].map((product) => [
+          [...DUMMY_PRODUCTS, ...currentRemoteProducts].map((product) => [
             product.id,
             product,
           ]),

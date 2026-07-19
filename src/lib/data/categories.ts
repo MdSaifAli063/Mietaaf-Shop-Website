@@ -39,10 +39,10 @@ export const CATEGORIES: Category[] = [
     image: CATEGORY_IMAGE_LINKS.pants,
   },
   {
-    slug: "designer-dresses",
-    name: "Designer Dresses",
-    description: "Statement designer pieces for spotlight moments.",
-    image: CATEGORY_IMAGE_LINKS["designer-dresses"],
+    slug: "waistcoat",
+    name: "Waistcoat",
+    description: "Refined layers for celebrations and formal evenings.",
+    image: CATEGORY_IMAGE_LINKS.waistcoat,
   },
   {
     slug: "indo-western",

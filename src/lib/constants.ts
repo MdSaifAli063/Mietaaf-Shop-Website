@@ -17,7 +17,7 @@ export const NAV_CATEGORIES: { slug: CategorySlug; label: string }[] = [
   { slug: "suits", label: "Suits" },
   { slug: "kurta", label: "Kurta" },
   { slug: "pants", label: "Pants" },
-  { slug: "designer-dresses", label: "Designer Dresses" },
+  { slug: "waistcoat", label: "Waistcoat" },
   { slug: "indo-western", label: "Indo-Western" },
   { slug: "wedding-collection", label: "Wedding" },
   { slug: "festive-collection", label: "Festive" },

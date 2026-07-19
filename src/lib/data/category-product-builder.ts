@@ -61,13 +61,13 @@ const CATEGORY_DETAILS: Record<CategorySlug, CategoryDetails> = {
     fabric: "Wool-blend suiting with a smooth, crease-resistant finish.",
     tags: ["pants", "trousers", "formal"],
   },
-  "designer-dresses": {
-    category: "Designer Dresses",
-    description: "A directional designer look combining sculpted tailoring, statement detail, and occasion-ready comfort.",
-    sizes: ["38", "40", "42", "44", "46"],
-    colors: [{ name: "Onyx", hex: "#111111" }, { name: "Emerald", hex: "#14532d" }, { name: "Champagne", hex: "#e8dcc4" }],
-    fabric: "Textured wool-silk blend with hand-finished accents.",
-    tags: ["designer", "statement", "runway"],
+  waistcoat: {
+    category: "Waistcoat",
+    description: "A refined sleeveless layer shaped with clean tailoring, premium texture, and an occasion-ready fit.",
+    sizes: ["36", "38", "40", "42", "44", "46"],
+    colors: [{ name: "Ivory", hex: "#f5f0e6" }, { name: "Midnight", hex: "#111827" }, { name: "Burgundy", hex: "#7f1d1d" }],
+    fabric: "Premium silk, velvet, and wool blends with satin lining.",
+    tags: ["waistcoat", "layering", "occasion"],
   },
   "indo-western": {
     category: "Indo-Western",
