@@ -30,7 +30,7 @@ export const HOME_PRODUCT_SECTIONS = {
   ],
   feed: [
     "pleated-tuxedo-trousers",
-    "velvet-designer-drape",
+    "ivory-embroidered-waistcoat-set",
     "indo-western-bandhgala",
     "silk-brocade-festive-bandhgala",
     "structured-trench-coat",
