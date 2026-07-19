@@ -1,111 +1,68 @@
-# Mietaaf — Luxury Men’s Fashion (Next.js 15)
+# Mietaaf storefront
 
-Production-ready men’s ethnic and formal e-commerce experience: **Next.js 15 (App Router)**, **TypeScript**, **Tailwind CSS v4**, **Firebase Auth + Firestore + Storage**, **Framer Motion**, **Shadcn UI (Base UI primitives)**, **Zustand**, **React Hook Form + Zod**, **Swiper**, **React Hot Toast**, **next-themes**.
+Luxury men's ethnic and formal storefront built with Next.js 15 App Router, React 19, TypeScript, Tailwind CSS 4, Firebase, EmailJS, Zustand, React Hook Form, Zod, and next-themes.
 
-Orders are completed **without a payment gateway**: checkout builds a structured message and redirects to **`https://wa.me/<YOUR_NUMBER>?text=...`**, optionally persisting an `orders` document in Firestore.
+Customers can browse as guests. Sign-in is requested only when checkout needs a Firebase-backed customer session. Orders are saved to Firestore when Firebase is configured and then confirmed through WhatsApp; the site does not collect card payments.
 
-## Authentication gate
+## Local development
 
-When **Firebase env vars are set** (`firebaseReady`), the storefront (header, search, cart, shop, etc.) is only available **after sign-in**. Visiting any other route sends you to `/login?returnUrl=…`; after login you return to that path (same-origin paths only — see `sanitizeReturnUrl` in `src/lib/auth-public-paths.ts`).
-
-If Firebase is **not** configured, the gate is **off** so you can still preview layouts while wiring `.env.local`.
-
-Auth pages (`/login`, `/signup`, `/forgot-password`) use a compact card layout with the gold wordmark inside the form. Logo path: `src/lib/auth-wordmark-src.ts` (default `/branding/mietaaf-auth-wordmark.png`).
-
-## Quick start
+Requirements: Node.js 22 and npm.
 
 ```bash
 npm install
 cp .env.example .env.local
-# Fill .env.local (see below)
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+Open `http://localhost:3000`.
 
-## Environment variables
-
-Copy `.env.example` to `.env.local` and set:
-
-| Variable | Purpose |
-|----------|---------|
-| `NEXT_PUBLIC_SITE_URL` | Canonical URL for metadata / Open Graph |
-| `NEXT_PUBLIC_WHATSAPP_NUMBER` | Business WhatsApp in **digits only** (e.g. `917411025321`) |
-| `NEXT_PUBLIC_ADMIN_EMAILS` | Comma-separated emails that may access `/admin` in the UI |
-| `NEXT_PUBLIC_FIREBASE_*` | Firebase Web SDK config from the Firebase console |
-| `NEXT_PUBLIC_SOCIAL_*` | Optional LinkedIn / Instagram / Facebook URLs for the footer |
-
-## Site contact & branding
-
-Customer-facing phone, email, address, and Maps links live in **`src/lib/site-contact.ts`** (footer, Contact page, JSON-LD). Update that file when business details change.
-
-Default WhatsApp number in `.env.example` matches `SITE_WHATSAPP_E164_DIGITS` in `site-contact.ts`.
-
-## Catalog suits (PDF → shop)
-
-Ten suit products from the Mietaaf catalog PDF are seeded in **`src/lib/data/catalog-suits.ts`** and merged into the shop via **`src/lib/data/products.ts`**.
-
-| What | Where |
-|------|--------|
-| Page images (full PDF spreads) | `public/catalog/catalog-page-01.png` … `catalog-page-10.png` |
-| Product copy, slugs, tags | `CATALOG_SUIT_PRODUCTS` in `catalog-suits.ts` |
-| **Selling price / MRP** | Edit `price` and `compareAtPrice` on each product in `catalog-suits.ts` |
-| Category listing | `/category/suits` — photo left (cropped), catalogue copy right |
-| Product detail | `/product/<slug>` — same layout + size picker, cart, WhatsApp |
-
-**Image crop:** Catalog PNGs include embedded text on the right. The UI crops to the **model photo only** (left ~46% of the image) everywhere it matters — category panels, cart, checkout, and thumbnails — via **`ProductThumbnailImage`** / **`CatalogProductPhoto`** in `src/components/product/catalog-product-photo.tsx`. Do not set `style.width` on a Next.js `Image` with `fill`; apply crop width on a positioned wrapper `div` instead.
-
-To add or replace catalog looks, drop new PNGs under `public/catalog/`, add a row in `catalog-suits.ts`, and rebuild.
-
-## WhatsApp checkout
-
-- **Cart → Checkout** collects name, phone, full address, and notes (Zod validated).  
-- **Place order** writes to Firestore `orders` (if configured), clears the cart, then redirects to WhatsApp with the full order text (items, sizes, colors, quantities, prices, total).  
-- **Product page** includes **Buy via WhatsApp** for a single-line inquiry.
-
-## Admin dashboard
-
-Routes under `/admin` (protected in the UI when Firebase is configured):
-
-- Dashboard (sample analytics + chart)  
-- Products (Firestore CRUD by slug; image URLs comma-separated)  
-- Categories / Banners (guidance + seed previews)  
-- Orders (lists recent `orders` documents)  
-- Users (policy notes)
-
-## Deployment (e.g. Vercel)
-
-1. Push the repo and import the project in Vercel.  
-2. Set the same `NEXT_PUBLIC_*` environment variables in the Vercel dashboard.  
-3. Add your production domain to `NEXT_PUBLIC_SITE_URL`.  
-4. In Firebase console → Authentication → **Authorized domains**, add your Vercel domain.
-
-Build locally:
+Before committing a change, run:
 
 ```bash
+npm run check
 npm run build
-npm start
 ```
 
-## Project structure (high level)
+## Configuration
 
-- `src/app` — App Router: `(main)` shop, `(auth)` login/signup, `admin`, static pages (About, Contact, FAQ), `not-found`  
-- `src/components` — UI, layout, home, product (including catalog panels & cropped thumbnails), admin, motion  
-- `src/lib` — `site-contact.ts`, `data/catalog-suits.ts`, `data/products.ts`, WhatsApp helpers, validations, SEO  
-- `src/store` — Zustand (cart, wishlist, compare, recent, UI)  
-- `src/context` — Firebase auth provider  
-- `src/firebase` — client SDK bootstrap  
-- `src/services` — optional helpers (e.g. Storage upload)  
-- `public/catalog/` — catalog suit page images  
-- `public/branding/` — auth wordmark and brand assets  
-- `firebase/` — Firestore and Storage rules templates  
+Copy [.env.example](./.env.example) and fill the services you use. All supported variables begin with `NEXT_PUBLIC_` because Firebase Web SDK configuration and EmailJS's browser key are designed to run in the browser. Never add a Firebase service-account private key or any other server secret to a `NEXT_PUBLIC_` variable.
 
-## Security notes
+- Site contact details and Maps links: `src/lib/site-contact.ts`
+- Sitewide logo URL: `src/lib/site-logo.ts` or `NEXT_PUBLIC_SITE_LOGO_URL`
+- Hero, category, story, and home-section image links: `src/lib/data/image-links/`
+- Category product records: `src/lib/data/category-products.ts` and `src/lib/data/category-products/`
+- Catalog suit products: `src/lib/data/catalog-suits.ts`
 
-- Firestore rules in-repo are a **starting point**; tighten `orders` create/read and admin checks before public launch.  
-- Prefer **Firebase Admin SDK** or **Custom Claims** for authoritative admin checks in production.  
-- Never commit real `.env.local` files.
+## Authentication and checkout
 
-## Licence
+- `/login`, `/signup`, and `/forgot-password` are public.
+- Storefront and product pages are public.
+- `/checkout` redirects signed-out customers to login when Firebase is configured, preserving the return URL.
+- If Firebase is intentionally not configured, the catalog still renders and checkout continues through WhatsApp without a Firestore write.
 
-Private / proprietary — Mietaaf.
+## Firebase security
+
+Repository rules are in `firebase/firestore.rules` and `firebase/storage.rules`. They use the Firebase custom claim `admin: true` for privileged catalog/storage writes. A public environment variable or editable user document is never trusted for authorization.
+
+Vercel does not publish Firebase rules. Publish them separately before launch, as described in [VERCEL_DEPLOYMENT.md](./VERCEL_DEPLOYMENT.md).
+
+## Deploying
+
+The project is prepared for Vercel with a pinned Node.js version and the standard stable Next.js production build. No `vercel.json` is needed.
+
+Follow the complete checklist in [VERCEL_DEPLOYMENT.md](./VERCEL_DEPLOYMENT.md).
+
+## Main structure
+
+- `src/app` - App Router pages, metadata, sitemap, robots, loading/error states
+- `src/components` - layout, auth, storefront, product, form, and UI components
+- `src/lib/data` - editable local catalog and content
+- `src/context` - Firebase authentication state
+- `src/firebase` and `src/services` - optional Firebase integrations
+- `src/store` - persistent cart, wishlist, compare, recent, settings, and UI state
+- `public` - optimized local images and placeholders
+- `firebase` - production Firestore and Storage rules
+
+## License
+
+Private and proprietary - Mietaaf.
