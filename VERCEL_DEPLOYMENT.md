@@ -42,6 +42,8 @@ Production URL and optional branding/social variables:
 
 ```text
 NEXT_PUBLIC_SITE_URL
+NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
+NEXT_PUBLIC_INDEXING_DISABLED
 NEXT_PUBLIC_SITE_LOGO_URL
 NEXT_PUBLIC_SOCIAL_LINKEDIN
 NEXT_PUBLIC_SOCIAL_INSTAGRAM
@@ -52,6 +54,8 @@ Rules for the values:
 
 - `NEXT_PUBLIC_WHATSAPP_NUMBER`: country code and phone number, digits only; no `+`, spaces, or dashes.
 - `NEXT_PUBLIC_SITE_URL`: the final HTTPS origin with no path, for example `https://mietaaf.com`.
+- `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION`: optional. Paste only the Google Search Console meta tag `content` value.
+- `NEXT_PUBLIC_INDEXING_DISABLED`: optional. Set to `true` only for staging. Vercel Preview deployments are noindexed automatically.
 - `NEXT_PUBLIC_SITE_LOGO_URL`: optional. Leave it unset/blank to use the existing logo. A remote override must use an image host allowed in `next.config.ts`.
 - Do not surround values with quotes.
 - Environment variables changed after a deployment take effect only after a new deployment.
@@ -99,6 +103,17 @@ Click **Deploy**, then verify on the deployed HTTPS URL:
 5. Email/password login, Google login, and password reset work.
 6. Contact and Appointment each reach the correct EmailJS template/inbox.
 7. `/robots.txt` and `/sitemap.xml` contain the production domain.
-8. Test at least one mobile viewport and one desktop viewport.
+8. The home page source includes Organization/WebSite JSON-LD, product pages include Product/Breadcrumb JSON-LD, and utility pages include `noindex`.
+9. Test at least one mobile viewport and one desktop viewport.
+
+## 6. Publish to Google
+
+After the production domain is live:
+
+1. Open Google Search Console and add the final domain as a property.
+2. Verify with either DNS verification or the HTML tag. For the HTML tag method, put the tag's `content` value into `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION`, redeploy, then click **Verify**.
+3. Submit `https://your-domain.com/sitemap.xml` in **Sitemaps**.
+4. Use **URL Inspection** for the homepage and one real product page, then request indexing.
+5. Test one product page with Google's Rich Results Test and the homepage with Schema Markup Validator.
 
 If Vercel reports a stale `.next` manifest locally, stop every running Next.js process and remove `.next`/`.next-dev` before rebuilding. These generated folders are ignored and are never uploaded to Vercel.
