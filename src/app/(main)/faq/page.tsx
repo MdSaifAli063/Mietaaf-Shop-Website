@@ -1,5 +1,14 @@
+import type { Metadata } from "next";
 import { PageEnter } from "@/components/motion/page-enter";
 import { PAGE_CONTAINER, PAGE_PY } from "@/lib/layout";
+import { publicPageMetadata } from "@/lib/seo";
+
+export const metadata: Metadata = publicPageMetadata({
+  title: "FAQ",
+  description:
+    "Answers about Mietaaf sizing, custom appointments, delivery timelines, WhatsApp ordering, and premium menswear care.",
+  path: "/faq",
+});
 
 const faqs = [
   {

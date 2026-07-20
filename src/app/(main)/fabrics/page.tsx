@@ -4,12 +4,14 @@ import { ArrowRight, CalendarDays, Layers3, Scissors, Sparkles } from "lucide-re
 import { PageEnter } from "@/components/motion/page-enter";
 import { Button } from "@/components/ui/button";
 import { PAGE_CONTAINER, PAGE_PY } from "@/lib/layout";
+import { publicPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = publicPageMetadata({
   title: "Fabrics",
   description:
     "Discover the upcoming Mietaaf fabric library for ceremonial, festive, and formal tailoring.",
-};
+  path: "/fabrics",
+});
 
 const fabricFamilies = [
   {
