@@ -2,10 +2,14 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import { ShopExplorer } from "@/components/shop/shop-explorer";
 import { Skeleton } from "@/components/ui/skeleton";
+import { publicPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = publicPageMetadata({
   title: "Shop",
-};
+  description:
+    "Shop Mietaaf sherwanis, suits, blazers, kurtas, waistcoats, and premium menswear for weddings and formal occasions.",
+  path: "/shop",
+});
 
 function ShopFallback() {
   return (

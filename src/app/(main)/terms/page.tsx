@@ -1,5 +1,14 @@
+import type { Metadata } from "next";
 import { PageEnter } from "@/components/motion/page-enter";
 import { PAGE_CONTAINER, PAGE_PY } from "@/lib/layout";
+import { publicPageMetadata } from "@/lib/seo";
+
+export const metadata: Metadata = publicPageMetadata({
+  title: "Terms & Conditions",
+  description:
+    "Review Mietaaf website terms for browsing collections, consultations, orders, availability, and product information.",
+  path: "/terms",
+});
 
 export default function TermsPage() {
   return (
