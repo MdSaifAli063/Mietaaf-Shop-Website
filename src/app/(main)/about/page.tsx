@@ -64,11 +64,11 @@ export default function AboutPage() {
           <div className="relative aspect-4/5 overflow-hidden rounded-2xl bg-muted shadow-lg ring-1 ring-black/5 sm:aspect-5/6 lg:min-h-[min(60vh,560px)] lg:aspect-auto dark:ring-white/10">
             <Image
               src={hero}
-              alt="Mietaaf ceremonial tailoring"
+              alt="An Indian groom receiving a final sherwani fitting in the Mietaaf atelier"
               fill
               priority
               sizes="(max-width:1024px) 100vw, 50vw"
-              className="object-cover"
+              className="object-cover object-top"
             />
             <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-linear-to-t from-black/50 to-transparent" />
             <p className="absolute bottom-5 left-5 right-5 text-sm font-medium text-white drop-shadow-sm sm:bottom-7 sm:left-7">
@@ -81,7 +81,7 @@ export default function AboutPage() {
           <div className="relative aspect-16/11 overflow-hidden rounded-2xl bg-muted ring-1 ring-black/5 md:aspect-auto md:min-h-[340px] dark:ring-white/10">
             <Image
               src={craft}
-              alt="Detailed embroidery and fabric"
+              alt="An artisan hand-embroidering an ivory sherwani panel"
               fill
               sizes="(max-width:768px) 100vw, 45vw"
               className="object-cover"
@@ -123,10 +123,10 @@ export default function AboutPage() {
 
         <div className="mt-14 grid gap-6 sm:mt-16 md:mt-20 md:grid-cols-2 md:gap-8 lg:grid-cols-3">
           <div className="relative aspect-4/5 overflow-hidden rounded-2xl bg-muted md:col-span-2 md:aspect-auto md:min-h-[300px] lg:col-span-1 lg:aspect-4/5 lg:min-h-0">
-            <Image src={stitch} alt="Gold thread and occasion wear" fill sizes="(max-width:768px) 100vw, 33vw" className="object-cover" />
+            <Image src={stitch} alt="Emerald bandhgala construction with silk, thread, and tailoring tools" fill sizes="(max-width:768px) 100vw, 33vw" className="object-cover" />
           </div>
           <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-muted md:col-span-2 md:aspect-[16/9] lg:col-span-2 lg:min-h-[300px]">
-            <Image src={studio} alt="Tailoring workspace" fill sizes="(max-width:1024px) 100vw, 66vw" className="object-cover" />
+            <Image src={studio} alt="Indian tailors working around a cutting table in a refined atelier" fill sizes="(max-width:1024px) 100vw, 66vw" className="object-cover" />
             <div className="absolute inset-0 flex flex-col justify-end bg-linear-to-t from-black/60 via-black/20 to-transparent p-6 sm:p-8">
               <p className="max-w-xl text-lg font-heading text-white drop-shadow">
                 Made in India, minded for the modern gentleman.
