@@ -1,10 +1,11 @@
-import type { Product } from "@/types";
+import type { CategorySlug, Product } from "@/types";
 import { unsplashImageUrl } from "@/lib/unsplash-images";
 import { CATALOG_SUIT_PRODUCTS } from "@/lib/data/catalog-suits";
 import {
   applyNumberedCategoryProductDetails,
   createCategoryDemoProducts,
 } from "@/lib/data/category-product-builder";
+import { CATEGORY_PRODUCTS } from "@/lib/data/category-products";
 
 const img = (id: string) => unsplashImageUrl(id, 900);
 
@@ -530,11 +531,27 @@ const CORE_PRODUCTS: Product[] = [
   ...CATALOG_SUIT_PRODUCTS,
 ];
 
-/** Shop inventory: every category always contains at least eight demo products. */
+/**
+ * Canonical storefront inventory.
+ *
+ * Each category page and the Shop page must expose only the numbered rows from
+ * `category-products.ts` (including the separate Wedding and Premium files).
+ * Limiting each category to that editable row count prevents retired seed or
+ * catalogue records from leaking into Shop as extra products.
+ */
+const numberedProductPositions = new Map<CategorySlug, number>();
+
 export const DUMMY_PRODUCTS: Product[] = applyNumberedCategoryProductDetails([
   ...CORE_PRODUCTS,
   ...createCategoryDemoProducts(CORE_PRODUCTS),
-]);
+]).filter((product) => {
+  const position = numberedProductPositions.get(product.categorySlug) ?? 0;
+  numberedProductPositions.set(product.categorySlug, position + 1);
+  return position < CATEGORY_PRODUCTS[product.categorySlug].length;
+});
+
+/** Explicit alias used by storefront consumers. */
+export const SHOP_PRODUCTS: Product[] = DUMMY_PRODUCTS;
 
 export function getProductBySlug(slug: string): Product | undefined {
   return DUMMY_PRODUCTS.find((p) => p.slug === slug);

@@ -1,18 +1,15 @@
 import { useEffect, useState } from "react";
-import { getProducts } from "@/services/products";
 import { getCategories } from "@/services/categories";
 import { getBanners } from "@/services/banners";
-import { DUMMY_PRODUCTS } from "@/lib/data/products";
+import { SHOP_PRODUCTS } from "@/lib/data/products";
 import { CATEGORIES as DUMMY_CATEGORIES } from "@/lib/data/categories";
 import { BANNERS as DUMMY_BANNERS } from "@/lib/data/banners";
 import { applyCategoryImageLink } from "@/lib/data/image-links/category-images";
 import { applyHeroImageLink } from "@/lib/data/image-links/hero-images";
-import { applyNumberedCategoryProductDetails } from "@/lib/data/category-product-builder";
 import { getFirebaseDb } from "@/firebase/client";
 import type { Product, Category, Banner } from "@/types";
 
 type RemoteShopData = {
-  products: Product[];
   categories: Category[];
   banners: Banner[];
 };
@@ -27,11 +24,9 @@ let remoteShopDataPromise: Promise<RemoteShopData> | null = null;
 function loadRemoteShopData(): Promise<RemoteShopData> {
   if (!remoteShopDataPromise) {
     remoteShopDataPromise = Promise.allSettled([
-      getProducts(),
       getCategories(),
       getBanners(),
-    ]).then(([products, categories, banners]) => ({
-      products: products.status === "fulfilled" ? products.value : [],
+    ]).then(([categories, banners]) => ({
       categories: categories.status === "fulfilled" ? categories.value : [],
       banners: banners.status === "fulfilled" ? banners.value : [],
     }));
@@ -40,7 +35,7 @@ function loadRemoteShopData(): Promise<RemoteShopData> {
 }
 
 export function useShopData() {
-  const [products, setProducts] = useState<Product[]>(DUMMY_PRODUCTS);
+  const products: Product[] = SHOP_PRODUCTS;
   const [categories, setCategories] = useState<Category[]>(DUMMY_CATEGORIES);
   const [banners, setBanners] = useState<Banner[]>(DUMMY_BANNERS);
   const loading = false;
@@ -53,19 +48,6 @@ export function useShopData() {
     async function load() {
       const remote = await loadRemoteShopData();
       if (!active) return;
-      if (remote.products.length > 0) {
-        // Ignore the retired category if it still exists in an older Firestore dataset.
-        const currentRemoteProducts = remote.products.filter(
-          (product) => (product.categorySlug as string) !== "designer-dresses",
-        );
-        const mergedProducts = new Map(
-          [...DUMMY_PRODUCTS, ...currentRemoteProducts].map((product) => [
-            product.id,
-            product,
-          ]),
-        );
-        setProducts(applyNumberedCategoryProductDetails(Array.from(mergedProducts.values())));
-      }
       if (remote.categories.length > 0) {
         setCategories(remote.categories.map(applyCategoryImageLink));
       }

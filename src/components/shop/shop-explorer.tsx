@@ -23,16 +23,14 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { SlidersHorizontal } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useShopData } from "@/hooks/use-shop-data";
+import { CATEGORIES } from "@/lib/data/categories";
 
 const ALL_CATEGORIES: { slug: CategorySlug | "all"; label: string }[] = [
   { slug: "all", label: "All" },
-  { slug: "sherwani", label: "Sherwani" },
-  { slug: "blazer", label: "Blazer" },
-  { slug: "suits", label: "Suits" },
-  { slug: "kurta", label: "Kurta" },
-  { slug: "wedding-collection", label: "Wedding" },
-  { slug: "premium-collection", label: "Premium" },
-  { slug: "indo-western", label: "Indo-Western" },
+  ...CATEGORIES.map((category) => ({
+    slug: category.slug,
+    label: category.name.replace(" Collection", ""),
+  })),
 ];
 
 export function ShopExplorer() {
