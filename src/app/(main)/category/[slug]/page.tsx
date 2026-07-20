@@ -16,6 +16,8 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import { BreadcrumbJsonLd, CategoryJsonLd } from "@/components/seo/json-ld";
+import { publicPageMetadata } from "@/lib/seo";
 
 const slugs = CATEGORIES.map((category) => category.slug);
 
@@ -31,7 +33,12 @@ export async function generateMetadata({
   const { slug } = await params;
   const category = CATEGORIES.find((item) => item.slug === slug);
   if (!category) return { title: "Category" };
-  return { title: category.name, description: category.description };
+  return publicPageMetadata({
+    title: category.name,
+    description: category.description,
+    path: `/category/${category.slug}`,
+    image: category.image,
+  });
 }
 
 export default async function CategoryPage({
@@ -47,6 +54,14 @@ export default async function CategoryPage({
 
   return (
     <PageEnter>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Home", url: "/" },
+          { name: "Shop", url: "/shop" },
+          { name: category.name, url: `/category/${category.slug}` },
+        ]}
+      />
+      <CategoryJsonLd category={category} />
       <div className="min-h-screen bg-[#fbf8f2] dark:bg-[#181613]">
         <div className={`${PAGE_CONTAINER} ${PAGE_PY} min-w-0`}>
           <Breadcrumb className="mb-6 overflow-x-auto sm:mb-8">

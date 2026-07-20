@@ -1,8 +1,10 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { Clock, Mail, MapPin, Phone } from "lucide-react";
 import { PageEnter } from "@/components/motion/page-enter";
 import { ContactForm } from "@/components/contact/contact-form";
 import { PAGE_CONTAINER, PAGE_PY } from "@/lib/layout";
+import { publicPageMetadata } from "@/lib/seo";
 import {
   SITE_ADDRESS_DISPLAY,
   SITE_EMAIL_DISPLAY,
@@ -10,6 +12,13 @@ import {
   SITE_PHONE_DISPLAY,
   getSiteMapsEmbedSrc,
 } from "@/lib/site-contact";
+
+export const metadata: Metadata = publicPageMetadata({
+  title: "Contact",
+  description:
+    "Contact Mietaaf for wedding menswear, premium suits, custom fittings, fabric consultations, and Bengaluru appointments.",
+  path: "/contact",
+});
 
 function ContactChip({
   icon: Icon,
