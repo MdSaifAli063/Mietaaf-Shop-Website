@@ -108,7 +108,16 @@ export function CatalogProductPanel({
             </h2>
           </Link>
         ) : (
-          <h1 className="font-heading text-xl font-medium tracking-[0.06em] sm:text-2xl">{title}</h1>
+          <>
+            {product.catalogTitle ? (
+              <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.3em] text-primary sm:text-xs">
+                {product.catalogTitle}
+              </p>
+            ) : null}
+            <h1 className="font-heading text-xl font-medium tracking-[0.06em] sm:text-2xl">
+              {product.name}
+            </h1>
+          </>
         )}
 
         {bullets.length > 0 ? (
