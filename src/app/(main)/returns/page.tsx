@@ -1,5 +1,14 @@
+import type { Metadata } from "next";
 import { PageEnter } from "@/components/motion/page-enter";
 import { PAGE_CONTAINER, PAGE_PY } from "@/lib/layout";
+import { publicPageMetadata } from "@/lib/seo";
+
+export const metadata: Metadata = publicPageMetadata({
+  title: "Return Policy",
+  description:
+    "Read the Mietaaf return policy for custom, altered, and ready-to-ship menswear orders.",
+  path: "/returns",
+});
 
 export default function ReturnsPage() {
   return (

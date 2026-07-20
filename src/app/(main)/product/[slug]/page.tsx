@@ -8,6 +8,8 @@ import { CatalogProductDetailView } from "@/components/product/catalog-product-d
 import { isCatalogProduct } from "@/lib/data/catalog-suits";
 import { fetchCollectionREST } from "@/lib/firebase-rest";
 import type { CategorySlug, Product, ProductColor } from "@/types";
+import { BreadcrumbJsonLd, ProductJsonLd } from "@/components/seo/json-ld";
+import { absoluteUrl, noIndexMetadata } from "@/lib/seo";
 
 const categorySlugs = new Set<string>(CATEGORIES.map((category) => category.slug));
 
@@ -108,6 +110,10 @@ const resolveProduct = cache(async (slug: string): Promise<Product | null> => {
   return null;
 });
 
+function hasSeoReadyImage(product: Product): boolean {
+  return product.images.some((image) => !image.includes("/placeholders/product-coming-soon.svg"));
+}
+
 export function generateStaticParams() {
   return DUMMY_PRODUCTS.map((p) => ({ slug: p.slug }));
 }
@@ -120,10 +126,26 @@ export async function generateMetadata({
   const { slug } = await params;
   const p = await resolveProduct(slug);
   if (!p) return { title: "Product" };
+  const image = p.images[0] ?? "/placeholders/product-coming-soon.svg";
+  const robots = hasSeoReadyImage(p) ? undefined : noIndexMetadata.robots;
   return {
     title: p.name,
     description: p.description.slice(0, 160),
-    openGraph: { images: [{ url: p.images[0]! }] },
+    robots,
+    alternates: { canonical: `/product/${p.slug}` },
+    openGraph: {
+      type: "website",
+      title: `${p.name} | Mietaaf`,
+      description: p.description.slice(0, 160),
+      url: `/product/${p.slug}`,
+      images: [{ url: absoluteUrl(image), alt: p.name }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${p.name} | Mietaaf`,
+      description: p.description.slice(0, 160),
+      images: [absoluteUrl(image)],
+    },
   };
 }
 
@@ -135,17 +157,38 @@ export default async function ProductPage({
   const { slug } = await params;
   const p = await resolveProduct(slug);
   if (!p) notFound();
+  const category = CATEGORIES.find((item) => item.slug === p.categorySlug);
+  const schema = (
+    <>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Home", url: "/" },
+          { name: "Shop", url: "/shop" },
+          { name: category?.name ?? p.category, url: `/category/${p.categorySlug}` },
+          { name: p.name, url: `/product/${p.slug}` },
+        ]}
+      />
+      <ProductJsonLd product={p} />
+    </>
+  );
+
   if (isCatalogProduct(p)) {
     return (
-      <Suspense fallback={<ProductDetailFallback />}>
-        <CatalogProductDetailView product={p} />
-      </Suspense>
+      <>
+        {schema}
+        <Suspense fallback={<ProductDetailFallback />}>
+          <CatalogProductDetailView product={p} />
+        </Suspense>
+      </>
     );
   }
   return (
-    <Suspense fallback={<ProductDetailFallback />}>
-      <ProductDetailView product={p} />
-    </Suspense>
+    <>
+      {schema}
+      <Suspense fallback={<ProductDetailFallback />}>
+        <ProductDetailView product={p} />
+      </Suspense>
+    </>
   );
 }
 

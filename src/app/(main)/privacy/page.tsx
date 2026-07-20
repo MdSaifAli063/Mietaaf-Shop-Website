@@ -1,5 +1,14 @@
+import type { Metadata } from "next";
 import { PageEnter } from "@/components/motion/page-enter";
 import { PAGE_CONTAINER, PAGE_PY } from "@/lib/layout";
+import { publicPageMetadata } from "@/lib/seo";
+
+export const metadata: Metadata = publicPageMetadata({
+  title: "Privacy Policy",
+  description:
+    "Read Mietaaf's privacy policy for how contact, appointment, order, and account details are handled.",
+  path: "/privacy",
+});
 
 export default function PrivacyPage() {
   return (
