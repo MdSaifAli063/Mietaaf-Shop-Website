@@ -107,6 +107,10 @@ function slugify(value: string): string {
   return value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 }
 
+function productDescription(productName: string, categoryDescription: string): string {
+  return `${productName} is ${categoryDescription.charAt(0).toLowerCase()}${categoryDescription.slice(1)}`;
+}
+
 export function createCategoryDemoProducts(
   existingProducts: Product[],
   minimumPerCategory = 8,
@@ -123,9 +127,9 @@ export function createCategoryDemoProducts(
 
       return items.map((item): Product => ({
         id: `demo-${categorySlug}-${item.number}`,
-        slug: `demo-${slugify(item.name)}`,
+        slug: slugify(item.name),
         name: item.name,
-        description: details.description,
+        description: productDescription(item.name, details.description),
         price: item.price,
         compareAtPrice: item.compareAtPrice,
         discountPercent: item.discountPercent,
@@ -158,10 +162,12 @@ export function applyNumberedCategoryProductDetails(products: Product[]): Produc
     positions.set(product.categorySlug, position + 1);
     const item = CATEGORY_PRODUCTS[product.categorySlug][position];
     if (!item) return product;
+    const details = CATEGORY_DETAILS[product.categorySlug];
 
     return {
       ...product,
       name: item.name,
+      description: productDescription(item.name, details.description),
       price: item.price,
       compareAtPrice: item.compareAtPrice,
       discountPercent: item.discountPercent,

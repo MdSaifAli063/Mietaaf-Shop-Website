@@ -11,9 +11,14 @@ export function normalizeProductImageParam(value: string | null): string | undef
 
   try {
     const url = new URL(value);
-    return url.protocol === "https:" ? value : undefined;
+    const trustedHosts = new Set([
+      "images.unsplash.com",
+      "ik.imagekit.io",
+      "firebasestorage.googleapis.com",
+      "lh3.googleusercontent.com",
+    ]);
+    return url.protocol === "https:" && trustedHosts.has(url.hostname) ? value : undefined;
   } catch {
     return undefined;
   }
 }
-
