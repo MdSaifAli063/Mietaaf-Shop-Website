@@ -20,12 +20,15 @@ import { PageEnter } from "@/components/motion/page-enter";
 import { PAGE_IMAGE_LINKS } from "@/lib/data/image-links/page-images";
 import { PAGE_CONTAINER } from "@/lib/layout";
 import { SITE_PHONE_DISPLAY } from "@/lib/site-contact";
+import { publicPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Book an Appointment | Mietaaf",
+export const metadata: Metadata = publicPageMetadata({
+  title: "Book an Appointment",
   description:
     "Book Mietaaf home service for curated fabric collections, measurements, and custom menswear consultation in Bengaluru.",
-};
+  path: "/appointment",
+  image: PAGE_IMAGE_LINKS.appointment.hero,
+});
 
 const steps = [
   {

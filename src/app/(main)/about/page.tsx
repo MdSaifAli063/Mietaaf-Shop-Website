@@ -1,11 +1,21 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { PageEnter } from "@/components/motion/page-enter";
 import { Button } from "@/components/ui/button";
 import { PAGE_IMAGE_LINKS } from "@/lib/data/image-links/page-images";
 import { PAGE_CONTAINER, PAGE_PY } from "@/lib/layout";
+import { publicPageMetadata } from "@/lib/seo";
 
 const { hero, craft, stitch, studio } = PAGE_IMAGE_LINKS.about;
+
+export const metadata: Metadata = publicPageMetadata({
+  title: "About",
+  description:
+    "Meet Mietaaf, a Bengaluru menswear atelier crafting luxury sherwanis, suits, indo-western looks, and ceremony-first tailoring.",
+  path: "/about",
+  image: hero,
+});
 
 const pillars = [
   {

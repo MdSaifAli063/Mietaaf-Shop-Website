@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
+import { SiteJsonLd } from "@/components/seo/site-json-ld";
 import { homePageMetadata } from "@/lib/seo";
 
 const HeroCarousel = dynamic(
@@ -39,6 +40,7 @@ export const metadata: Metadata = homePageMetadata();
 export default function HomePage() {
   return (
     <>
+      <SiteJsonLd />
       <HeroCarousel />
       <HomeSections />
     </>
