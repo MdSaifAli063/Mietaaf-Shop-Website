@@ -7,6 +7,7 @@ interface CompareState {
   slugs: string[];
   images: Record<string, string>;
   max: number;
+  has: (slug: string) => boolean;
   add: (slug: string, image?: string) => boolean;
   remove: (slug: string) => void;
   clear: () => void;
@@ -18,6 +19,7 @@ export const useCompareStore = create<CompareState>()(
       slugs: [],
       images: {},
       max: 4,
+      has: (slug) => get().slugs.includes(slug),
       add: (slug, image) => {
         const { slugs, images, max } = get();
         if (slugs.includes(slug)) {
