@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { Minus, Plus, ShoppingBag, MessageCircle } from "lucide-react";
+import { Minus, Plus, ShoppingBag, MessageCircle, Share2 } from "lucide-react";
 import type { Product } from "@/types";
 import { CatalogProductPanel } from "@/components/product/catalog-product-panel";
 import { Button } from "@/components/ui/button";
@@ -45,6 +45,20 @@ export function CatalogProductDetailView({ product: originalProduct }: { product
   }, [product.slug, product.images, pushRecent]);
 
   const color = product.colors[0]!.name;
+
+  async function share() {
+    const url = typeof window !== "undefined" ? window.location.href : "";
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: product.name, url });
+      } else {
+        await navigator.clipboard.writeText(url);
+        toast.success("Link copied");
+      }
+    } catch {
+      toast.error("Could not share");
+    }
+  }
 
   return (
     <div className="page-container min-w-0 py-8 sm:py-10 md:py-12">
@@ -157,6 +171,15 @@ export function CatalogProductDetailView({ product: originalProduct }: { product
                   <MessageCircle className="mr-2 h-4 w-4" />
                   WhatsApp
                 </a>
+              </Button>
+              <Button
+                size="lg"
+                variant="secondary"
+                className="h-11 w-full sm:w-auto touch-manipulation rounded-full"
+                onClick={share}
+              >
+                <Share2 className="mr-2 h-4 w-4" />
+                Share
               </Button>
             </div>
 
