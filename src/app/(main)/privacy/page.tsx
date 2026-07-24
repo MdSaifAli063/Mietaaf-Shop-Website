@@ -27,7 +27,7 @@ export default function PrivacyPage() {
             secure options.
           </p>
           <p>
-            You may request access or deletion of personal data by emailing care@mietaaf.com with
+            You may request access or deletion of personal data by emailing mietaaf@gmail.com with
             the subject line “Data request”.
           </p>
         </div>

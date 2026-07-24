@@ -11,7 +11,7 @@ export const SITE_ADDRESS_DISPLAY =
   "Dharmaraja Koil St, Shivaji Nagar, Bengaluru, Karnataka, India";
 
 /** Public inbox for UI + mailto: links */
-export const SITE_EMAIL_DISPLAY = "care@mietaaf.com";
+export const SITE_EMAIL_DISPLAY = "mietaaf@gmail.com";
 
 /** Open in Maps app / browser (canonical search link). */
 export const SITE_GOOGLE_MAPS_URL = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(SITE_ADDRESS_DISPLAY)}`;
