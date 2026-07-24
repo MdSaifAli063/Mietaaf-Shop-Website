@@ -325,6 +325,14 @@ export const CATALOG_SUIT_PRODUCTS: Product[] = [
   },
 ];
 
-export function isCatalogProduct(product: Pick<Product, "catalogBullets" | "tags">): boolean {
-  return Boolean(product.catalogBullets?.length) || product.tags?.includes("catalog") === true;
+export function isCatalogProduct(
+  product: Pick<Product, "catalogBullets" | "tags" | "categorySlug">,
+): boolean {
+  // Treat explicit catalog items or any product in the `suits` category as catalog-style
+  // so suit product pages render the richer catalog detail layout.
+  return (
+    Boolean(product.catalogBullets?.length) ||
+    product.tags?.includes("catalog") === true ||
+    product.categorySlug === "suits"
+  );
 }
