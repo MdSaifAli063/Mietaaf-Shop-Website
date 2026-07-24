@@ -8,6 +8,7 @@ export type EditableCategoryProduct = {
   discountPercent: number;
   rating: number;
   reviewCount: number;
+  fabric?: string;
 };
 
 /** Automatically shown whenever a product image link is left blank. */
@@ -22,6 +23,7 @@ export function product(
   discountPercent: number,
   rating: number,
   reviewCount: number,
+  fabric?: string,
 ): EditableCategoryProduct {
-  return { number, name, image, price, compareAtPrice, discountPercent, rating, reviewCount };
+  return { number, name, image, price, compareAtPrice, discountPercent, rating, reviewCount, fabric };
 }
