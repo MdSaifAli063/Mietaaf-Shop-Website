@@ -141,7 +141,7 @@ export function createCategoryDemoProducts(
         rating: item.rating,
         reviewCount: item.reviewCount,
         stock: 8 + item.number * 3,
-        fabric: details.fabric,
+        fabric: item.fabric ?? details.fabric,
         tags: details.tags,
         featured: item.number <= 2,
         trending: item.number % 3 === 1,
