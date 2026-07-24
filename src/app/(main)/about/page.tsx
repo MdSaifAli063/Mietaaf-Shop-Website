@@ -12,7 +12,7 @@ const { hero, craft, stitch, studio } = PAGE_IMAGE_LINKS.about;
 export const metadata: Metadata = publicPageMetadata({
   title: "About",
   description:
-    "Meet Mietaaf, a Bengaluru menswear atelier crafting luxury sherwanis, suits, indo-western looks, and ceremony-first tailoring.",
+    "Meet Mietaaf Couture, a Bengaluru menswear house crafting luxury sherwanis, suits, indo-western looks, and ceremony-first tailoring.",
   path: "/about",
   image: hero,
 });
@@ -41,7 +41,7 @@ export default function AboutPage() {
           <div className="max-w-xl lg:max-w-none">
             <p className="text-xs font-semibold uppercase tracking-[0.4em] text-primary">About</p>
             <h1 className="mt-3 font-heading text-3xl sm:text-4xl md:text-5xl xl:text-[3.25rem]">
-              Mietaaf atelier
+              Mietaaf Couture
             </h1>
             <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
               A luxury men&apos;s house for modern Indian ceremony — sherwanis, indo-western tailoring,
@@ -64,7 +64,7 @@ export default function AboutPage() {
           <div className="relative aspect-4/5 overflow-hidden rounded-2xl bg-muted shadow-lg ring-1 ring-black/5 sm:aspect-5/6 lg:min-h-[min(60vh,560px)] lg:aspect-auto dark:ring-white/10">
             <Image
               src={hero}
-              alt="An Indian groom receiving a final sherwani fitting in the Mietaaf atelier"
+              alt="An Indian groom receiving a final sherwani fitting in the Mietaaf Couture atelier"
               fill
               priority
               sizes="(max-width:1024px) 100vw, 50vw"
