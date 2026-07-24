@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Eye, GitCompareArrows, Heart, ShoppingBag } from "lucide-react";
 import type { Product } from "@/types";
 import { formatInr } from "@/lib/format";
@@ -30,6 +31,8 @@ export function ProductCard({
   const addItem = useCartStore((s) => s.addItem);
   const setQuick = useUiStore((s) => s.setQuickView);
   const addCompare = useCompareStore((s) => s.add);
+  const hasCompare = useCompareStore((s) => s.has(product.slug));
+  const router = useRouter();
   const mounted = useHasMounted();
   const hasWish = mounted && storedHasWish;
 
@@ -63,9 +66,14 @@ export function ProductCard({
   function addToCompare(e: React.MouseEvent) {
     e.preventDefault();
     const ok = addCompare(product.slug, primary);
-    toast[ok ? "success" : "error"](
-      ok ? "Added to compare" : "Compare list is full (max 4)",
-    );
+
+    if (!ok) {
+      toast.error("Compare list is full (max 4)");
+      return;
+    }
+
+    toast.success("Added to compare");
+    router.push("/compare");
   }
 
   return (
@@ -134,11 +142,14 @@ export function ProductCard({
             </Button>
             <Button
               variant="outline"
-              className="h-10 touch-manipulation rounded-full"
+              className={cn(
+                "h-10 touch-manipulation rounded-full",
+                hasCompare && "border-primary bg-primary/10 text-primary",
+              )}
               type="button"
               onClick={addToCompare}
             >
-              Compare
+              {hasCompare ? "Selected" : "Compare"}
             </Button>
           </div>
         </div>
@@ -173,10 +184,13 @@ export function ProductCard({
           <Button
             variant="outline"
             size="icon"
-            className="h-9 min-h-9 w-9 min-w-9 shrink-0 touch-manipulation rounded-full p-0 sm:h-11 sm:min-h-11 sm:w-11 sm:min-w-11"
+            className={cn(
+              "h-9 min-h-9 w-9 min-w-9 shrink-0 touch-manipulation rounded-full p-0 sm:h-11 sm:min-h-11 sm:w-11 sm:min-w-11",
+              hasCompare && "border-primary bg-primary/10 text-primary",
+            )}
             type="button"
             onClick={addToCompare}
-            aria-label={`Compare ${product.name}`}
+            aria-label={hasCompare ? `Selected in compare: ${product.name}` : `Compare ${product.name}`}
           >
             <GitCompareArrows className="h-3.5 w-3.5 sm:h-4 sm:w-4" aria-hidden="true" />
           </Button>
