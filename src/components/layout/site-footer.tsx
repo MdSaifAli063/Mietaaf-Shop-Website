@@ -26,17 +26,17 @@ export function SiteFooter() {
               {(
                 [
                   {
-                    href: SITE_SOCIAL_URLS.linkedin,
+                    href: "https://www.linkedin.com/company/mietaaf-couture-llp/",
                     label: "LinkedIn",
                     Icon: LinkedInIcon,
                   },
                   {
-                    href: SITE_SOCIAL_URLS.instagram,
+                    href: "https://www.instagram.com/mietaaf",
                     label: "Instagram",
                     Icon: InstagramIcon,
                   },
                   {
-                    href: SITE_SOCIAL_URLS.facebook,
+                    href: "https://www.facebook.com/people/Mietaaf-Mietaaf/pfbid02SomQ6rT3aW1ndYNWy6reVSUx9eBKTpfiXibNM3LjLUahjjoAWrwJc6rLuh7qqP8sl/",
                     label: "Facebook",
                     Icon: FacebookIcon,
                   },
