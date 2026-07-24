@@ -7,6 +7,7 @@ import {
   ChevronDown,
   ChevronRight,
   CircleHelp,
+  GitCompareArrows,
   LogOut,
   Menu,
   PackageCheck,
@@ -29,6 +30,7 @@ import {
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { NAV_CATEGORIES } from "@/lib/constants";
 import { useCartStore } from "@/store/cart-store";
+import { useCompareStore } from "@/store/compare-store";
 import { useWishlistStore } from "@/store/wishlist-store";
 import { useUiStore } from "@/store/ui-store";
 import { useAuth } from "@/context/auth-context";
@@ -43,11 +45,13 @@ export function SiteHeader() {
     s.items.reduce((n, i) => n + i.quantity, 0),
   );
   const storedWishCount = useWishlistStore((s) => s.ids.length);
+  const storedCompareCount = useCompareStore((s) => s.slugs.length);
   const setSearch = useUiStore((s) => s.setSearchOpen);
   const { user, logout, loading } = useAuth();
   const mounted = useHasMounted();
   const cartCount = mounted ? storedCartCount : 0;
   const wishCount = mounted ? storedWishCount : 0;
+  const compareCount = mounted ? storedCompareCount : 0;
   const pathname = usePathname();
   const router = useRouter();
   const [open, setOpen] = useState(false);
@@ -361,6 +365,22 @@ export function SiteHeader() {
                 {wishCount > 0 ? (
                   <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-primary px-1 text-[10px] font-semibold text-primary-foreground">
                     {wishCount > 9 ? "9+" : wishCount}
+                  </span>
+                ) : null}
+              </Link>
+
+              <Link
+                href="/compare"
+                aria-label="Compare"
+                className={cn(
+                  buttonVariants({ variant: "ghost", size: "icon" }),
+                  "relative inline-flex h-8 w-8 shrink-0 sm:h-11 sm:w-11",
+                )}
+              >
+                <GitCompareArrows className="h-[18px] w-[18px] sm:h-5 sm:w-5" />
+                {compareCount > 0 ? (
+                  <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-primary px-1 text-[10px] font-semibold text-primary-foreground">
+                    {compareCount > 9 ? "9+" : compareCount}
                   </span>
                 ) : null}
               </Link>
