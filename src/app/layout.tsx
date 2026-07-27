@@ -1,8 +1,11 @@
 import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, DM_Sans } from "next/font/google";
+import { GoogleAnalytics } from "@next/third-parties/google";
+
 import { AppProviders } from "@/providers/app-providers";
 import { FirebasePublicEnvScript } from "@/components/firebase/firebase-public-env-script";
 import { rootMetadata } from "@/lib/seo";
+
 import "./globals.css";
 
 const dmSans = DM_Sans({
@@ -24,8 +27,14 @@ export const viewport: Viewport = {
   initialScale: 1,
   viewportFit: "cover",
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#faf7f2" },
-    { media: "(prefers-color-scheme: dark)", color: "#0c0a09" },
+    {
+      media: "(prefers-color-scheme: light)",
+      color: "#faf7f2",
+    },
+    {
+      media: "(prefers-color-scheme: dark)",
+      color: "#0c0a09",
+    },
   ],
 };
 
@@ -40,8 +49,12 @@ export default function RootLayout({
         className={`${dmSans.variable} ${cormorant.variable} min-h-dvh bg-background font-sans text-foreground`}
       >
         <FirebasePublicEnvScript />
+
         <AppProviders>{children}</AppProviders>
       </body>
+
+      {/* Replace G-XXXXXXXXXX with your Google Analytics Measurement ID */}
+      <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID!} />
     </html>
   );
 }
