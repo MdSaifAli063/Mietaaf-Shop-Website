@@ -76,6 +76,7 @@ export default function CheckoutPage() {
       try {
         await addDoc(collection(db, "orders"), {
           userId: user.uid,
+          customerEmail: user.email ?? "",
           customerName: data.fullName,
           phone: data.phone,
           address: data.address,

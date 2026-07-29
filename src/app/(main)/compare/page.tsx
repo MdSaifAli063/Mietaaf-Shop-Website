@@ -13,6 +13,7 @@ import { useShopData } from "@/hooks/use-shop-data";
 import { useHasMounted } from "@/hooks/use-has-mounted";
 import { buildProductHref } from "@/lib/product-links";
 import { CATEGORY_IMAGE_LINKS } from "@/lib/data/image-links/category-images";
+import { bypassImageOptimization } from "@/lib/image-source";
 
 export default function ComparePage() {
   const storedSlugs = useCompareStore((s) => s.slugs);
@@ -90,7 +91,7 @@ export default function ComparePage() {
               className="overflow-hidden rounded-[1.6rem] border border-border/70 bg-card/80 shadow-[0_14px_40px_rgba(58,48,38,0.06)] backdrop-blur-sm"
             >
               <div className="relative aspect-[3/4] bg-muted">
-                <Image src={p.images[0]!} alt={p.name} fill className="object-cover" sizes="(max-width: 1024px) 50vw, 25vw" />
+                <Image src={p.images[0]!} alt={p.name} fill unoptimized={bypassImageOptimization(p.images[0]!)} className="object-cover" sizes="(max-width: 1024px) 50vw, 25vw" />
               </div>
               <div className="p-3.5 sm:p-4">
                 <Link href={buildProductHref(p.slug, p.images[0])} className="block font-heading text-base hover:text-primary sm:text-lg">

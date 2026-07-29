@@ -1,37 +1,49 @@
 import type { Metadata } from "next";
+import { cache } from "react";
 import { notFound } from "next/navigation";
-import Image from "next/image";
-import Link from "next/link";
 import { CATEGORIES } from "@/lib/data/categories";
-import { getCollectionPageProducts } from "@/lib/data/products";
-import { ProductCard } from "@/components/product/product-card";
 import { PageEnter } from "@/components/motion/page-enter";
 import type { CategorySlug } from "@/types";
-import { PAGE_CONTAINER, PAGE_PY } from "@/lib/layout";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
 import { BreadcrumbJsonLd, CategoryJsonLd } from "@/components/seo/json-ld";
 import { publicPageMetadata } from "@/lib/seo";
+import { CategoryCollectionView } from "@/components/category/category-collection-view";
+import { fetchCollectionREST } from "@/lib/firebase-rest";
+import type { Category } from "@/types";
 
 const slugs = CATEGORIES.map((category) => category.slug);
+
+const resolveCategory = cache(async (slug: string): Promise<Category | null> => {
+  const local = CATEGORIES.find((item) => item.slug === slug);
+  if (local) return local;
+  const documents = await fetchCollectionREST("categories");
+  const match = documents?.find(
+    (entry) => (entry as Record<string, unknown>).slug === slug,
+  ) as Record<string, unknown> | undefined;
+  if (
+    !match ||
+    typeof match.name !== "string" ||
+    typeof match.description !== "string" ||
+    typeof match.image !== "string"
+  ) {
+    return null;
+  }
+  return {
+    slug,
+    name: match.name,
+    description: match.description,
+    image: match.image,
+    hidden: match.hidden === true,
+    deleted: match.deleted === true,
+  };
+});
 
 export function generateStaticParams() {
   return slugs.map((slug) => ({ slug }));
 }
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const category = CATEGORIES.find((item) => item.slug === slug);
+  const category = await resolveCategory(slug);
   if (!category) return { title: "Category" };
   return publicPageMetadata({
     title: category.name,
@@ -41,16 +53,10 @@ export async function generateMetadata({
   });
 }
 
-export default async function CategoryPage({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
+export default async function CategoryPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  if (!slugs.includes(slug as CategorySlug)) notFound();
-
-  const category = CATEGORIES.find((item) => item.slug === slug)!;
-  const products = getCollectionPageProducts(slug);
+  const category = await resolveCategory(slug);
+  if (!category || category.hidden || category.deleted) notFound();
 
   return (
     <PageEnter>
@@ -62,77 +68,7 @@ export default async function CategoryPage({
         ]}
       />
       <CategoryJsonLd category={category} />
-      <div className="min-h-screen bg-[#fbf8f2] dark:bg-[#181613]">
-        <div className={`${PAGE_CONTAINER} ${PAGE_PY} min-w-0`}>
-          <Breadcrumb className="mb-6 overflow-x-auto sm:mb-8">
-            <BreadcrumbList>
-              <BreadcrumbItem>
-                <BreadcrumbLink href="/">Home</BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbLink href="/shop">Shop</BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbPage>{category.name}</BreadcrumbPage>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
-
-          <header className="grid overflow-hidden rounded-[1.5rem] border border-border/60 bg-[#eee4d6] shadow-[0_22px_60px_rgba(58,48,38,0.07)] sm:rounded-[2rem] lg:grid-cols-[0.9fr_1.1fr] dark:bg-[#201d19]">
-            <div className="relative aspect-[16/9] overflow-hidden bg-muted sm:aspect-[4/3] lg:aspect-auto lg:min-h-[420px]">
-              <Image
-                src={category.image}
-                alt={category.name}
-                fill
-                priority
-                className="object-cover transition-transform duration-700 hover:scale-[1.02]"
-                sizes="(max-width:1024px) 100vw, 45vw"
-              />
-            </div>
-            <div className="flex flex-col justify-center px-5 py-6 sm:px-10 sm:py-10 lg:px-12">
-              <p className="text-[10px] font-semibold uppercase tracking-[0.32em] text-primary sm:text-xs sm:tracking-[0.4em]">
-                Mietaaf collection
-              </p>
-              <h1 className="mt-2 font-heading text-3xl sm:text-4xl md:text-5xl">
-                {category.name}
-              </h1>
-              <p className="mt-3 line-clamp-2 max-w-xl text-sm leading-6 text-muted-foreground sm:mt-4 sm:text-base sm:leading-7">
-                {category.description}
-              </p>
-              <p className="mt-4 text-sm font-medium text-foreground/75">
-                {products.length} pieces available
-              </p>
-              <Link
-                href="/shop"
-                className="mt-5 inline-flex w-fit items-center rounded-full border border-border bg-background/70 px-4 py-2 text-xs font-semibold text-foreground transition-colors hover:border-primary/40 hover:bg-background sm:mt-7 sm:px-5 sm:py-2.5 sm:text-sm"
-              >
-                Browse all collections <span className="ml-2" aria-hidden="true">→</span>
-              </Link>
-            </div>
-          </header>
-
-          <section className="mt-9 sm:mt-16">
-            <div className="mb-7 flex items-end justify-between gap-4 border-b border-border/60 pb-5">
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.35em] text-primary">
-                  Curated for you
-                </p>
-                <h2 className="mt-2 font-heading text-2xl sm:text-3xl">
-                  Explore the collection
-                </h2>
-              </div>
-              <p className="text-sm text-muted-foreground">{products.length} products</p>
-            </div>
-            <div className="grid grid-cols-2 gap-x-2.5 gap-y-5 sm:gap-6 xl:grid-cols-4">
-              {products.map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))}
-            </div>
-          </section>
-        </div>
-      </div>
+      <CategoryCollectionView slug={slug as CategorySlug} fallbackCategory={category} />
     </PageEnter>
   );
 }

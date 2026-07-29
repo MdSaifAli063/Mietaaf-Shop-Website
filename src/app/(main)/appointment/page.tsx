@@ -18,6 +18,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { PageEnter } from "@/components/motion/page-enter";
 import { PAGE_IMAGE_LINKS } from "@/lib/data/image-links/page-images";
+import { bypassImageOptimization } from "@/lib/image-source";
 import { PAGE_CONTAINER } from "@/lib/layout";
 import { SITE_PHONE_DISPLAY } from "@/lib/site-contact";
 import { publicPageMetadata } from "@/lib/seo";
@@ -79,6 +80,7 @@ export default function AppointmentPage() {
           <div className="absolute inset-0">
             <Image
               src={PAGE_IMAGE_LINKS.appointment.hero}
+              unoptimized={bypassImageOptimization(PAGE_IMAGE_LINKS.appointment.hero)}
               alt="Mietaaf premium menswear consultation"
               fill
               priority
