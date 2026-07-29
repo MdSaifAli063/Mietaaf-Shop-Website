@@ -1,64 +1,133 @@
-import { useEffect, useState } from "react";
-import { getCategories } from "@/services/categories";
-import { getBanners } from "@/services/banners";
+"use client";
+
+import { useSyncExternalStore } from "react";
+import { collection, onSnapshot, type Unsubscribe } from "firebase/firestore";
 import { SHOP_PRODUCTS } from "@/lib/data/products";
 import { CATEGORIES as DUMMY_CATEGORIES } from "@/lib/data/categories";
 import { BANNERS as DUMMY_BANNERS } from "@/lib/data/banners";
-import { applyCategoryImageLink } from "@/lib/data/image-links/category-images";
-import { applyHeroImageLink } from "@/lib/data/image-links/hero-images";
 import { getFirebaseDb } from "@/firebase/client";
 import type { Product, Category, Banner } from "@/types";
 
-type RemoteShopData = {
+type ShopSnapshot = {
+  products: Product[];
+  allProducts: Product[];
   categories: Category[];
+  allCategories: Category[];
   banners: Banner[];
+  allBanners: Banner[];
+  loading: boolean;
 };
 
-let remoteShopDataPromise: Promise<RemoteShopData> | null = null;
-
-/**
- * The storefront is local-first. Firestore content is an optional enhancement,
- * so a stale deployment of security rules must never break or flood the console.
- * One shared request also avoids React development mode loading every collection twice.
- */
-function loadRemoteShopData(): Promise<RemoteShopData> {
-  if (!remoteShopDataPromise) {
-    remoteShopDataPromise = Promise.allSettled([
-      getCategories(),
-      getBanners(),
-    ]).then(([categories, banners]) => ({
-      categories: categories.status === "fulfilled" ? categories.value : [],
-      banners: banners.status === "fulfilled" ? banners.value : [],
-    }));
+function mergeManagedRecords<T>(
+  local: T[],
+  remote: T[],
+  key: (item: T) => string,
+): T[] {
+  const merged = new Map(local.map((item) => [key(item), item]));
+  for (const item of remote) {
+    const itemKey = key(item);
+    const fallback = merged.get(itemKey);
+    merged.set(itemKey, fallback ? { ...fallback, ...item } : item);
   }
-  return remoteShopDataPromise;
+  return Array.from(merged.values());
 }
 
-export function useShopData() {
-  const products: Product[] = SHOP_PRODUCTS;
-  const [categories, setCategories] = useState<Category[]>(DUMMY_CATEGORIES);
-  const [banners, setBanners] = useState<Banner[]>(DUMMY_BANNERS);
-  const loading = false;
+const localSnapshot: ShopSnapshot = {
+  products: SHOP_PRODUCTS,
+  allProducts: SHOP_PRODUCTS,
+  categories: DUMMY_CATEGORIES,
+  allCategories: DUMMY_CATEGORIES,
+  banners: DUMMY_BANNERS,
+  allBanners: DUMMY_BANNERS,
+  loading: false,
+};
+
+let currentSnapshot = localSnapshot;
+let remoteProducts: Product[] = [];
+let remoteCategories: Category[] = [];
+let remoteBanners: Banner[] = [];
+let firestoreUnsubscribers: Unsubscribe[] | null = null;
+const listeners = new Set<() => void>();
+
+function publish() {
+  const allProducts = mergeManagedRecords(
+    SHOP_PRODUCTS,
+    remoteProducts,
+    (item) => item.slug,
+  );
+  const allCategories = mergeManagedRecords(
+    DUMMY_CATEGORIES,
+    remoteCategories,
+    (item) => item.slug,
+  );
+  const allBanners = mergeManagedRecords(
+    DUMMY_BANNERS,
+    remoteBanners,
+    (item) => item.id,
+  );
+  const visible = <T extends { hidden?: boolean; deleted?: boolean }>(items: T[]) =>
+    items.filter((item) => item.hidden !== true && item.deleted !== true);
+  currentSnapshot = {
+    products: visible(allProducts),
+    allProducts,
+    categories: visible(allCategories),
+    allCategories,
+    banners: visible(allBanners),
+    allBanners,
+    loading: false,
+  };
+  listeners.forEach((listener) => listener());
+}
+
+function startFirestoreSync() {
+  if (firestoreUnsubscribers) return;
   const db = getFirebaseDb();
+  if (!db) return;
 
-  useEffect(() => {
-    if (!db) return;
-    let active = true;
+  firestoreUnsubscribers = [
+    onSnapshot(
+      collection(db, "products"),
+      (snapshot) => {
+        remoteProducts = snapshot.docs.map((entry) => ({
+          id: entry.id,
+          ...entry.data(),
+        })) as Product[];
+        publish();
+      },
+      () => undefined,
+    ),
+    onSnapshot(
+      collection(db, "categories"),
+      (snapshot) => {
+        remoteCategories = snapshot.docs.map((entry) => entry.data()) as Category[];
+        publish();
+      },
+      () => undefined,
+    ),
+    onSnapshot(
+      collection(db, "banners"),
+      (snapshot) => {
+        remoteBanners = snapshot.docs.map((entry) => ({
+          id: entry.id,
+          ...entry.data(),
+        })) as Banner[];
+        publish();
+      },
+      () => undefined,
+    ),
+  ];
+}
 
-    async function load() {
-      const remote = await loadRemoteShopData();
-      if (!active) return;
-      if (remote.categories.length > 0) {
-        setCategories(remote.categories.map(applyCategoryImageLink));
-      }
-      if (remote.banners.length > 0) setBanners(remote.banners.map(applyHeroImageLink));
-    }
+function subscribe(listener: () => void) {
+  listeners.add(listener);
+  startFirestoreSync();
+  return () => listeners.delete(listener);
+}
 
-    void load();
-    return () => {
-      active = false;
-    };
-  }, [db]);
-
-  return { products, categories, banners, loading };
+export function useShopData(): ShopSnapshot {
+  return useSyncExternalStore(
+    subscribe,
+    () => currentSnapshot,
+    () => localSnapshot,
+  );
 }

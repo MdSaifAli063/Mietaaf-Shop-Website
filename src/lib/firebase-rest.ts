@@ -17,29 +17,40 @@ type FirestoreDocument = {
 
 type FirestoreListResponse = {
   documents?: FirestoreDocument[];
+  nextPageToken?: string;
 };
 
-export async function fetchCollectionREST(collectionName: string) {
+export async function fetchCollectionREST(
+  collectionName: string,
+): Promise<Record<string, unknown>[] | null> {
   const config = getFirebasePublicClientConfig();
   if (!config?.projectId) return null;
 
   try {
-    const res = await fetch(
-      `https://firestore.googleapis.com/v1/projects/${config.projectId}/databases/(default)/documents/${collectionName}?pageSize=100`,
-      { next: { revalidate: 60 } } // Cache for 60 seconds
-    );
-    if (!res.ok) return null;
-    const data = (await res.json()) as FirestoreListResponse;
-    if (!data.documents) return [];
+    const documents: FirestoreDocument[] = [];
+    let pageToken = "";
 
-    return data.documents.map((doc) => parseFirestoreDocument(doc));
+    do {
+      const params = new URLSearchParams({ pageSize: "100" });
+      if (pageToken) params.set("pageToken", pageToken);
+      const res = await fetch(
+        `https://firestore.googleapis.com/v1/projects/${config.projectId}/databases/(default)/documents/${collectionName}?${params}`,
+        { next: { revalidate: 60 } },
+      );
+      if (!res.ok) return null;
+      const data = (await res.json()) as FirestoreListResponse;
+      documents.push(...(data.documents ?? []));
+      pageToken = data.nextPageToken ?? "";
+    } while (pageToken);
+
+    return documents.map((doc) => parseFirestoreDocument(doc));
   } catch (error) {
     console.error(`Error fetching collection ${collectionName} via REST:`, error);
     return null;
   }
 }
 
-function parseFirestoreDocument(doc: FirestoreDocument) {
+function parseFirestoreDocument(doc: FirestoreDocument): Record<string, unknown> {
   const id = doc.name.split("/").pop();
   const fields = doc.fields ?? {};
   const parsed = parseFields(fields);
