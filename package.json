@@ -11,7 +11,8 @@
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
-    "check": "npm run lint && npm run typecheck"
+    "check": "npm run lint && npm run typecheck",
+    "admin:grant": "node scripts/grant-admin.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.4.1",
@@ -42,6 +43,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.5.18",
+    "firebase-admin": "^14.2.0",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

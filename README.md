@@ -46,6 +46,27 @@ Repository rules are in `firebase/firestore.rules` and `firebase/storage.rules`.
 
 Vercel does not publish Firebase rules. Publish them separately before launch, as described in [VERCEL_DEPLOYMENT.md](./VERCEL_DEPLOYMENT.md).
 
+## Private administration
+
+The standalone protected workspace starts at `/admin/login` and includes:
+
+- customer order confirmation, status changes, and confirmation emails;
+- product creation, pricing, stock, images, collection flags, viewing, editing,
+  hiding, restoring, and deletion;
+- category creation, names, descriptions, imagery, viewing, hiding, restoring,
+  and deletion;
+- homepage hero slide creation, imagery, links, visibility, and deletion;
+- announcement-bar, branding, social links, and public contact settings.
+
+Storefront content remains available from the local catalogue when Firestore is empty.
+Admin-saved Firestore records override matching local records by product/category slug or
+banner ID and update connected browser sessions in real time.
+
+Admin access is enforced by the Firebase Auth custom claim `admin: true`, not by a
+route password or a browser-visible environment variable. To activate the one owner
+account, follow the service-account command in
+[VERCEL_DEPLOYMENT.md](./VERCEL_DEPLOYMENT.md#grant-the-owner-account-secure-admin-access).
+
 ## Deploying
 
 The project is prepared for Vercel with a pinned Node.js version and the standard stable Next.js production build. No `vercel.json` is needed.

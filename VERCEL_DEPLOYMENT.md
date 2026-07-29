@@ -35,6 +35,7 @@ NEXT_PUBLIC_FIREBASE_APP_ID
 NEXT_PUBLIC_EMAILJS_SERVICE_ID
 NEXT_PUBLIC_EMAILJS_APPOINTMENT_TEMPLATE_ID
 NEXT_PUBLIC_EMAILJS_CONTACT_TEMPLATE_ID
+NEXT_PUBLIC_EMAILJS_ORDER_CONFIRMATION_TEMPLATE_ID
 NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
 ```
 
@@ -43,6 +44,7 @@ Production URL and optional branding/social variables:
 ```text
 NEXT_PUBLIC_SITE_URL
 NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
+NEXT_PUBLIC_GA_ID
 NEXT_PUBLIC_INDEXING_DISABLED
 NEXT_PUBLIC_SITE_LOGO_URL
 NEXT_PUBLIC_SOCIAL_LINKEDIN
@@ -55,6 +57,7 @@ Rules for the values:
 - `NEXT_PUBLIC_WHATSAPP_NUMBER`: country code and phone number, digits only; no `+`, spaces, or dashes.
 - `NEXT_PUBLIC_SITE_URL`: the final HTTPS origin with no path, for example `https://mietaaf.com`.
 - `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION`: optional. Paste only the Google Search Console meta tag `content` value.
+- `NEXT_PUBLIC_GA_ID`: optional. Add the Google Analytics 4 Measurement ID in `G-XXXXXXXXXX` format.
 - `NEXT_PUBLIC_INDEXING_DISABLED`: optional. Set to `true` only for staging. Vercel Preview deployments are noindexed automatically.
 - `NEXT_PUBLIC_SITE_LOGO_URL`: optional. Leave it unset/blank to use the existing logo. A remote override must use an image host allowed in `next.config.ts`.
 - Do not surround values with quotes.
@@ -80,15 +83,46 @@ npx firebase-tools deploy --only firestore:rules,storage
 
 Select the same Firebase project whose public values were placed in Vercel. As an alternative, paste `firebase/firestore.rules` and `firebase/storage.rules` into their matching Firebase Console Rules tabs and publish them.
 
-The current website has no browser-based admin dashboard. If one is added later, assign `admin: true` only from a trusted Firebase Admin SDK environment; never restore email-list or profile-field authorization.
+### Grant the owner account secure admin access
+
+The complete `/admin` workspace is protected by the Firebase custom claim
+`admin: true`; changing a user profile field cannot grant access.
+
+1. Create/sign in to the Firebase account that will manage Mietaaf orders.
+2. In Firebase Console, open **Project settings -> Service accounts** and
+   generate a private key for this one-time local operation. Never commit that
+   JSON file or add it to Vercel.
+3. In PowerShell, point Application Default Credentials to the downloaded file:
+
+```powershell
+$env:GOOGLE_APPLICATION_CREDENTIALS='C:\secure\firebase-service-account.json'
+npm run admin:grant -- your-admin-email@example.com
+```
+
+4. Sign out and open `/admin/login`. Use that Firebase email/password account
+   to enter the standalone administration dashboard.
+5. Delete or securely archive the downloaded service-account key after use.
+
+The included script preserves existing custom claims while adding `admin: true`.
+Only run it from a trusted machine. Run it for only the single private owner account
+if Mietaaf should have exactly one administrator.
 
 ## 4. Complete EmailJS setup
 
 In EmailJS:
 
-1. Keep separate Appointment and Contact templates; their IDs go in the two separate Vercel variables.
-2. Confirm each template delivers to the intended Mietaaf inbox. The forms provide `{{to_email}}` and `{{reply_to}}`.
-3. In **Domains / Allowed Origins**, add the exact production origin and any preview origin used for testing, including `https://`.
+1. Keep separate Appointment, Contact, and Order Confirmation templates; their
+   IDs go in the three separate Vercel variables.
+2. For the Order Confirmation template:
+   - Set **To Email** to `{{to_email}}`.
+   - Set **Reply To** to `{{reply_to}}`.
+   - Set **Subject** to `{{subject}}`.
+   - Paste the contents of `EMAILJS_ORDER_CONFIRMATION_TEMPLATE.html` into the
+     template body.
+3. Confirm Appointment and Contact deliver to the intended Mietaaf inbox. The
+   forms provide `{{to_email}}` and `{{reply_to}}`.
+4. In **Domains / Allowed Origins**, add the exact production origin and any
+   preview origin used for testing, including `https://`.
 
 EmailJS and Firebase Web SDK run in the browser, so their public IDs are visible by design. Security comes from EmailJS origin controls and Firebase Rules, not from hiding these identifiers.
 
@@ -102,9 +136,16 @@ Click **Deploy**, then verify on the deployed HTTPS URL:
 4. Checkout asks a signed-out customer to sign in, returns to checkout, saves the order, and opens WhatsApp.
 5. Email/password login, Google login, and password reset work.
 6. Contact and Appointment each reach the correct EmailJS template/inbox.
-7. `/robots.txt` and `/sitemap.xml` contain the production domain.
-8. The home page source includes Organization/WebSite JSON-LD, product pages include Product/Breadcrumb JSON-LD, and utility pages include `noindex`.
-9. Test at least one mobile viewport and one desktop viewport.
+7. Open `/admin` as the owner and verify product, category, banner, and website
+   settings can be saved and appear on the storefront.
+8. Place a customer order, open `/admin/orders` as the admin, click
+   **Confirm & email**, and verify:
+   - the admin order badge changes to Confirmed;
+   - the customer profile changes to Confirmed without a refresh;
+   - the customer receives the EmailJS confirmation.
+9. `/robots.txt` and `/sitemap.xml` contain the production domain.
+10. The home page source includes Organization/WebSite JSON-LD, product pages include Product/Breadcrumb JSON-LD, and utility/admin pages include `noindex`.
+11. Test at least one mobile viewport and one desktop viewport.
 
 ## 6. Publish to Google
 
