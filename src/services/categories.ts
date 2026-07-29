@@ -4,14 +4,14 @@ import {
   getDocs,
   getDoc,
   setDoc,
-  updateDoc,
   deleteDoc,
   query,
   orderBy,
   serverTimestamp,
 } from "firebase/firestore";
-import { ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
+import { ref, deleteObject } from "firebase/storage";
 import { getFirebaseDb, getFirebaseStorage } from "@/firebase/client";
+import { uploadStorageImage } from "@/services/storage-image-upload";
 import type { Category } from "@/types";
 
 const COLLECTION_NAME = "categories";
@@ -48,10 +48,10 @@ export async function updateCategory(slug: string, categoryData: Partial<Categor
   const db = getFirebaseDb();
   if (!db) throw new Error("Firebase DB not initialized");
   const docRef = doc(db, COLLECTION_NAME, slug);
-  await updateDoc(docRef, {
+  await setDoc(docRef, {
     ...categoryData,
     updatedAt: serverTimestamp(),
-  });
+  }, { merge: true });
 }
 
 export async function deleteCategory(slug: string, imageUrl?: string): Promise<void> {
@@ -72,11 +72,14 @@ export async function deleteCategory(slug: string, imageUrl?: string): Promise<v
   await deleteDoc(docRef);
 }
 
-export async function uploadCategoryImage(file: File): Promise<string> {
-  const storage = getFirebaseStorage();
-  if (!storage) throw new Error("Firebase Storage not initialized");
-  const filename = `${Date.now()}-${file.name}`;
-  const storageRef = ref(storage, `categories/${filename}`);
-  await uploadBytes(storageRef, file);
-  return await getDownloadURL(storageRef);
+export async function uploadCategoryImage(
+  file: File,
+  onProgress?: (percentage: number) => void,
+): Promise<string> {
+  return uploadStorageImage({
+    file,
+    folder: "categories",
+    maxBytes: 5 * 1024 * 1024,
+    onProgress,
+  });
 }

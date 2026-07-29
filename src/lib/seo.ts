@@ -60,7 +60,7 @@ export const noIndexMetadata: Metadata = {
   },
 };
 
-function isIndexingDisabled(): boolean {
+export function isIndexingDisabled(): boolean {
   return (
     process.env.VERCEL_ENV === "preview" ||
     process.env.NEXT_PUBLIC_INDEXING_DISABLED === "true"
