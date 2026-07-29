@@ -4,14 +4,14 @@ import {
   getDocs,
   getDoc,
   setDoc,
-  updateDoc,
   deleteDoc,
   query,
   orderBy,
   serverTimestamp,
 } from "firebase/firestore";
-import { ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
+import { ref, deleteObject } from "firebase/storage";
 import { getFirebaseDb, getFirebaseStorage } from "@/firebase/client";
+import { uploadStorageImage } from "@/services/storage-image-upload";
 import type { Product } from "@/types";
 
 const COLLECTION_NAME = "products";
@@ -53,10 +53,10 @@ export async function updateProduct(id: string, productData: Partial<Product>): 
   const db = getFirebaseDb();
   if (!db) throw new Error("Firebase DB not initialized");
   const docRef = doc(db, COLLECTION_NAME, id);
-  await updateDoc(docRef, {
+  await setDoc(docRef, {
     ...productData,
     updatedAt: serverTimestamp(),
-  });
+  }, { merge: true });
 }
 
 export async function deleteProduct(id: string, imageUrls?: string[]): Promise<void> {
@@ -79,11 +79,14 @@ export async function deleteProduct(id: string, imageUrls?: string[]): Promise<v
   await deleteDoc(docRef);
 }
 
-export async function uploadProductImage(file: File): Promise<string> {
-  const storage = getFirebaseStorage();
-  if (!storage) throw new Error("Firebase Storage not initialized");
-  const filename = `${Date.now()}-${file.name}`;
-  const storageRef = ref(storage, `products/${filename}`);
-  await uploadBytes(storageRef, file);
-  return await getDownloadURL(storageRef);
+export async function uploadProductImage(
+  file: File,
+  onProgress?: (percentage: number) => void,
+): Promise<string> {
+  return uploadStorageImage({
+    file,
+    folder: "products",
+    maxBytes: 5 * 1024 * 1024,
+    onProgress,
+  });
 }

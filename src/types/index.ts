@@ -1,15 +1,5 @@
-export type CategorySlug =
-  | "sherwani"
-  | "blazer"
-  | "coat"
-  | "suits"
-  | "kurta"
-  | "pants"
-  | "waistcoat"
-  | "indo-western"
-  | "wedding-collection"
-  | "festive-collection"
-  | "premium-collection";
+/** Category slugs are admin-managed strings; existing named collections remain the defaults. */
+export type CategorySlug = string;
 
 export interface ProductColor {
   name: string;
@@ -43,6 +33,10 @@ export interface Product {
   newArrival?: boolean;
   wedding?: boolean;
   popularity?: number;
+  /** Admin-controlled storefront visibility. Hidden records override local fallbacks. */
+  hidden?: boolean;
+  /** Tombstone used when an original local catalogue record is removed by admin. */
+  deleted?: boolean;
 }
 
 export interface CartItem {
@@ -73,6 +67,8 @@ export interface Banner {
   image: string;
   href?: string;
   cta?: string;
+  hidden?: boolean;
+  deleted?: boolean;
 }
 
 export interface Category {
@@ -80,6 +76,25 @@ export interface Category {
   name: string;
   description: string;
   image: string;
+  hidden?: boolean;
+  deleted?: boolean;
+}
+
+export interface SiteSettings {
+  brandTagline: string;
+  footerDescription: string;
+  announcementEnabled: boolean;
+  announcementText: string;
+  announcementMobileText: string;
+  announcementCta: string;
+  announcementHref: string;
+  supportEmail: string;
+  phoneDisplay: string;
+  whatsappNumber: string;
+  address: string;
+  linkedinUrl: string;
+  instagramUrl: string;
+  facebookUrl: string;
 }
 
 export interface UserProfile {
@@ -106,6 +121,7 @@ export interface OrderLine {
 export interface Order {
   id: string;
   userId: string;
+  customerEmail: string;
   customerName: string;
   phone: string;
   address: string;
