@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { SITE_EMAIL_DISPLAY } from "@/lib/site-contact";
+import { useSiteSettings } from "@/hooks/use-site-settings";
 
 const EMAILJS_SERVICE_ID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
 const EMAILJS_APPOINTMENT_TEMPLATE_ID =
@@ -54,6 +55,7 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
 
 export function AppointmentBookingForm() {
   const [submitting, setSubmitting] = useState(false);
+  const { settings } = useSiteSettings();
 
   return (
     <form
@@ -114,10 +116,10 @@ export function AppointmentBookingForm() {
               template_id: EMAILJS_APPOINTMENT_TEMPLATE_ID,
               user_id: EMAILJS_PUBLIC_KEY,
               template_params: {
-                to_email: SITE_EMAIL_DISPLAY,
+                to_email: settings.supportEmail,
                 subject,
                 from_name: name,
-                reply_to: email || SITE_EMAIL_DISPLAY,
+                reply_to: email || settings.supportEmail || SITE_EMAIL_DISPLAY,
                 phone: get("phone"),
                 customer_email: email || "Not shared",
                 city: get("city"),
