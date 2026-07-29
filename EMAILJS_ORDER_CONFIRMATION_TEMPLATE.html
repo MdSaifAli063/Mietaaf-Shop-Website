@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>{{subject}}</title>
+  </head>
+  <body style="margin:0;background:#f4eee5;font-family:Arial,Helvetica,sans-serif;color:#2b251f">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:#f4eee5;padding:32px 12px">
+      <tr>
+        <td align="center">
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:640px;overflow:hidden;border:1px solid #dfd2c2;border-radius:24px;background:#fffaf2">
+            <tr>
+              <td style="background:#24211d;padding:28px 34px;text-align:center;color:#fffaf2">
+                <div style="font-family:Georgia,'Times New Roman',serif;font-size:30px;letter-spacing:7px">MIETAAF</div>
+                <div style="margin-top:8px;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#d9c7aa">Your presence, our craft</div>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:36px 34px 16px">
+                <div style="font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#b37a4c">Order confirmed</div>
+                <h1 style="margin:12px 0 12px;font-family:Georgia,'Times New Roman',serif;font-size:32px;font-weight:400;line-height:1.25">Your Mietaaf order is confirmed.</h1>
+                <p style="margin:0;color:#70675f;font-size:15px;line-height:1.7">Hello {{customer_name}}, our concierge has reviewed and confirmed your order. We will coordinate the remaining fitting, payment, and delivery details with you directly.</p>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:18px 34px">
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border:1px solid #e3d8ca;border-radius:16px;background:#f8f1e8">
+                  <tr>
+                    <td style="padding:20px">
+                      <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+                        <tr>
+                          <td style="padding-bottom:8px;color:#81776e;font-size:12px;text-transform:uppercase;letter-spacing:1.5px">Order number</td>
+                          <td align="right" style="padding-bottom:8px;font-size:13px;font-weight:700">#{{order_number}}</td>
+                        </tr>
+                        <tr>
+                          <td style="color:#81776e;font-size:12px;text-transform:uppercase;letter-spacing:1.5px">Confirmed on</td>
+                          <td align="right" style="font-size:13px">{{order_date}}</td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:10px 34px">
+                <h2 style="margin:0 0 12px;font-family:Georgia,'Times New Roman',serif;font-size:21px;font-weight:400">Order summary</h2>
+                <div style="white-space:pre-line;border-top:1px solid #e3d8ca;border-bottom:1px solid #e3d8ca;padding:18px 0;color:#5f5750;font-size:14px;line-height:1.8">{{order_items}}</div>
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+                  <tr>
+                    <td style="padding-top:18px;font-size:16px;font-weight:700">Total</td>
+                    <td align="right" style="padding-top:18px;font-size:18px;font-weight:700">{{order_total}}</td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td align="center" style="padding:30px 34px">
+                <a href="{{account_url}}" style="display:inline-block;border-radius:999px;background:#2b2723;padding:14px 28px;color:#fffaf2;text-decoration:none;font-size:14px;font-weight:700">View my order</a>
+              </td>
+            </tr>
+            <tr>
+              <td style="border-top:1px solid #e3d8ca;padding:24px 34px;color:#81776e;font-size:12px;line-height:1.7;text-align:center">
+                Need help? Email <a href="mailto:{{support_email}}" style="color:#a96f43">{{support_email}}</a>
+                or call {{support_phone}}.<br />
+                <a href="{{whatsapp_url}}" style="color:#a96f43">Continue on WhatsApp</a>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

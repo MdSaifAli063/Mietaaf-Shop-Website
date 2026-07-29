@@ -59,6 +59,11 @@ const nextConfig: NextConfig = {
         hostname: "lh3.googleusercontent.com",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "bwo.co.in",
+        pathname: "/cdn/shop/files/**",
+      },
     ],
   },
 };
