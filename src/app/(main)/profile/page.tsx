@@ -5,7 +5,14 @@ import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { collection, doc, getDocs, query, setDoc, where } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  onSnapshot,
+  query,
+  setDoc,
+  where,
+} from "firebase/firestore";
 import { updateProfile as updateFirebaseProfile } from "firebase/auth";
 import { useTheme } from "next-themes";
 import toast from "react-hot-toast";
@@ -126,6 +133,19 @@ function statusClass(status: AccountOrder["status"]): string {
   return "border-amber-600/25 bg-amber-500/10 text-amber-700 dark:text-amber-300";
 }
 
+function statusMessage(status: AccountOrder["status"]): string {
+  if (status === "confirmed") {
+    return "Confirmed by Mietaaf. A confirmation email is sent to your account email.";
+  }
+  if (status === "shipped") {
+    return "Your order has been dispatched. Contact the concierge for the latest delivery update.";
+  }
+  if (status === "cancelled") {
+    return "This order was cancelled. Contact the concierge if you need assistance.";
+  }
+  return "Awaiting confirmation after the WhatsApp order review.";
+}
+
 export default function ProfilePage() {
   const { user, profile, loading, firebaseReady, refreshProfile, resetPassword, logout } = useAuth();
   const { resolvedTheme, setTheme } = useTheme();
@@ -178,19 +198,21 @@ export default function ProfilePage() {
   }, [profile, form]);
 
   useEffect(() => {
-    let cancelled = false;
-    async function loadOrders() {
-      const db = getFirebaseDb();
-      if (!user || !db) {
-        if (!cancelled) {
-          setOrders([]);
-          setOrdersLoading(false);
-        }
-        return;
-      }
-      setOrdersLoading(true);
-      try {
-        const snapshot = await getDocs(query(collection(db, "orders"), where("userId", "==", user.uid)));
+    const db = getFirebaseDb();
+    if (!user || !db) {
+      setOrders([]);
+      setOrdersLoading(false);
+      return;
+    }
+
+    setOrdersLoading(true);
+    const ordersQuery = query(
+      collection(db, "orders"),
+      where("userId", "==", user.uid),
+    );
+    return onSnapshot(
+      ordersQuery,
+      (snapshot) => {
         const nextOrders = snapshot.docs
           .map((orderDoc): AccountOrder => {
             const data = orderDoc.data();
@@ -206,20 +228,15 @@ export default function ProfilePage() {
             };
           })
           .sort((a, b) => (b.createdAt?.getTime() ?? 0) - (a.createdAt?.getTime() ?? 0));
-        if (!cancelled) setOrders(nextOrders);
-      } catch {
-        if (!cancelled) {
-          setOrders([]);
-          toast.error("Could not load order history.");
-        }
-      } finally {
-        if (!cancelled) setOrdersLoading(false);
-      }
-    }
-    void loadOrders();
-    return () => {
-      cancelled = true;
-    };
+        setOrders(nextOrders);
+        setOrdersLoading(false);
+      },
+      () => {
+        setOrders([]);
+        setOrdersLoading(false);
+        toast.error("Could not load order history.");
+      },
+    );
   }, [user]);
 
   const profileCompletion = useMemo(() => {
@@ -500,6 +517,9 @@ export default function ProfilePage() {
                             </div>
                             <Badge variant="outline" className={cn("w-fit capitalize", statusClass(order.status))}>{order.status}</Badge>
                           </div>
+                          <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
+                            {statusMessage(order.status)}
+                          </p>
                           <div className="mt-4 border-t border-border/50 pt-4">
                             <div className="space-y-2">
                               {order.items.map((item, index) => (

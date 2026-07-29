@@ -3,15 +3,11 @@ import { cache, Suspense } from "react";
 import { notFound } from "next/navigation";
 import { DUMMY_PRODUCTS, getProductBySlug } from "@/lib/data/products";
 import { CATEGORIES } from "@/lib/data/categories";
-import { ProductDetailView } from "@/components/product/product-detail-view";
-import { CatalogProductDetailView } from "@/components/product/catalog-product-detail-view";
-import { isCatalogProduct } from "@/lib/data/catalog-suits";
 import { fetchCollectionREST } from "@/lib/firebase-rest";
 import type { CategorySlug, Product, ProductColor } from "@/types";
 import { BreadcrumbJsonLd, ProductJsonLd } from "@/components/seo/json-ld";
 import { absoluteUrl, noIndexMetadata } from "@/lib/seo";
-
-const categorySlugs = new Set<string>(CATEGORIES.map((category) => category.slug));
+import { ManagedProductDetail } from "@/components/product/managed-product-detail";
 
 function finiteNumber(value: unknown, fallback: number): number {
   return typeof value === "number" && Number.isFinite(value) ? value : fallback;
@@ -51,7 +47,7 @@ function remoteProduct(raw: Record<string, unknown>, requestedSlug: string): Pro
     : [];
 
   const requestedCategory =
-    typeof raw.categorySlug === "string" && categorySlugs.has(raw.categorySlug)
+    typeof raw.categorySlug === "string" && raw.categorySlug.trim()
       ? (raw.categorySlug as CategorySlug)
       : "premium-collection";
   const category = CATEGORIES.find((entry) => entry.slug === requestedCategory);
@@ -172,21 +168,11 @@ export default async function ProductPage({
     </>
   );
 
-  if (isCatalogProduct(p)) {
-    return (
-      <>
-        {schema}
-        <Suspense fallback={<ProductDetailFallback />}>
-          <CatalogProductDetailView product={p} />
-        </Suspense>
-      </>
-    );
-  }
   return (
     <>
       {schema}
       <Suspense fallback={<ProductDetailFallback />}>
-        <ProductDetailView product={p} />
+        <ManagedProductDetail fallbackProduct={p} />
       </Suspense>
     </>
   );
