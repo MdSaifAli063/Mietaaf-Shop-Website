@@ -35,6 +35,7 @@ import { HOME_PRODUCT_SECTIONS } from "@/lib/data/home-product-sections";
 import { cn } from "@/lib/utils";
 import type { Product } from "@/types";
 import { buildProductHref } from "@/lib/product-links";
+import { bypassImageOptimization } from "@/lib/image-source";
 
 function takeUniqueProducts(
   preferredSlugs: readonly string[],
@@ -146,6 +147,7 @@ export function HomeSections() {
                     <div className="relative aspect-[4/5] overflow-hidden">
                       <Image
                         src={c.image}
+                        unoptimized={bypassImageOptimization(c.image)}
                         alt={c.name}
                         fill
                         className="object-cover transition-transform duration-700 group-hover:scale-105"
@@ -272,6 +274,7 @@ export function HomeSections() {
                 >
                   <Image
                     src={src}
+                    unoptimized={bypassImageOptimization(src)}
                     alt={`Mietaaf fashion look ${i + 1}`}
                     fill
                     className="object-cover transition-transform duration-500 group-hover:scale-105"
@@ -319,6 +322,7 @@ export function HomeSections() {
               <Image
                 key={activeGalleryImage}
                 src={activeGalleryImage}
+                unoptimized={bypassImageOptimization(activeGalleryImage)}
                 alt={`Mietaaf fashion look ${(activeGalleryIndex ?? 0) + 1}`}
                 fill
                 priority
@@ -368,6 +372,7 @@ export function HomeSections() {
         <div className="absolute inset-0">
           <Image
             src={HOME_SECTION_IMAGE_LINKS.mietaafStory}
+            unoptimized={bypassImageOptimization(HOME_SECTION_IMAGE_LINKS.mietaafStory)}
             alt=""
             fill
             className="object-cover opacity-30"
@@ -433,6 +438,7 @@ export function HomeSections() {
                     <div className="relative size-12 shrink-0 overflow-hidden rounded-full ring-2 ring-background shadow-sm">
                       <Image
                         src={testimonial.image}
+                        unoptimized={bypassImageOptimization(testimonial.image)}
                         alt={testimonial.name}
                         fill
                         className="object-cover transition-transform duration-500 group-hover:scale-105"

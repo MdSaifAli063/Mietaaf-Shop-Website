@@ -21,6 +21,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import toast from "react-hot-toast";
+import { useShopData } from "@/hooks/use-shop-data";
 
 const waNumber = () =>
   process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? SITE_WHATSAPP_E164_DIGITS;
@@ -28,12 +29,15 @@ const waNumber = () =>
 export function CatalogProductDetailView({ product: originalProduct }: { product: Product }) {
   const searchParams = useSearchParams();
   const selectedImage = normalizeProductImageParam(searchParams.get("image"));
+  const { products } = useShopData();
+  const managedProduct =
+    products.find((item) => item.slug === originalProduct.slug) ?? originalProduct;
   const product = useMemo(
     () =>
       selectedImage
-        ? { ...originalProduct, images: [selectedImage] }
-        : originalProduct,
-    [originalProduct, selectedImage],
+        ? { ...managedProduct, images: [selectedImage] }
+        : managedProduct,
+    [managedProduct, selectedImage],
   );
   const addItem = useCartStore((s) => s.addItem);
   const pushRecent = useRecentStore((s) => s.push);

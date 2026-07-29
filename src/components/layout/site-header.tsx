@@ -13,6 +13,7 @@ import {
   PackageCheck,
   Search,
   Settings,
+  ShieldCheck,
   ShoppingBag,
   User2,
   Heart,
@@ -39,6 +40,8 @@ import { usePathname, useRouter } from "next/navigation";
 import { isAuthOnlyPath } from "@/lib/auth-public-paths";
 import { SITE_PHONE_E164_PLUS, SITE_WHATSAPP_E164_DIGITS } from "@/lib/site-contact";
 import { useHasMounted } from "@/hooks/use-has-mounted";
+import { useSiteSettings } from "@/hooks/use-site-settings";
+import { useShopData } from "@/hooks/use-shop-data";
 
 export function SiteHeader() {
   const storedCartCount = useCartStore((s) =>
@@ -47,7 +50,7 @@ export function SiteHeader() {
   const storedWishCount = useWishlistStore((s) => s.ids.length);
   const storedCompareCount = useCompareStore((s) => s.slugs.length);
   const setSearch = useUiStore((s) => s.setSearchOpen);
-  const { user, logout, loading } = useAuth();
+  const { user, logout, loading, isAdmin } = useAuth();
   const mounted = useHasMounted();
   const cartCount = mounted ? storedCartCount : 0;
   const wishCount = mounted ? storedWishCount : 0;
@@ -57,6 +60,11 @@ export function SiteHeader() {
   const [open, setOpen] = useState(false);
   const [categoriesOpen, setCategoriesOpen] = useState(false);
   const [announcementIndex, setAnnouncementIndex] = useState(0);
+  const { settings } = useSiteSettings();
+  const { categories } = useShopData();
+  const navCategories = categories.length
+    ? categories.map((category) => ({ slug: category.slug, label: category.name }))
+    : NAV_CATEGORIES;
 
   const links = useMemo(
     () => [
@@ -74,21 +82,23 @@ export function SiteHeader() {
   const isAuthPage = Boolean(pathname && isAuthOnlyPath(pathname));
   const logoHref = isAuthPage ? "/login" : "/";
   const announcements = [
-    {
-      text: "Our Bengaluru studio is open by appointment.",
-      mobileText: "Bengaluru studio by appointment.",
-      cta: "Book a visit",
-      href: "/appointment",
-    },
+    ...(settings.announcementEnabled
+      ? [{
+          text: settings.announcementText,
+          mobileText: settings.announcementMobileText,
+          cta: settings.announcementCta,
+          href: settings.announcementHref,
+        }]
+      : []),
     {
       text: "For personalised assistance, reach us on WhatsApp at",
       mobileText: "Personal styling on WhatsApp",
-      cta: SITE_PHONE_E164_PLUS,
-      href: `https://wa.me/${SITE_WHATSAPP_E164_DIGITS}`,
+      cta: settings.phoneDisplay || SITE_PHONE_E164_PLUS,
+      href: `https://wa.me/${settings.whatsappNumber || SITE_WHATSAPP_E164_DIGITS}`,
       external: true,
     },
   ];
-  const announcement = announcements[announcementIndex]!;
+  const announcement = announcements[announcementIndex] ?? announcements[0]!;
   const showPreviousAnnouncement = () =>
     setAnnouncementIndex((current) => (current === 0 ? announcements.length - 1 : current - 1));
   const showNextAnnouncement = () =>
@@ -250,7 +260,7 @@ export function SiteHeader() {
                     <p className="px-3 text-[10px] font-semibold uppercase tracking-[0.34em] text-muted-foreground">
                       Categories
                     </p>
-                    {NAV_CATEGORIES.map((c) => (
+                    {navCategories.map((c) => (
                       <Link
                         key={c.slug}
                         href={`/category/${c.slug}`}
@@ -309,7 +319,7 @@ export function SiteHeader() {
                   sideOffset={10}
                 >
                   <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-3">
-                    {NAV_CATEGORIES.map((c) => (
+                    {navCategories.map((c) => (
                       <Link
                         key={c.slug}
                         href={`/category/${c.slug}`}
@@ -445,6 +455,17 @@ export function SiteHeader() {
                       <CircleHelp className="size-4" aria-hidden="true" />
                       Help center
                     </DropdownMenuItem>
+                    {isAdmin ? (
+                      <>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem
+                          onClick={() => router.push("/admin")}
+                        >
+                          <ShieldCheck className="size-4" aria-hidden="true" />
+                          Admin panel
+                        </DropdownMenuItem>
+                      </>
+                    ) : null}
                     <DropdownMenuSeparator />
                     <DropdownMenuItem
                       onClick={async () => {

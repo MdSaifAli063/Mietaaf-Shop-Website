@@ -4,13 +4,15 @@ import Link from "next/link";
 import { Mail, MapPin, Phone } from "lucide-react";
 import { Logo } from "@/components/branding/logo";
 import { FacebookIcon, InstagramIcon, LinkedInIcon } from "@/components/branding/social-brand-icons";
-import { FOOTER_LINKS, SITE_SOCIAL_URLS, SITE_TAGLINE } from "@/lib/constants";
+import { FOOTER_LINKS } from "@/lib/constants";
 import { SITE_ADDRESS_DISPLAY, SITE_EMAIL_DISPLAY, SITE_PHONE_DISPLAY } from "@/lib/site-contact";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import toast from "react-hot-toast";
+import { useSiteSettings } from "@/hooks/use-site-settings";
 
 export function SiteFooter() {
+  const { settings } = useSiteSettings();
   return (
     <footer className="border-t border-border/70 bg-background text-foreground dark:bg-card">
       <div className="mx-auto max-w-7xl px-4 pb-[max(3rem,env(safe-area-inset-bottom))] pt-12 sm:px-6 sm:py-16 lg:px-8">
@@ -19,24 +21,23 @@ export function SiteFooter() {
           <div className="flex min-w-0 max-w-full flex-col items-start gap-4 lg:pr-4">
             <Logo variant="footer" href="/" className="w-full max-w-full" />
             <p className="max-w-sm text-sm leading-relaxed text-muted-foreground">
-              {SITE_TAGLINE}. Crafted silhouettes, ceremonial grandeur, and contemporary
-              tailoring for the modern gentleman.
+              {settings.brandTagline}. {settings.footerDescription}
             </p>
             <div className="flex flex-wrap gap-3">
               {(
                 [
                   {
-                    href: "https://www.linkedin.com/company/mietaaf-couture-llp/",
+                    href: settings.linkedinUrl,
                     label: "LinkedIn",
                     Icon: LinkedInIcon,
                   },
                   {
-                    href: "https://www.instagram.com/mietaaf",
+                    href: settings.instagramUrl,
                     label: "Instagram",
                     Icon: InstagramIcon,
                   },
                   {
-                    href: "https://www.facebook.com/people/Mietaaf-Mietaaf/pfbid02SomQ6rT3aW1ndYNWy6reVSUx9eBKTpfiXibNM3LjLUahjjoAWrwJc6rLuh7qqP8sl/",
+                    href: settings.facebookUrl,
                     label: "Facebook",
                     Icon: FacebookIcon,
                   },
@@ -128,14 +129,14 @@ export function SiteFooter() {
             </form>
             <div className="space-y-2 pt-2 text-sm text-muted-foreground">
               <p className="flex min-w-0 items-center gap-2">
-                <Phone className="h-4 w-4 shrink-0 text-primary" /> <span>{SITE_PHONE_DISPLAY}</span>
+                <Phone className="h-4 w-4 shrink-0 text-primary" /> <span>{settings.phoneDisplay || SITE_PHONE_DISPLAY}</span>
               </p>
               <p className="flex min-w-0 items-center gap-2">
-                <Mail className="h-4 w-4 shrink-0 text-primary" /> <span className="break-all">{SITE_EMAIL_DISPLAY}</span>
+                <Mail className="h-4 w-4 shrink-0 text-primary" /> <span className="break-all">{settings.supportEmail || SITE_EMAIL_DISPLAY}</span>
               </p>
               <p className="flex items-start gap-2">
                 <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-                {SITE_ADDRESS_DISPLAY} — by appointment.
+                {settings.address || SITE_ADDRESS_DISPLAY} — by appointment.
               </p>
             </div>
           </div>

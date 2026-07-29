@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { SITE_WHATSAPP_E164_DIGITS } from "@/lib/site-contact";
 import { sanitizeWhatsAppNumber } from "@/lib/whatsapp";
+import { useSiteSettings } from "@/hooks/use-site-settings";
 
 function WhatsAppIcon({ className }: { className?: string }) {
   return (
@@ -26,7 +27,11 @@ function WhatsAppIcon({ className }: { className?: string }) {
 
 export function FloatingWhatsApp() {
   const pathname = usePathname();
-  const raw = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? SITE_WHATSAPP_E164_DIGITS;
+  const { settings } = useSiteSettings();
+  const raw =
+    settings.whatsappNumber ||
+    process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ||
+    SITE_WHATSAPP_E164_DIGITS;
   const num = sanitizeWhatsAppNumber(raw);
   const href = `https://wa.me/${num}?text=${encodeURIComponent("Hello Mietaaf, I would like styling assistance.")}`;
 
