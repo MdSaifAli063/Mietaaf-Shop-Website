@@ -1,8 +1,19 @@
 import type { MetadataRoute } from "next";
-import { getSiteUrl } from "@/lib/seo";
+import { getSiteUrl, isIndexingDisabled } from "@/lib/seo";
 
 export default function robots(): MetadataRoute.Robots {
   const base = getSiteUrl();
+  if (isIndexingDisabled()) {
+    return {
+      rules: {
+        userAgent: "*",
+        disallow: "/",
+      },
+      sitemap: `${base}/sitemap.xml`,
+      host: base,
+    };
+  }
+
   return {
     rules: {
       userAgent: "*",

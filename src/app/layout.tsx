@@ -43,6 +43,8 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const googleAnalyticsId = process.env.NEXT_PUBLIC_GA_ID?.trim();
+
   return (
     <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth">
       <body
@@ -53,8 +55,7 @@ export default function RootLayout({
         <AppProviders>{children}</AppProviders>
       </body>
 
-      {/* Replace G-XXXXXXXXXX with your Google Analytics Measurement ID */}
-      <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID!} />
+      {googleAnalyticsId ? <GoogleAnalytics gaId={googleAnalyticsId} /> : null}
     </html>
   );
 }
