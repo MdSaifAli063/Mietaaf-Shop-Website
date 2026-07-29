@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { bypassImageOptimization } from "@/lib/image-source";
 
 type CatalogProductPhotoProps = {
   src: string;
@@ -44,6 +45,7 @@ export function CatalogCroppedFillImage({
     >
       <Image
         src={src}
+        unoptimized={bypassImageOptimization(src)}
         alt={alt}
         fill
         priority={priority}
@@ -87,6 +89,7 @@ export function ProductThumbnailImage({
   return (
     <Image
       src={src}
+      unoptimized={bypassImageOptimization(src)}
       alt={alt}
       fill
       priority={priority}

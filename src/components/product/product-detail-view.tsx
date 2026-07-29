@@ -31,18 +31,22 @@ import { cn } from "@/lib/utils";
 import { SITE_WHATSAPP_E164_DIGITS } from "@/lib/site-contact";
 import { normalizeProductImageParam } from "@/lib/product-links";
 import { CATEGORY_IMAGE_LINKS } from "@/lib/data/image-links/category-images";
+import { bypassImageOptimization } from "@/lib/image-source";
 const waNumber = () =>
   process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? SITE_WHATSAPP_E164_DIGITS;
 
 export function ProductDetailView({ product: originalProduct }: { product: Product }) {
   const searchParams = useSearchParams();
   const selectedImage = normalizeProductImageParam(searchParams.get("image"));
+  const { products: allProducts } = useShopData();
+  const managedProduct =
+    allProducts.find((item) => item.slug === originalProduct.slug) ?? originalProduct;
   const product = useMemo(
     () =>
       selectedImage
-        ? { ...originalProduct, images: [selectedImage] }
-        : originalProduct,
-    [originalProduct, selectedImage],
+        ? { ...managedProduct, images: [selectedImage] }
+        : managedProduct,
+    [managedProduct, selectedImage],
   );
   const addItem = useCartStore((s) => s.addItem);
   const pushRecent = useRecentStore((s) => s.push);
@@ -55,8 +59,6 @@ export function ProductDetailView({ product: originalProduct }: { product: Produ
   useEffect(() => {
     pushRecent(product.slug, product.images[0]);
   }, [product.slug, product.images, pushRecent]);
-
-  const { products: allProducts } = useShopData();
 
   const similar = useMemo(
     () =>
@@ -138,6 +140,7 @@ export function ProductDetailView({ product: originalProduct }: { product: Produ
             <div className="relative h-full w-full overflow-hidden">
               <Image
                 src={mainImg}
+                unoptimized={bypassImageOptimization(mainImg)}
                 alt={product.name}
                 fill
                 priority
@@ -157,7 +160,7 @@ export function ProductDetailView({ product: originalProduct }: { product: Produ
                   i === imgIdx ? "ring-primary" : "ring-transparent opacity-70 hover:opacity-100",
                 )}
               >
-                <Image src={src} alt="" fill className="object-cover" sizes="64px" />
+                <Image src={src} alt="" fill unoptimized={bypassImageOptimization(src)} className="object-cover" sizes="64px" />
               </button>
             ))}
           </div>

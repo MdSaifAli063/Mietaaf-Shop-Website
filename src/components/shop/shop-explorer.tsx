@@ -25,7 +25,7 @@ import { cn } from "@/lib/utils";
 import { useShopData } from "@/hooks/use-shop-data";
 import { CATEGORIES } from "@/lib/data/categories";
 
-const ALL_CATEGORIES: { slug: CategorySlug | "all"; label: string }[] = [
+const FALLBACK_CATEGORIES: { slug: CategorySlug | "all"; label: string }[] = [
   { slug: "all", label: "All" },
   ...CATEGORIES.map((category) => ({
     slug: category.slug,
@@ -34,11 +34,21 @@ const ALL_CATEGORIES: { slug: CategorySlug | "all"; label: string }[] = [
 ];
 
 export function ShopExplorer() {
-  const { products, loading } = useShopData();
+  const { products, categories, loading } = useShopData();
+  const allCategories = useMemo(
+    () => [
+      { slug: "all" as const, label: "All" },
+      ...categories.map((item) => ({
+        slug: item.slug,
+        label: item.name.replace(" Collection", ""),
+      })),
+    ],
+    [categories],
+  );
   const sp = useSearchParams();
   const initialCat = (sp.get("category") as CategorySlug | null) ?? "all";
   const [category, setCategory] = useState<CategorySlug | "all">(
-    initialCat && ALL_CATEGORIES.some((c) => c.slug === initialCat)
+    initialCat && FALLBACK_CATEGORIES.some((c) => c.slug === initialCat)
       ? initialCat
       : "all",
   );
@@ -104,7 +114,7 @@ export function ShopExplorer() {
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            {ALL_CATEGORIES.map((c) => (
+            {allCategories.map((c) => (
               <SelectItem key={c.slug} value={c.slug}>
                 {c.label}
               </SelectItem>
