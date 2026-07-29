@@ -60,14 +60,16 @@ service cloud.firestore {
     match /orders/{orderId} {
       allow create: if isSignedIn()
         && request.resource.data.keys().hasOnly([
-          'userId', 'customerName', 'phone', 'address', 'city', 'state',
+          'userId', 'customerEmail', 'customerName', 'phone', 'address', 'city', 'state',
           'pincode', 'notes', 'items', 'total', 'status', 'createdAt'
         ])
         && request.resource.data.keys().hasAll([
-          'userId', 'customerName', 'phone', 'address', 'city', 'state',
+          'userId', 'customerEmail', 'customerName', 'phone', 'address', 'city', 'state',
           'pincode', 'items', 'total', 'status', 'createdAt'
         ])
         && request.resource.data.userId == request.auth.uid
+        && request.resource.data.customerEmail is string
+        && request.resource.data.customerEmail == request.auth.token.email
         && request.resource.data.customerName is string
         && request.resource.data.phone is string
         && request.resource.data.address is string
