@@ -3,20 +3,29 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { BANNERS } from "@/lib/data/banners";
+import { useShopData } from "@/hooks/use-shop-data";
+import { bypassImageOptimization } from "@/lib/image-source";
 import { Button } from "@/components/ui/button";
 
 export function HeroCarousel() {
+  const { banners } = useShopData();
   const [activeIndex, setActiveIndex] = useState(0);
-  const activeBanner = BANNERS[activeIndex] ?? BANNERS[0]!;
+  const activeBanner = banners[activeIndex] ?? banners[0];
 
   useEffect(() => {
+    if (banners.length < 2) return;
     const timer = window.setInterval(() => {
-      setActiveIndex((current) => (current + 1) % BANNERS.length);
+      setActiveIndex((current) => (current + 1) % banners.length);
     }, 5200);
 
     return () => window.clearInterval(timer);
-  }, []);
+  }, [banners.length]);
+
+  useEffect(() => {
+    if (activeIndex >= banners.length) setActiveIndex(0);
+  }, [activeIndex, banners.length]);
+
+  if (!activeBanner) return null;
 
   return (
     <section className="relative h-[calc(100svh-6.25rem)] min-h-[450px] w-full overflow-hidden bg-background sm:h-[calc(100svh-7.25rem)] sm:min-h-[520px] lg:h-[calc(100svh-8.25rem)] lg:min-h-[600px]">
@@ -24,6 +33,7 @@ export function HeroCarousel() {
         <Image
           key={activeBanner.id}
           src={activeBanner.image}
+          unoptimized={bypassImageOptimization(activeBanner.image)}
           alt={activeBanner.title}
           fill
           priority={activeIndex === 0}
@@ -67,7 +77,7 @@ export function HeroCarousel() {
           </div>
         </div>
         <div className="absolute bottom-5 left-1/2 z-10 flex -translate-x-1/2 gap-2">
-          {BANNERS.map((banner, index) => (
+          {banners.map((banner, index) => (
             <button
               key={banner.id}
               type="button"

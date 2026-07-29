@@ -7,7 +7,7 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { SITE_EMAIL_DISPLAY } from "@/lib/site-contact";
+import { useSiteSettings } from "@/hooks/use-site-settings";
 
 const EMAILJS_SERVICE_ID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
 const EMAILJS_CONTACT_TEMPLATE_ID = process.env.NEXT_PUBLIC_EMAILJS_CONTACT_TEMPLATE_ID;
@@ -15,6 +15,7 @@ const EMAILJS_PUBLIC_KEY = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
 
 export function ContactForm() {
   const [submitting, setSubmitting] = useState(false);
+  const { settings } = useSiteSettings();
 
   return (
     <Card className="rounded-[1.5rem] border-border/55 bg-card/90 p-5 shadow-[0_18px_45px_rgba(58,48,38,0.07)] ring-1 ring-black/5 sm:p-7 dark:ring-white/10">
@@ -63,7 +64,7 @@ export function ContactForm() {
                 template_id: EMAILJS_CONTACT_TEMPLATE_ID,
                 user_id: EMAILJS_PUBLIC_KEY,
                 template_params: {
-                  to_email: SITE_EMAIL_DISPLAY,
+                  to_email: settings.supportEmail,
                   subject,
                   from_name: name,
                   reply_to: email,

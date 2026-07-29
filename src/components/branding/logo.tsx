@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { SITE_LOGO_URL } from "@/lib/site-logo";
+import { bypassImageOptimization } from "@/lib/image-source";
 import { cn } from "@/lib/utils";
 import { useSettingsStore } from "@/store/settings-store";
 
@@ -48,6 +49,7 @@ export function Logo({
       <span className={cn("relative block", box)}>
         <Image
           src={activeLogo}
+          unoptimized={bypassImageOptimization(activeLogo)}
           alt="Mietaaf"
           fill
           className={cn(
