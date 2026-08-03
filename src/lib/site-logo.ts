@@ -10,4 +10,10 @@
  */
 export const SITE_LOGO_URL =
 	process.env.NEXT_PUBLIC_SITE_LOGO_URL?.trim() ||
-	"https://ik.imagekit.io/77nsbwefl/ChatGPT%20Image%20Jul%2014,%202026,%2007_56_57%20PM.png";
+	"/branding/mietaaf-logo.png";
+
+/** Square monogram for browser icons, PWA installs, and Organization schema. */
+export const SITE_MONOGRAM_URL = "/icon.png";
+
+/** 1200 × 630 first-party card for Google, WhatsApp, and social previews. */
+export const SITE_SOCIAL_CARD_URL = "/branding/mietaaf-social-card.png";

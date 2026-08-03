@@ -4,7 +4,7 @@ export const SITE_NAME = "Mietaaf";
 export const SITE_TITLE = "Mietaaf | Luxury Men's Ethnic & Formal";
 export const SITE_DESCRIPTION =
   "Discover sherwanis, suits, indo-western, wedding and premium festive menswear. Crafted for the modern gentleman.";
-export const SITE_DEFAULT_IMAGE = "/opengraph-image";
+export const SITE_DEFAULT_IMAGE = "/branding/mietaaf-social-card.png";
 
 /**
  * Canonical origin for metadata, sitemap, and JSON-LD (no trailing slash).
@@ -133,6 +133,13 @@ export function rootMetadata(): Metadata {
     publisher: SITE_NAME,
     category: "fashion",
     manifest: "/manifest.webmanifest",
+    icons: {
+      icon: [
+        { url: "/icon.png", type: "image/png", sizes: "512x512" },
+        { url: "/favicon.ico", type: "image/x-icon", sizes: "any" },
+      ],
+      apple: [{ url: "/apple-icon.png", type: "image/png", sizes: "180x180" }],
+    },
     openGraph: {
       type: "website",
       locale: "en_IN",
