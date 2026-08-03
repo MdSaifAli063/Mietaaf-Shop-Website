@@ -1,11 +1,11 @@
-import { getSiteUrl } from "@/lib/seo";
+import { absoluteUrl, getSiteUrl, SITE_DESCRIPTION } from "@/lib/seo";
 import {
   SITE_ADDRESS_SCHEMA_POSTAL,
   SITE_EMAIL_DISPLAY,
   SITE_GOOGLE_MAPS_URL,
   SITE_PHONE_E164_PLUS,
 } from "@/lib/site-contact";
-import { SITE_LOGO_URL } from "@/lib/site-logo";
+import { SITE_MONOGRAM_URL, SITE_SOCIAL_CARD_URL } from "@/lib/site-logo";
 
 function validHttpUrl(value: string | undefined): string | null {
   if (!value) return null;
@@ -20,7 +20,8 @@ function validHttpUrl(value: string | undefined): string | null {
 /** Organization + WebSite schema for rich results (server-rendered). */
 export function SiteJsonLd() {
   const base = getSiteUrl();
-  const logo = SITE_LOGO_URL;
+  const logo = absoluteUrl(SITE_MONOGRAM_URL);
+  const socialCard = absoluteUrl(SITE_SOCIAL_CARD_URL);
   const sameAs = [
     validHttpUrl(process.env.NEXT_PUBLIC_SOCIAL_INSTAGRAM),
     validHttpUrl(process.env.NEXT_PUBLIC_SOCIAL_FACEBOOK),
@@ -34,8 +35,18 @@ export function SiteJsonLd() {
         "@type": "OnlineStore",
         "@id": `${base}/#organization`,
         name: "Mietaaf",
+        alternateName: "MIETAAF",
         url: base,
-        logo: /^https?:\/\//i.test(logo) ? logo : `${base}${logo}`,
+        logo: {
+          "@type": "ImageObject",
+          url: logo,
+          width: 512,
+          height: 512,
+          caption: "Mietaaf monogram",
+        },
+        image: socialCard,
+        description: SITE_DESCRIPTION,
+        slogan: "Your Presence, Our Craft.",
         email: SITE_EMAIL_DISPLAY,
         telephone: SITE_PHONE_E164_PLUS,
         contactPoint: {
@@ -53,6 +64,7 @@ export function SiteJsonLd() {
         "@id": `${base}/#bengaluru-studio`,
         name: "Mietaaf Bengaluru Studio",
         url: base,
+        image: socialCard,
         parentOrganization: { "@id": `${base}/#organization` },
         telephone: SITE_PHONE_E164_PLUS,
         email: SITE_EMAIL_DISPLAY,
