@@ -55,7 +55,7 @@ NEXT_PUBLIC_SOCIAL_FACEBOOK
 Rules for the values:
 
 - `NEXT_PUBLIC_WHATSAPP_NUMBER`: country code and phone number, digits only; no `+`, spaces, or dashes.
-- `NEXT_PUBLIC_SITE_URL`: the final HTTPS origin with no path, for example `https://mietaaf.com`.
+- `NEXT_PUBLIC_SITE_URL`: the final HTTPS origin with no path. It must match the domain visitors land on after redirects; for this site use `https://www.mietaaf.com`.
 - `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION`: optional. Paste only the Google Search Console meta tag `content` value.
 - `NEXT_PUBLIC_GA_ID`: optional. Add the Google Analytics 4 Measurement ID in `G-XXXXXXXXXX` format.
 - `NEXT_PUBLIC_INDEXING_DISABLED`: optional. Set to `true` only for staging. Vercel Preview deployments are noindexed automatically.

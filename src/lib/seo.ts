@@ -8,7 +8,7 @@ export const SITE_DEFAULT_IMAGE = "/opengraph-image";
 
 /**
  * Canonical origin for metadata, sitemap, and JSON-LD (no trailing slash).
- * - Production: set NEXT_PUBLIC_SITE_URL in Vercel, e.g. https://mietaaf.com.
+ * - Production: set NEXT_PUBLIC_SITE_URL in Vercel, e.g. https://www.mietaaf.com.
  * - Preview: if unset, uses Vercel's deployment URL so OG/sitemap match the deployment.
  * - Local: http://localhost:3000 when neither is set.
  */
@@ -25,6 +25,12 @@ function normalizeSiteUrl(value: string | undefined): string | null {
   try {
     const url = new URL(candidate);
     if (url.protocol !== "http:" && url.protocol !== "https:") return null;
+    // Vercel redirects the apex domain to www for this site. Keep all canonical,
+    // sitemap, Open Graph, and JSON-LD URLs on that single indexable host even
+    // when an old environment value still says https://mietaaf.com.
+    if (url.hostname.toLowerCase() === "mietaaf.com") {
+      url.hostname = "www.mietaaf.com";
+    }
     return url.toString().replace(/\/$/, "");
   } catch {
     return null;
