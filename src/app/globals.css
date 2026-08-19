@@ -218,3 +218,55 @@
     transform: scale(1);
   }
 }
+
+@keyframes mietaaf-doorstep-glow {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(0.88);
+  }
+
+  50% {
+    opacity: 0.8;
+    transform: scale(1.08);
+  }
+}
+
+@keyframes mietaaf-hanging-sign {
+  0%,
+  100% {
+    transform: rotate(-1deg) translateY(0);
+  }
+
+  50% {
+    transform: rotate(1deg) translateY(4px);
+  }
+}
+
+@keyframes mietaaf-doorstep-shine {
+  0%,
+  18% {
+    transform: translateX(0) skewX(-12deg);
+    opacity: 0;
+  }
+
+  24% {
+    opacity: 0.7;
+  }
+
+  44%,
+  100% {
+    transform: translateX(350%) skewX(-12deg);
+    opacity: 0;
+  }
+}
+
+.mietaaf-doorstep-shine {
+  animation: mietaaf-doorstep-shine 5.5s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mietaaf-doorstep-shine {
+    animation: none;
+  }
+}
