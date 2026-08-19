@@ -143,6 +143,17 @@ export function SiteFooter() {
         </div>
         <div className="mt-10 flex flex-col items-center gap-4 border-t border-border/70 pt-6 text-center text-xs text-muted-foreground sm:mt-12 sm:flex-row sm:items-center sm:justify-between sm:gap-4 sm:pt-8 sm:text-start">
           <p className="px-2">© {new Date().getFullYear()} Mietaaf. All rights reserved.</p>
+          <span>
+              Design and Develop by{" "}
+              <a
+                href="https://softtrickscode.com"
+                target="_blank"
+                rel="noreferrer"
+                className="font-medium text-blue-500 hover:text-blue-400/80"
+              >
+                Soft Tricks Code
+              </a>
+            </span>
           <div className="flex max-w-full flex-wrap justify-center gap-2 sm:justify-end sm:gap-3">
             <span className="rounded-full border border-border/70 px-3 py-1">Secure checkout via WhatsApp</span>
             <span className="rounded-full border border-border/70 px-3 py-1">Made in India</span>
