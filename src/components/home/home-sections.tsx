@@ -36,6 +36,7 @@ import { cn } from "@/lib/utils";
 import type { Product } from "@/types";
 import { buildProductHref } from "@/lib/product-links";
 import { bypassImageOptimization } from "@/lib/image-source";
+import { DoorstepServiceBanner } from "@/components/home/doorstep-service-banner";
 
 function takeUniqueProducts(
   preferredSlugs: readonly string[],
@@ -456,6 +457,8 @@ export function HomeSections() {
           </div>
         </div>
       </section>
+
+      <DoorstepServiceBanner />
 
       <section className="bg-[#eee4d6] py-12 sm:py-16 md:py-20 dark:bg-[#201d19]">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
