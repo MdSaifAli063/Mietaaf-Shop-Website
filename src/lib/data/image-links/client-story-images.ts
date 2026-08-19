@@ -1,10 +1,10 @@
 /** CLIENT STORIES PROFILE IMAGES */
 export const CLIENT_STORY_IMAGE_LINKS = {
   arjunMehta:
-    "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&q=80&auto=format&fit=crop",
+    "https://cdn-icons-png.flaticon.com/512/3781/3781973.png",
   kabirSingh:
-    "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&q=80&auto=format&fit=crop",
+    "https://png.pngtree.com/png-vector/20220807/ourmid/pngtree-man-avatar-wearing-gray-suit-png-image_6102786.png",
   rohanVerma:
-    "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&q=80&auto=format&fit=crop",
+    "https://pngpix.com/images/file/generic-male-avatar-icon-piiktqtfffyzulft.png",
 } as const;
 
