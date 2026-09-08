@@ -42,8 +42,8 @@ export function ProductCard({
     product.discountPercent ??
     (product.compareAtPrice
       ? Math.round(
-          ((product.compareAtPrice - product.price) / product.compareAtPrice) * 100,
-        )
+        ((product.compareAtPrice - product.price) / product.compareAtPrice) * 100,
+      )
       : undefined);
 
   function addToCart(e: React.MouseEvent) {
@@ -97,7 +97,11 @@ export function ProductCard({
           priority={false}
         />
         {discount ? (
-          <Badge className="absolute left-1.5 top-1.5 px-1.5 py-0.5 text-[9px] leading-4 bg-[rgb(95_107_84/0.18)] text-[rgb(72_82_64)] sm:left-3 sm:top-3 sm:px-2.5 sm:text-xs">
+          // Change variant="secondary" to variant="default"
+          <Badge
+            variant="default"
+            className="absolute left-1.5 top-1.5 px-1.5 py-0.5 text-[9px] leading-4 sm:left-3 sm:top-3 sm:px-2.5 sm:text-xs"
+          >
             {discount}% off
           </Badge>
         ) : null}
