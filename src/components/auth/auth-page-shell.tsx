@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 import { Check, PackageCheck, ShieldCheck, Sparkles } from "lucide-react";
 import { AuthUtilityBar } from "@/components/auth/auth-utility-bar";
 
@@ -9,9 +10,6 @@ type AuthPageShellProps = {
   offWhite?: boolean;
 };
 
-/**
- * Soft backdrop + narrow column. Parent layout handles viewport height and vertical centering.
- */
 const benefits = [
   { icon: Sparkles, label: "Curated collections" },
   { icon: PackageCheck, label: "Easy order tracking" },
@@ -28,56 +26,64 @@ export function AuthPageShell({
   return (
     <div
       className={cn(
-        "relative isolate min-h-dvh w-full overflow-hidden",
+        "relative isolate min-h-dvh w-full overflow-x-clip",
         offWhite
-          ? "bg-[#fbf8f2] dark:bg-[#181613]"
+          ? "bg-surface-paper dark:bg-[#181613]"
           : "bg-linear-to-b from-mietaaf-cream/75 via-background to-background dark:from-mietaaf-cream/10",
         className,
       )}
     >
-      <div className="pointer-events-none absolute -left-28 top-10 -z-10 size-80 rounded-full bg-primary/10 blur-3xl" />
-      <div className="pointer-events-none absolute -right-32 bottom-0 -z-10 size-96 rounded-full bg-mietaaf-gold/10 blur-3xl" />
       <AuthUtilityBar />
       <div
         className={cn(
-          "relative mx-auto grid min-h-[calc(100dvh-3.5rem)] w-full max-w-md items-center gap-6 px-4 py-3 sm:max-w-xl sm:px-6 sm:py-4 lg:max-w-6xl lg:px-8 lg:py-5",
-          showPromoPanel && "lg:grid-cols-[1.02fr_0.98fr] lg:gap-8 xl:gap-10",
+          "relative mx-auto flex min-h-[calc(100dvh-3.5rem)] w-full items-center px-4 pb-6 pt-2 sm:px-6 sm:pb-8 sm:pt-4 lg:px-8",
+          showPromoPanel ? "max-w-xl lg:max-w-6xl" : "max-w-xl",
         )}
       >
+        <div className={cn(
+          "grid w-full min-w-0",
+          showPromoPanel && "overflow-hidden rounded-2xl border border-border/80 bg-card shadow-[0_16px_60px_rgba(48,42,36,0.06)] lg:grid-cols-[0.95fr_1.05fr]",
+        )}>
         {showPromoPanel ? (
-          <aside className="relative hidden h-[min(38rem,calc(100dvh-6rem))] min-h-[31rem] overflow-hidden rounded-[2rem] border border-white/15 bg-[#292724] p-9 text-[#f7f1e8] shadow-[0_32px_90px_rgba(38,32,26,0.2)] lg:flex lg:flex-col lg:justify-between xl:p-10">
-            <div className="pointer-events-none absolute -right-20 -top-20 size-72 rounded-full border border-white/10" />
-            <div className="pointer-events-none absolute -right-10 -top-10 size-44 rounded-full border border-white/10" />
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.36em] text-[#cbb89f]">
-                The Mietaaf experience
+          <aside className="relative isolate hidden min-h-[35rem] flex-col justify-end overflow-hidden bg-mietaaf-charcoal p-8 text-mietaaf-cream lg:flex xl:p-10">
+            <Image
+              src="/about/about-atelier-fitting.webp"
+              alt="A Mietaaf sherwani being carefully fitted in the atelier"
+              fill
+              priority
+              sizes="(min-width: 1152px) 520px, 45vw"
+              className="-z-20 object-cover object-[center_25%]"
+            />
+            <div className="pointer-events-none absolute inset-0 -z-10 bg-linear-to-t from-[#211b15]/95 via-[#211b15]/65 to-[#211b15]/15" />
+            <div className="mt-40">
+              <p className="mb-5 w-fit rounded-full border border-mietaaf-cream/30 bg-mietaaf-charcoal/45 px-4 py-2 text-[9px] font-medium uppercase tracking-[0.22em] backdrop-blur-md">
+                Mietaaf couture
               </p>
-              <h2 className="mt-5 max-w-lg font-heading text-5xl leading-[0.98] tracking-[0.01em] xl:text-[3.5rem]">
+              <h2 className="max-w-sm font-heading text-[2.75rem] leading-[1.02] tracking-[-0.02em] xl:text-5xl">
                 Thoughtful style, made personal.
               </h2>
-              <p className="mt-5 max-w-md text-sm leading-6 text-[#d8d0c5] xl:text-base">
-                Create your account to keep every favorite, order, and detail together in one elegant place.
+              <p className="mt-4 max-w-[32ch] text-sm leading-6 text-mietaaf-cream/85">
+                Your favourite pieces, saved details, and orders. All in one considered space.
               </p>
-            </div>
-            <div className="mt-8 grid grid-cols-2 gap-3">
+            <div className="mt-6 grid grid-cols-2 gap-x-4 gap-y-4 border-t border-mietaaf-cream/25 pt-5">
               {benefits.map(({ icon: Icon, label }) => (
                 <div
                   key={label}
-                  className="flex min-h-17 items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.06] p-3.5 text-sm text-[#eee7dc] backdrop-blur-sm"
+                  className="flex items-center gap-2.5 text-[11px] leading-4 text-mietaaf-cream/90"
                 >
-                  <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-[#cbb89f]/15 text-[#d8c5aa]">
-                    <Icon className="size-4" aria-hidden="true" />
-                  </span>
+                  <Icon className="size-4 shrink-0 text-[#dfcdb3]" strokeWidth={1.5} aria-hidden="true" />
                   <span>{label}</span>
                 </div>
               ))}
             </div>
+            </div>
           </aside>
         ) : null}
-        <div className="min-w-0">
+        <div className="flex min-w-0 items-center">
           <div className="mx-auto w-full max-w-[34rem]">
             {children}
           </div>
+        </div>
         </div>
       </div>
     </div>

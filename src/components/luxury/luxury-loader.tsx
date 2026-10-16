@@ -11,7 +11,8 @@ const STORAGE_KEY = "mietaaf_splash_seen";
  * Short fade only — avoids blocking navigations after the initial load.
  */
 export function LuxuryLoader() {
-  const [phase, setPhase] = useState<"in" | "out" | "done">("in");
+  // Server HTML must remain visible when JavaScript is unavailable.
+  const [phase, setPhase] = useState<"in" | "out" | "done">("done");
 
   useLayoutEffect(() => {
     if (typeof window === "undefined") return;
@@ -19,6 +20,7 @@ export function LuxuryLoader() {
       setPhase("done");
       return;
     }
+    setPhase("in");
     const hide = window.setTimeout(() => setPhase("out"), 160);
     const remove = window.setTimeout(() => {
       try {

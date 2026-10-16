@@ -322,9 +322,9 @@ export default function ProfilePage() {
 
   return (
     <PageEnter>
-      <div className="min-h-screen bg-[#fbf8f2] py-8 dark:bg-[#181613] sm:py-10 lg:py-12">
+      <div className="min-h-screen bg-surface-paper py-8 dark:bg-[#181613] sm:py-10 lg:py-12">
         <div className="page-container mx-auto min-w-0 max-w-7xl">
-          <section className="overflow-hidden rounded-[2rem] border border-border/60 bg-[#eee4d6] p-6 shadow-[0_22px_60px_rgba(53,39,22,0.08)] dark:bg-[#201d19] sm:p-8 lg:p-10">
+          <section className="overflow-hidden rounded-xl border border-border/60 bg-surface-cream p-6 shadow-[0_8px_32px_rgba(36,39,33,0.035)] dark:bg-[#201d19] sm:p-8 lg:p-10">
             <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
               <div className="flex min-w-0 items-center gap-4 sm:gap-5">
                 <Avatar className="size-16 border-2 border-background shadow-sm sm:size-20">
@@ -357,8 +357,8 @@ export default function ProfilePage() {
           </section>
 
           <div className="mt-6 grid min-w-0 gap-6 lg:grid-cols-[260px_minmax(0,1fr)] lg:items-start">
-            <aside className="min-w-0 lg:sticky lg:top-28">
-              <Card className="overflow-hidden rounded-[1.5rem] border-border/60 bg-card/90 p-2 shadow-sm">
+            <aside className="min-w-0 lg:sticky lg:top-[calc(var(--site-header-height)+1rem)]">
+              <Card className="overflow-hidden rounded-xl border-border/60 bg-card/90 p-2 shadow-sm">
                 <nav aria-label="Account" className="flex snap-x snap-mandatory gap-2 overflow-x-auto overscroll-x-contain p-1 pb-2 lg:flex-col lg:overflow-visible lg:pb-1">
                   {sectionItems.map((item) => {
                     const Icon = item.icon;
@@ -417,7 +417,7 @@ export default function ProfilePage() {
             <main className="min-w-0">
               {activeSection === "profile" ? (
                 <div className="space-y-6">
-                  <Card className="rounded-[1.5rem] border-border/60 bg-card/90 p-5 shadow-sm sm:p-7 lg:p-8">
+                  <Card className="rounded-xl border-border/60 bg-card/90 p-5 shadow-sm sm:p-7 lg:p-8">
                     <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
                       <div>
                         <p className="text-xs font-semibold uppercase tracking-[0.28em] text-primary">Profile</p>
@@ -474,7 +474,7 @@ export default function ProfilePage() {
                     </form>
                   </Card>
 
-                  <Card className="rounded-[1.5rem] border-border/60 bg-[#eee4d6] p-5 dark:bg-[#201d19] sm:p-7">
+                  <Card className="rounded-xl border-border/60 bg-surface-cream p-5 dark:bg-[#201d19] sm:p-7">
                     <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                       <div className="flex items-start gap-3">
                         <ShieldCheck className="mt-0.5 size-5 text-primary" aria-hidden="true" />
@@ -493,7 +493,7 @@ export default function ProfilePage() {
               ) : null}
 
               {activeSection === "orders" ? (
-                <Card className="rounded-[1.5rem] border-border/60 bg-card/90 p-5 shadow-sm sm:p-7 lg:p-8">
+                <Card className="rounded-xl border-border/60 bg-card/90 p-5 shadow-sm sm:p-7 lg:p-8">
                   <p className="text-xs font-semibold uppercase tracking-[0.28em] text-primary">Purchases</p>
                   <h2 className="mt-1 font-heading text-2xl sm:text-3xl">My orders</h2>
                   <p className="mt-2 text-sm text-muted-foreground">Orders placed through checkout and confirmed with our concierge.</p>
@@ -553,7 +553,7 @@ export default function ProfilePage() {
               ) : null}
 
               {activeSection === "settings" ? (
-                <Card className="rounded-[1.5rem] border-border/60 bg-card/90 p-5 shadow-sm sm:p-7 lg:p-8">
+                <Card className="rounded-xl border-border/60 bg-card/90 p-5 shadow-sm sm:p-7 lg:p-8">
                   <p className="text-xs font-semibold uppercase tracking-[0.28em] text-primary">Settings</p>
                   <h2 className="mt-1 font-heading text-2xl sm:text-3xl">Website appearance</h2>
                   <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">
@@ -579,7 +579,7 @@ export default function ProfilePage() {
                           )}
                           aria-pressed={selected}
                         >
-                          <span className="flex size-10 items-center justify-center rounded-full bg-[#eee4d6] text-primary dark:bg-[#2c2822]">
+                          <span className="flex size-10 items-center justify-center rounded-full bg-surface-cream text-primary dark:bg-[#2c2822]">
                             <Icon className="size-5" aria-hidden="true" />
                           </span>
                           <span className="mt-5 font-medium">{option.label}</span>
@@ -593,7 +593,7 @@ export default function ProfilePage() {
                       );
                     })}
                   </div>
-                  <div className="mt-6 flex items-start gap-3 rounded-2xl bg-[#eee4d6] p-4 dark:bg-[#201d19]">
+                  <div className="mt-6 flex items-start gap-3 rounded-2xl bg-surface-cream p-4 dark:bg-[#201d19]">
                     <Sparkles className="mt-0.5 size-4 shrink-0 text-primary" aria-hidden="true" />
                     <p className="text-sm leading-relaxed text-muted-foreground">
                       Appearance is now managed here only, keeping the store header cleaner and easier to use.
@@ -604,7 +604,7 @@ export default function ProfilePage() {
 
               {activeSection === "help" ? (
                 <div className="space-y-6">
-                  <Card className="rounded-[1.5rem] border-border/60 bg-card/90 p-5 shadow-sm sm:p-7 lg:p-8">
+                  <Card className="rounded-xl border-border/60 bg-card/90 p-5 shadow-sm sm:p-7 lg:p-8">
                     <p className="text-xs font-semibold uppercase tracking-[0.28em] text-primary">Support</p>
                     <h2 className="mt-1 font-heading text-2xl sm:text-3xl">How can we help?</h2>
                     <p className="mt-2 text-sm text-muted-foreground">Choose the quickest way to reach the Mietaaf concierge.</p>
@@ -627,7 +627,7 @@ export default function ProfilePage() {
                     </div>
                   </Card>
 
-                  <Card className="rounded-[1.5rem] border-border/60 bg-[#eee4d6] p-5 dark:bg-[#201d19] sm:p-7 lg:p-8">
+                  <Card className="rounded-xl border-border/60 bg-surface-cream p-5 dark:bg-[#201d19] sm:p-7 lg:p-8">
                     <div className="flex items-center gap-3">
                       <HelpCircle className="size-5 text-primary" aria-hidden="true" />
                       <h3 className="font-heading text-xl sm:text-2xl">Common questions</h3>

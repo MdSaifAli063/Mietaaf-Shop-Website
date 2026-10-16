@@ -1,8 +1,8 @@
-/** Instant feedback during client navigations — main segment only */
+/** Checkout feedback; public catalogue routes resolve before streaming a page. */
 import Image from "next/image";
 import { SITE_LOGO_URL } from "@/lib/site-logo";
 
-export default function MainLoading() {
+export default function CheckoutLoading() {
   return (
     <div className="flex min-h-[50vh] w-full flex-col items-center justify-center gap-4 px-4">
       <div className="relative h-[5.5rem] w-[min(calc(100dvw-7rem),340px)] sm:h-[6.5rem] sm:w-[min(calc(100dvw-8rem),420px)] lg:h-[7.5rem] lg:w-[min(44vw,520px)]">

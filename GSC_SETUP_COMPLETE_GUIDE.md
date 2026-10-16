@@ -1,5 +1,7 @@
 # 🔍 GOOGLE SEARCH CONSOLE COMPLETE SETUP GUIDE
 
+> For the current Mietaaf Couture configuration and rollout, start with [SEO_LAUNCH_CHECKLIST.md](SEO_LAUNCH_CHECKLIST.md). This older walkthrough can help with account setup, but its environment assumptions, page counts and timing estimates may be outdated. Search Console manages and measures search visibility; it does not guarantee indexing or ranking. GA4 is optional.
+
 ## Overview
 
 Google Search Console (GSC) is where Google tells you about your site's presence in search results. It's critical for:

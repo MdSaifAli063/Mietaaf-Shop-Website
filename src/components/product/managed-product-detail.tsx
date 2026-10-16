@@ -11,14 +11,14 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 
 export function ManagedProductDetail({ fallbackProduct }: { fallbackProduct: Product }) {
-  const { allProducts } = useShopData();
+  const { allProducts, productsSynced } = useShopData();
   const product =
-    allProducts.find((item) => item.slug === fallbackProduct.slug) ?? fallbackProduct;
+    (productsSynced ? allProducts.find((item) => item.slug === fallbackProduct.slug) : undefined) ?? fallbackProduct;
 
   if (product.hidden || product.deleted) {
     return (
       <div className="page-container py-16">
-        <Card className="mx-auto max-w-xl rounded-[1.5rem] p-8 text-center">
+        <Card className="mx-auto max-w-xl rounded-xl p-8 text-center">
           <PackageX className="mx-auto size-9 text-primary" />
           <h1 className="mt-4 font-heading text-3xl">This piece is unavailable</h1>
           <p className="mt-2 text-sm text-muted-foreground">

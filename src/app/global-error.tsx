@@ -34,7 +34,7 @@ export default function GlobalError({
         style={{
           alignItems: "center",
           background:
-            "radial-gradient(circle at top left, #f1e7d8, transparent 35%), #faf7f2",
+            "radial-gradient(circle at top left, #e8ddcd, transparent 35%), #f3eee5",
           color: "#302a24",
           display: "flex",
           fontFamily: "ui-sans-serif, system-ui, sans-serif",
@@ -46,8 +46,8 @@ export default function GlobalError({
       >
         <main
           style={{
-            background: "rgba(255, 252, 247, 0.94)",
-            border: "1px solid #ded3c3",
+            background: "rgba(248, 243, 233, 0.94)",
+            border: "1px solid #d9cdbd",
             borderRadius: "1.5rem",
             boxShadow: "0 24px 70px rgba(49, 39, 27, 0.1)",
             boxSizing: "border-box",
@@ -59,7 +59,7 @@ export default function GlobalError({
         >
           <p
             style={{
-              color: "#a87645",
+              color: "#795c40",
               fontSize: "0.72rem",
               fontWeight: 700,
               letterSpacing: "0.35em",
@@ -82,7 +82,7 @@ export default function GlobalError({
           </h1>
           <p
             style={{
-              color: "#746a60",
+              color: "#6e6256",
               lineHeight: 1.7,
               margin: "1rem auto 0",
               maxWidth: "31rem",
@@ -102,7 +102,7 @@ export default function GlobalError({
             <button
               type="button"
               onClick={reset}
-              style={{ ...actionStyle, background: "#302a24", color: "#fffaf2" }}
+              style={{ ...actionStyle, background: "#302a24", color: "#f3eee5" }}
             >
               Try again
             </button>

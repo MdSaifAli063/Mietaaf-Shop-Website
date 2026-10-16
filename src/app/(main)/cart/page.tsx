@@ -12,6 +12,7 @@ import {
   Truck,
 } from "lucide-react";
 import { ProductThumbnailImage } from "@/components/product/catalog-product-photo";
+import { OrderJourney } from "@/components/shop/order-journey";
 import { useCartStore, cartLineKey } from "@/store/cart-store";
 import { useAuth } from "@/context/auth-context";
 import { formatInr } from "@/lib/format";
@@ -56,7 +57,7 @@ export default function CartPage() {
     return (
       <PageEnter>
         <div className="mx-auto w-full max-w-3xl px-4 py-10 sm:px-6 sm:py-16">
-          <div className="flex flex-col items-center rounded-[2rem] border border-border/60 bg-card/75 px-5 py-14 text-center shadow-[0_24px_70px_rgba(58,48,38,0.08)] sm:px-10 sm:py-20">
+          <div className="flex flex-col items-center rounded-xl border border-border/60 bg-card/75 px-5 py-14 text-center shadow-[0_8px_32px_rgba(36,39,33,0.035)] sm:px-10 sm:py-20">
             <span className="flex size-16 items-center justify-center rounded-full border border-primary/20 bg-primary/10 text-primary">
               <ShoppingBag className="size-7" aria-hidden="true" />
             </span>
@@ -87,12 +88,13 @@ export default function CartPage() {
       <div
         className={`mx-auto w-full min-w-0 max-w-7xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8 ${MOBILE_STICKY_OFFSET}`}
       >
+        <OrderJourney current={1} />
         <div className="flex flex-col gap-4 border-b border-border/60 pb-6 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.32em] text-primary">
               Your selection
             </p>
-            <h1 className="mt-2 font-heading text-3xl sm:text-4xl">Shopping bag</h1>
+            <h1 className="atelier-heading mt-3">Shopping bag</h1>
             <p className="mt-2 text-sm text-muted-foreground sm:text-base">
               {itemCount} {itemCount === 1 ? "item" : "items"} ready for checkout
             </p>
@@ -110,11 +112,11 @@ export default function CartPage() {
               return (
                 <Card
                   key={key}
-                  className="flex min-w-0 flex-row gap-3 border-border/60 bg-card/75 p-3 shadow-[0_16px_45px_rgba(58,48,38,0.06)] sm:gap-5 sm:p-5"
+                  className="flex min-w-0 flex-row gap-3 border-border/60 bg-card/75 p-3 shadow-[0_8px_32px_rgba(36,39,33,0.035)] sm:gap-5 sm:p-5"
                 >
                   <Link
                     href={buildProductHref(item.slug, item.image)}
-                    className="relative h-36 w-24 shrink-0 overflow-hidden rounded-2xl bg-white sm:h-44 sm:w-32"
+                    className="relative h-36 w-24 shrink-0 overflow-hidden rounded-2xl bg-surface-paper sm:h-44 sm:w-32"
                   >
                     <ProductThumbnailImage
                       src={item.image}
@@ -207,8 +209,8 @@ export default function CartPage() {
             </div>
           </div>
 
-          <div className="min-w-0 lg:sticky lg:top-24 lg:self-start">
-            <Card className="space-y-5 border-border/60 bg-card/80 p-5 shadow-[0_22px_60px_rgba(58,48,38,0.08)] sm:p-6">
+          <div className="min-w-0 lg:sticky lg:top-[calc(var(--site-header-height)+1rem)] lg:self-start">
+            <Card className="space-y-5 rounded-xl border-border/70 bg-surface-silver p-5 shadow-none sm:p-7">
               <div>
                 <p className="text-xs font-semibold uppercase tracking-[0.25em] text-primary">
                   Order details
@@ -244,7 +246,7 @@ export default function CartPage() {
                 </div>
               ) : null}
 
-              <Button asChild className="h-12 w-full touch-manipulation rounded-full" size="lg">
+              <Button asChild className="h-12 w-full touch-manipulation rounded-md px-4" size="lg">
                 <Link href="/checkout">
                   Proceed to checkout
                   <ArrowRight className="ml-2 size-4" aria-hidden="true" />
@@ -264,7 +266,7 @@ export default function CartPage() {
               <p className="text-xs text-muted-foreground">Total</p>
               <p className="text-lg font-semibold">{formatInr(subtotal)}</p>
             </div>
-            <Button asChild className="h-11 shrink-0 touch-manipulation rounded-full px-6">
+            <Button asChild className="h-12 shrink-0 touch-manipulation rounded-md px-6">
               <Link href="/checkout">
                 Checkout
                 <ArrowRight className="ml-2 size-4" aria-hidden="true" />

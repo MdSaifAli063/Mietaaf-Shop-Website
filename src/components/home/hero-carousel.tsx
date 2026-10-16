@@ -1,9 +1,9 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowUpRight, Home, MapPin, Ruler, SwatchBook } from "lucide-react";
+import { ArrowUpRight, Home, MapPin, Pause, Play, Ruler, SwatchBook } from "lucide-react";
 import { useShopData } from "@/hooks/use-shop-data";
 import { bypassImageOptimization } from "@/lib/image-source";
 import { Button } from "@/components/ui/button";
@@ -11,164 +11,120 @@ import { Button } from "@/components/ui/button";
 export function HeroCarousel() {
   const { banners } = useShopData();
   const [activeIndex, setActiveIndex] = useState(0);
-  const [showMobileHomeService, setShowMobileHomeService] = useState(true);
+  const [paused, setPaused] = useState(false);
   const activeBanner = banners[activeIndex] ?? banners[0];
 
   useEffect(() => {
-    if (banners.length < 2) return;
-    const timer = window.setInterval(() => {
-      setActiveIndex((current) => (current + 1) % banners.length);
-    }, 5200);
-
+    if (banners.length < 2 || paused || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const timer = window.setInterval(() => setActiveIndex((current) => (current + 1) % banners.length), 6500);
     return () => window.clearInterval(timer);
-  }, [banners.length]);
+  }, [banners.length, paused]);
 
   useEffect(() => {
     if (activeIndex >= banners.length) setActiveIndex(0);
   }, [activeIndex, banners.length]);
 
-  useEffect(() => {
-    let hideTimer: number | undefined;
-    let restartTimer: number | undefined;
-
-    const cycleHomeService = () => {
-      setShowMobileHomeService(true);
-      hideTimer = window.setTimeout(() => {
-        setShowMobileHomeService(false);
-        restartTimer = window.setTimeout(cycleHomeService, 2000);
-      }, 4000);
-    };
-
-    cycleHomeService();
-
-    return () => {
-      window.clearTimeout(hideTimer);
-      window.clearTimeout(restartTimer);
-    };
-  }, []);
-
   if (!activeBanner) return null;
 
   return (
-    <section className="relative h-[calc(100svh-6.25rem)] min-h-[450px] w-full overflow-hidden bg-background sm:h-[calc(100svh-7.25rem)] sm:min-h-[520px] lg:h-[calc(100svh-8.25rem)] lg:min-h-[600px]">
-      <div className="relative h-full min-h-[inherit] w-full">
-        <Image
-          key={activeBanner.id}
-          src={activeBanner.image}
-          unoptimized={bypassImageOptimization(activeBanner.image)}
-          alt={activeBanner.title}
-          fill
-          priority={activeIndex === 0}
-          className="object-cover object-[72%_18%] animate-in fade-in duration-700 sm:object-[center_18%]"
-          sizes="100vw"
-        />
-        <div className="pointer-events-none absolute inset-y-0 left-0 w-full bg-gradient-to-r from-black/45 via-black/10 to-transparent sm:w-3/4" />
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/35 to-transparent" />
-        <aside className="absolute left-10 top-0 z-10 hidden w-[21.5rem] origin-top lg:block lg:left-16 motion-safe:animate-[mietaaf-hanging-sign_5.5s_ease-in-out_infinite] motion-reduce:animate-none">
-          <span className="absolute left-[23%] top-0 h-10 w-px bg-linear-to-b from-[#efd7a8]/90 to-[#b98747]/75" />
-          <span className="absolute right-[23%] top-0 h-10 w-px bg-linear-to-b from-[#efd7a8]/90 to-[#b98747]/75" />
-          <span className="absolute left-[calc(23%-0.32rem)] top-8 z-10 size-2.5 rounded-full border border-[#f7e3bc] bg-[#a87337] shadow-[0_1px_8px_rgba(0,0,0,0.45)]" />
-          <span className="absolute right-[calc(23%-0.32rem)] top-8 z-10 size-2.5 rounded-full border border-[#f7e3bc] bg-[#a87337] shadow-[0_1px_8px_rgba(0,0,0,0.45)]" />
-          <div className="relative mt-9 overflow-hidden rounded-[1.5rem] border-2 border-[#c49342] bg-[#fffdf8]/96 p-5 text-[#2a211a] shadow-[0_22px_48px_rgba(0,0,0,0.34)] backdrop-blur-md">
-            <span className="pointer-events-none absolute inset-2 rounded-[1.02rem] border border-[#dfbd78]/65" />
-            <span className="pointer-events-none absolute -right-16 -top-16 size-40 rounded-full bg-[#e7bd73]/28 blur-3xl motion-safe:animate-[mietaaf-doorstep-glow_4s_ease-in-out_infinite]" />
-            <span className="mietaaf-doorstep-shine pointer-events-none absolute inset-y-0 -left-1/2 w-1/2 -skew-x-12 bg-linear-to-r from-transparent via-[#d2a552]/14 to-transparent" />
+    <section aria-label="Featured collections" aria-roledescription="carousel" className="storefront-hero-height relative overflow-hidden bg-[#30332d] text-white">
+      <Image
+        key={activeBanner.id}
+        src={activeBanner.image}
+        unoptimized={bypassImageOptimization(activeBanner.image)}
+        alt={activeBanner.title}
+        fill
+        priority={activeIndex === 0}
+        className="object-cover object-[68%_18%] animate-in fade-in duration-1000 sm:object-[center_18%]"
+        sizes="100vw"
+      />
+      <div className="pointer-events-none absolute inset-0 bg-linear-to-r from-[#171d16]/65 via-[#171d16]/15 to-transparent" />
+      <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-[#11170f]/80 via-transparent to-black/5" />
+      <div className="page-container relative flex min-h-[inherit] flex-col gap-7 py-6 sm:gap-8 sm:py-8">
+        <aside aria-label="Door-to-door tailoring service" className="hanging-service-sign relative hidden w-full max-w-[21rem] shrink-0 pt-4 text-mietaaf-charcoal xl:block">
+          <div aria-hidden="true" className="pointer-events-none absolute -top-8 inset-x-0 z-10 h-12">
+            {["left-[22%]", "left-[78%]"].map((position) => (
+              <span key={position} className={`absolute top-0 h-full w-px bg-linear-to-b from-[#dfc58b]/60 to-[#ad7d38] ${position}`}>
+                <span className="absolute -bottom-1 left-1/2 size-2.5 -translate-x-1/2 rounded-full border border-[#dfbb76] bg-[#ad7d38] shadow-[0_2px_4px_rgba(48,42,36,0.3)]" />
+              </span>
+            ))}
+          </div>
+          <div className="relative rounded-[1.375rem] border border-[#cba156] bg-linear-to-br from-[#fffdf8] via-[#f8f5ef] to-[#f5f1e9] p-5 shadow-[0_12px_32px_rgba(0,0,0,0.18)]">
+            <div aria-hidden="true" className="pointer-events-none absolute inset-[7px] rounded-[1rem] border border-[#d7b976]/55" />
             <div className="relative">
-              <p className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.28em] text-[#95692f]">
-                <span className="flex size-5 items-center justify-center rounded-full border border-[#b98747]/50 bg-[#f8ead0]">
-                  <span className="size-1.5 rounded-full bg-[#b98747] motion-safe:animate-pulse" />
+              <p className="flex items-center gap-2 text-[9px] font-semibold uppercase tracking-[0.22em] text-[#956b2e]">
+                <span aria-hidden="true" className="flex size-[18px] items-center justify-center rounded-full border border-[#d7b976]/65 bg-[#f6e9cd]">
+                  <span className="size-1.5 rounded-full bg-[#b8873f]" />
                 </span>
                 Door-to-door service
               </p>
-              <h2 className="mt-3 max-w-sm font-heading text-[2.05rem] leading-[0.96] tracking-[0.01em] text-[#2a211a]">
-                Tailoring,<br />brought home.
-              </h2>
-              <p className="mt-3 max-w-sm text-[13px] leading-5 text-[#65594e]">
-                Handling Premium fabric Selection, Master fitting and Personal Design consultation right at your doorstep.
-              </p>
-              <div className="mt-3.5 flex items-center gap-2 text-[11px] font-medium text-[#51463c]">
-                <SwatchBook className="size-3.5 text-[#af7b38]" aria-hidden="true" />
-                <Ruler className="size-3.5 text-[#af7b38]" aria-hidden="true" />
-                <MapPin className="size-3.5 text-[#af7b38]" aria-hidden="true" />
+              <h2 className="mt-3 font-heading text-[1.875rem] leading-[0.98] tracking-[-0.02em]">Tailoring,<br />brought home.</h2>
+              <p className="mt-3 text-xs leading-5 text-mietaaf-charcoal/75">Handling Premium fabric Selection, Master fitting and Personal Design consultation right at your doorstep.</p>
+              <div className="mt-3 flex items-center gap-2 text-[10px] text-mietaaf-charcoal/75">
+                <span className="flex items-center gap-2 text-[#ad7d38]" aria-hidden="true"><SwatchBook className="size-3.5" /><Ruler className="size-3.5" /><MapPin className="size-3.5" /></span>
                 <span>Fabric · Fit · Final detail</span>
               </div>
-              <Link
-                href="/appointment"
-                className="group relative mt-4 inline-flex h-10 min-w-48 items-center justify-center bg-[#e4b657] px-5 text-[13px] font-bold uppercase tracking-[0.08em] text-[#1c160f] transition-transform hover:-translate-y-0.5 hover:bg-[#f0c96f] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#b78335] focus-visible:ring-offset-2 focus-visible:ring-offset-[#fffdf8]"
-                style={{ clipPath: "polygon(7% 0, 100% 0, 93% 100%, 0 100%)" }}
-              >
-                <span className="absolute -inset-x-1.5 bottom-[-0.34rem] -z-10 h-3 bg-[#17120e]" style={{ clipPath: "polygon(4% 0, 100% 0, 96% 100%, 0 100%)" }} />
-                <span className="relative inline-flex items-center">
-                  Book now <ArrowUpRight className="ml-2 size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden="true" />
-                </span>
+              <Link href="/appointment" className="group relative mt-4 inline-flex min-h-11 min-w-44 items-center justify-center gap-3 px-6 text-[11px] font-semibold uppercase tracking-[0.1em] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#795c40]">
+                <span aria-hidden="true" className="absolute inset-0 translate-y-1 bg-mietaaf-charcoal [clip-path:polygon(8%_0,100%_0,92%_100%,0%_100%)]" />
+                <span aria-hidden="true" className="absolute inset-0 bg-[#e6b956] transition-colors [clip-path:polygon(8%_0,100%_0,92%_100%,0%_100%)] group-hover:bg-[#efc66c]" />
+                <span className="relative">Book now</span><ArrowUpRight className="relative size-3.5" aria-hidden="true" />
               </Link>
             </div>
           </div>
         </aside>
-        <div className="absolute inset-0 flex flex-col justify-end px-4 pb-[max(2rem,env(safe-area-inset-bottom))] sm:px-12 sm:pb-12 lg:px-16 lg:pb-10">
-          <div className="max-w-xl space-y-4 sm:space-y-5">
-            <div className="relative h-10 overflow-hidden lg:hidden">
-              <Link
-                href="/appointment"
-                className={`absolute left-0 top-0 inline-flex h-9 max-w-[calc(100vw-2rem)] items-center gap-2.5 rounded-full border border-[#efd7a8]/65 bg-[#201812]/88 px-3.5 text-[10px] font-bold uppercase tracking-[0.16em] text-[#fff9ee] shadow-[0_8px_22px_rgba(0,0,0,0.28)] backdrop-blur-md transition-all duration-500 ease-out ${
-                  showMobileHomeService
-                    ? "translate-x-0 opacity-100"
-                    : "-translate-x-[calc(100%+1rem)] opacity-0 pointer-events-none"
-                }`}
-                aria-hidden={!showMobileHomeService}
-                tabIndex={showMobileHomeService ? 0 : -1}
-              >
-                <span className="flex size-5 shrink-0 items-center justify-center rounded-full border border-[#efd7a8]/45 bg-[#efd7a8]/12">
-                  <Home className="size-3 text-[#f4d79d]" aria-hidden="true" />
-                </span>
-                <span className="truncate">Doorstep service available</span>
-                <ArrowUpRight className="size-3.5 shrink-0 text-[#f4d79d]" aria-hidden="true" />
-              </Link>
-            </div>
-            <p className="hidden text-[10px] font-semibold uppercase tracking-[0.48em] text-mietaaf-cream/80 lg:block">
-              Mietaaf Couture
-            </p>
-            <h1 className="max-w-lg font-heading text-3xl leading-[0.95] tracking-[0.01em] text-mietaaf-cream sm:text-5xl lg:text-6xl">
-              {activeBanner.title}
-            </h1>
+        <div className="mt-auto min-w-0 shrink-0">
+          <div className="max-w-2xl">
+            <Link href="/appointment" className="mb-6 inline-flex min-h-11 items-center gap-2 border-b border-white/45 text-[9px] font-medium uppercase tracking-[0.16em] text-white/90 xl:hidden"><Home className="size-3.5" aria-hidden="true" /> Doorstep service available <ArrowUpRight className="size-3.5" aria-hidden="true" /></Link>
+            <p className="mb-4 text-[10px] font-medium uppercase tracking-[0.32em] text-white/75">Mietaaf Couture</p>
+            <h2 className="font-heading text-[clamp(2.75rem,5.2vw,4.75rem)] font-medium leading-[1.02] tracking-[-0.035em] text-mietaaf-cream">{activeBanner.title}</h2>
             {activeBanner.subtitle ? (
-              <p className="max-w-lg text-base leading-6 text-mietaaf-cream/80 sm:text-lg lg:text-xl lg:leading-7">
+              <p className="mt-5 max-w-md text-sm leading-6 text-white/85 sm:text-base sm:leading-7">
                 {activeBanner.subtitle}
               </p>
             ) : null}
-            <div className="flex flex-wrap gap-3">
+            <div className="mt-7 flex flex-wrap items-center gap-3 sm:gap-4">
               {activeBanner.href ? (
-                <Button
-                  asChild
-                  size="lg"
-                  className="rounded-full border-border/70 px-8 shadow-sm"
-                >
-                  <Link href={activeBanner.href}>{activeBanner.cta ?? "Explore"}</Link>
+                <Button asChild size="lg" className="h-12 rounded-md border-mietaaf-cream/80 bg-mietaaf-cream px-5 text-mietaaf-charcoal hover:border-mietaaf-cream hover:bg-mietaaf-cream/90 sm:px-7">
+                  <Link href={activeBanner.href}>
+                    {activeBanner.cta ?? "Explore"}
+                    <ArrowUpRight className="ml-1 size-4" aria-hidden="true" />
+                  </Link>
                 </Button>
               ) : null}
-              <Button
-                asChild
-                size="lg"
-                variant="outline"
-                className="rounded-full border-mietaaf-cream/35 bg-black/10 text-mietaaf-cream"
-              >
+              <Button asChild size="lg" variant="outline" className="h-12 rounded-md border-white/40 bg-transparent px-5 text-white hover:border-white hover:bg-white/10 hover:text-white sm:px-7">
                 <Link href="/shop">Shop all</Link>
               </Button>
             </div>
           </div>
         </div>
-        <div className="absolute bottom-5 left-1/2 z-10 flex -translate-x-1/2 gap-2">
-          {banners.map((banner, index) => (
+        <div className="flex shrink-0 items-center gap-3">
+          <span className="mr-1 text-[10px] tabular-nums tracking-[0.12em] text-white/70">{String(activeIndex + 1).padStart(2, "0")} <span className="mx-1 text-white/35">/</span> {String(banners.length).padStart(2, "0")}</span>
+          <div className="flex">
+            {banners.map((banner, index) => (
+              <button
+                key={banner.id}
+                type="button"
+                onClick={() => setActiveIndex(index)}
+                className="flex h-11 w-9 items-center justify-center outline-none focus-visible:ring-2 focus-visible:ring-white"
+                aria-label={`Show ${banner.title}`}
+                aria-pressed={index === activeIndex}
+              >
+                <span className={`h-px w-7 transition-colors ${index === activeIndex ? "bg-white" : "bg-white/30"}`} />
+              </button>
+            ))}
+          </div>
+          {banners.length > 1 ? (
             <button
-              key={banner.id}
               type="button"
-              onClick={() => setActiveIndex(index)}
-              className={`size-2 rounded-full transition-colors ${
-                index === activeIndex ? "bg-[rgb(138_120_100)]" : "bg-white/45"
-              }`}
-              aria-label={`Show ${banner.title}`}
-            />
-          ))}
+              onClick={() => setPaused((value) => !value)}
+              aria-label={paused ? "Play slideshow" : "Pause slideshow"}
+              className="group flex size-11 items-center justify-center rounded-full text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+            >
+              <span aria-hidden="true" className="flex size-8 items-center justify-center rounded-full border border-white/25 transition-colors group-hover:bg-white/10">
+                {paused ? <Play className="size-3" /> : <Pause className="size-3" />}
+              </span>
+            </button>
+          ) : null}
         </div>
       </div>
     </section>

@@ -16,6 +16,8 @@ type ShopSnapshot = {
   banners: Banner[];
   allBanners: Banner[];
   loading: boolean;
+  productsSynced: boolean;
+  categoriesSynced: boolean;
 };
 
 function mergeManagedRecords<T>(
@@ -40,12 +42,16 @@ const localSnapshot: ShopSnapshot = {
   banners: DUMMY_BANNERS,
   allBanners: DUMMY_BANNERS,
   loading: false,
+  productsSynced: false,
+  categoriesSynced: false,
 };
 
 let currentSnapshot = localSnapshot;
 let remoteProducts: Product[] = [];
 let remoteCategories: Category[] = [];
 let remoteBanners: Banner[] = [];
+let productsSynced = false;
+let categoriesSynced = false;
 let firestoreUnsubscribers: Unsubscribe[] | null = null;
 const listeners = new Set<() => void>();
 
@@ -75,6 +81,8 @@ function publish() {
     banners: visible(allBanners),
     allBanners,
     loading: false,
+    productsSynced,
+    categoriesSynced,
   };
   listeners.forEach((listener) => listener());
 }
@@ -92,6 +100,7 @@ function startFirestoreSync() {
           id: entry.id,
           ...entry.data(),
         })) as Product[];
+        productsSynced = true;
         publish();
       },
       () => undefined,
@@ -100,6 +109,7 @@ function startFirestoreSync() {
       collection(db, "categories"),
       (snapshot) => {
         remoteCategories = snapshot.docs.map((entry) => entry.data()) as Category[];
+        categoriesSynced = true;
         publish();
       },
       () => undefined,

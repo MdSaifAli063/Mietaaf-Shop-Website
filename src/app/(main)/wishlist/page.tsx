@@ -30,7 +30,7 @@ export default function WishlistPage() {
     return (
       <PageEnter>
         <div className={`${PAGE_CONTAINER} ${PAGE_PY}`}>
-          <div className="mx-auto flex max-w-2xl flex-col items-center rounded-[2rem] border border-border/60 bg-card/75 px-5 py-14 text-center shadow-[0_24px_70px_rgba(58,48,38,0.08)] sm:px-10 sm:py-20">
+          <div className="mx-auto flex max-w-2xl flex-col items-center rounded-xl border border-border/60 bg-card/75 px-5 py-14 text-center shadow-[0_8px_32px_rgba(36,39,33,0.035)] sm:px-10 sm:py-20">
             <span className="flex size-16 items-center justify-center rounded-full border border-primary/20 bg-primary/10 text-primary">
               <Heart className="size-7" aria-hidden="true" />
             </span>
@@ -56,7 +56,7 @@ export default function WishlistPage() {
   return (
     <PageEnter>
       <div className={`${PAGE_CONTAINER} ${PAGE_PY} min-w-0`}>
-        <section className="rounded-[2rem] border border-border/60 bg-card/55 px-5 py-6 shadow-[0_18px_55px_rgba(58,48,38,0.06)] sm:px-8 sm:py-8">
+        <section className="rounded-xl border border-border/60 bg-card/55 px-5 py-6 shadow-[0_8px_32px_rgba(36,39,33,0.035)] sm:px-8 sm:py-8">
           <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.32em] text-primary">

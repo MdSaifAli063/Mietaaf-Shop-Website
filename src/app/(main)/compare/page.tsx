@@ -36,7 +36,7 @@ export default function ComparePage() {
     return (
       <PageEnter>
         <div className={`${PAGE_CONTAINER} ${PAGE_PY} flex min-h-[45vh] items-center justify-center`}>
-          <div className="mx-auto max-w-lg rounded-[2rem] border border-border/70 bg-card/80 px-6 py-10 text-center shadow-[0_18px_45px_rgba(58,48,38,0.08)] backdrop-blur-sm sm:px-8">
+          <div className="mx-auto max-w-lg rounded-xl border border-border/70 bg-card/80 px-6 py-10 text-center shadow-[0_8px_32px_rgba(36,39,33,0.035)] backdrop-blur-sm sm:px-8">
             <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary">
               <Sparkles className="h-5 w-5" />
             </div>
@@ -65,7 +65,7 @@ export default function ComparePage() {
   return (
     <PageEnter>
       <div className={`${PAGE_CONTAINER} ${PAGE_PY} min-w-0`}>
-        <div className="rounded-[2rem] border border-border/70 bg-gradient-to-br from-card/90 via-card/75 to-muted/40 p-4 shadow-[0_18px_50px_rgba(58,48,38,0.08)] backdrop-blur-sm sm:p-6">
+        <div className="rounded-xl border border-border/70 bg-gradient-to-br from-card/90 via-card/75 to-muted/40 p-4 shadow-[0_8px_32px_rgba(36,39,33,0.035)] backdrop-blur-sm sm:p-6">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div className="max-w-2xl">
               <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.24em] text-primary">
@@ -88,7 +88,7 @@ export default function ComparePage() {
           {products.map((p) => (
             <div
               key={p.id}
-              className="overflow-hidden rounded-[1.6rem] border border-border/70 bg-card/80 shadow-[0_14px_40px_rgba(58,48,38,0.06)] backdrop-blur-sm"
+              className="overflow-hidden rounded-xl border border-border/70 bg-card/80 shadow-[0_14px_40px_rgba(58,48,38,0.06)] backdrop-blur-sm"
             >
               <div className="relative aspect-[3/4] bg-muted">
                 <Image src={p.images[0]!} alt={p.name} fill unoptimized={bypassImageOptimization(p.images[0]!)} className="object-cover" sizes="(max-width: 1024px) 50vw, 25vw" />
@@ -124,11 +124,11 @@ export default function ComparePage() {
         </div>
 
         <div className="mt-6 overflow-hidden rounded-[1.8rem] border border-border/70 bg-card/80 shadow-[0_14px_40px_rgba(58,48,38,0.06)] backdrop-blur-sm">
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto overscroll-x-contain focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" role="region" aria-label="Product comparison, scroll horizontally to see all products" tabIndex={0}>
             <table className="w-full min-w-[720px] border-collapse text-sm">
               <thead>
                 <tr className="bg-muted/40">
-                  <th className="sticky left-0 z-20 bg-muted/40 p-3 text-left font-medium text-muted-foreground">
+                  <th scope="col" className="sticky left-0 z-20 min-w-28 bg-muted p-3 text-left font-medium text-muted-foreground">
                     Feature
                   </th>
                   {products.map((p) => (
@@ -140,7 +140,7 @@ export default function ComparePage() {
               </thead>
               <tbody>
                 <tr className="border-t border-border/60 bg-primary/5">
-                  <td className="sticky left-0 z-10 bg-primary/5 p-3 font-medium text-primary">Best value</td>
+                  <th scope="row" className="sticky left-0 z-10 bg-card p-3 text-left font-medium text-primary">Best value</th>
                   {products.map((p) => (
                     <td key={`${p.id}-best-value`} className="p-3 align-top text-foreground">
                       {bestValueProduct?.id === p.id ? "✔ Lowest price" : "—"}
@@ -149,9 +149,9 @@ export default function ComparePage() {
                 </tr>
                 {rows.map((row) => (
                   <tr key={row.label} className="border-t border-border/60">
-                    <td className="sticky left-0 z-10 bg-muted/20 p-3 font-medium text-muted-foreground">
+                    <th scope="row" className="sticky left-0 z-10 bg-card p-3 text-left font-medium text-muted-foreground">
                       {row.label}
-                    </td>
+                    </th>
                     {products.map((p) => (
                       <td key={`${p.id}-${row.label}`} className="p-3 align-top text-foreground">
                         {row.get(p)}

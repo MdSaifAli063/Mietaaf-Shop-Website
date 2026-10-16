@@ -31,10 +31,11 @@ export function ProductCard({
   const addItem = useCartStore((s) => s.addItem);
   const setQuick = useUiStore((s) => s.setQuickView);
   const addCompare = useCompareStore((s) => s.add);
-  const hasCompare = useCompareStore((s) => s.has(product.slug));
+  const storedHasCompare = useCompareStore((s) => s.slugs.includes(product.slug));
   const router = useRouter();
   const mounted = useHasMounted();
   const hasWish = mounted && storedHasWish;
+  const hasCompare = mounted && storedHasCompare;
 
   const primary = product.images[0]!;
   const productHref = buildProductHref(product.slug, primary);
@@ -77,27 +78,28 @@ export function ProductCard({
   }
 
   return (
-    <Card className="group relative flex h-full min-w-0 flex-col gap-0 overflow-hidden rounded-2xl border-border/70 bg-card/90 py-0 shadow-[0_12px_30px_rgba(58,48,38,0.06)] backdrop-blur-sm transition-all hover:-translate-y-1 hover:shadow-[0_22px_55px_rgba(58,48,38,0.1)] sm:rounded-[1.4rem]">
+    <Card className="group relative flex h-full min-w-0 flex-col gap-0 overflow-visible rounded-none border-0 bg-transparent py-0 shadow-none">
       <div
         className={cn(
-          "relative overflow-hidden bg-muted",
+          "relative overflow-hidden rounded-lg bg-surface-silver ring-1 ring-black/4 dark:ring-white/5",
           compact ? "aspect-[4/5]" : "aspect-[3/4]",
         )}
       >
-        <Link href={productHref} className="absolute inset-0 z-0" />
-        <ProductThumbnailImage
-          src={primary}
-          alt={product.name}
-          sizes={
-            compact
-              ? "(max-width:639px) 50vw, (max-width:1024px) 45vw, 280px"
-              : "(max-width:639px) 50vw, (max-width:1024px) 50vw, 25vw"
-          }
-          className="transition-transform duration-500 [@media(hover:hover)]:group-hover:scale-[1.02]"
-          priority={false}
-        />
+        <Link href={productHref} aria-label={`View ${product.name}`} className="absolute inset-0 z-0">
+          <ProductThumbnailImage
+            src={primary}
+            alt={product.name}
+            sizes={
+              compact
+                ? "(max-width:639px) 50vw, (max-width:1024px) 45vw, 280px"
+                : "(max-width:639px) 50vw, (max-width:1024px) 50vw, 25vw"
+            }
+            className="transition-transform duration-500 [@media(hover:hover)]:group-hover:scale-[1.02]"
+            priority={false}
+          />
+        </Link>
         {discount ? (
-          <Badge className="absolute left-1.5 top-1.5 px-1.5 py-0.5 text-[9px] leading-4 bg-[rgb(95_107_84/0.18)] text-[rgb(72_82_64)] sm:left-3 sm:top-3 sm:px-2.5 sm:text-xs">
+          <Badge className="absolute left-2 top-2 rounded-sm border-0 bg-surface-paper/95 px-2 py-1 text-[9px] font-medium uppercase tracking-[0.08em] text-foreground shadow-none sm:left-3 sm:top-3 sm:text-[10px]">
             {discount}% off
           </Badge>
         ) : null}
@@ -107,7 +109,7 @@ export function ProductCard({
             size="icon"
             variant="secondary"
             className={cn(
-              "h-8 w-8 touch-manipulation rounded-full bg-background/85 shadow-sm backdrop-blur-sm sm:h-9 sm:w-9",
+              "size-11 touch-manipulation rounded-full border-white/60 bg-surface-paper/95 text-foreground shadow-none backdrop-blur-sm",
               hasWish && "text-primary",
             )}
             onClick={(e) => {
@@ -123,7 +125,7 @@ export function ProductCard({
             type="button"
             size="icon"
             variant="secondary"
-            className="h-8 w-8 touch-manipulation rounded-full bg-background/85 shadow-sm backdrop-blur-sm sm:h-9 sm:w-9"
+            className="size-11 touch-manipulation rounded-full border-white/60 bg-surface-paper/95 text-foreground shadow-none backdrop-blur-sm"
             onClick={(e) => {
               e.preventDefault();
               setQuick(product.slug, primary);
@@ -134,16 +136,16 @@ export function ProductCard({
           </Button>
         </div>
         {/* Desktop hover tray */}
-        <div className="absolute inset-x-0 bottom-0 z-10 hidden translate-y-full bg-gradient-to-t from-[rgb(245_241_234/0.96)] to-transparent p-3 transition-transform duration-300 [@media(hover:hover)]:group-hover:translate-y-0 lg:block">
+        <div className="absolute inset-x-0 bottom-0 z-10 hidden translate-y-full bg-surface-paper/95 p-3 backdrop-blur-md transition-transform duration-300 group-focus-within:translate-y-0 [@media(hover:hover)]:group-hover:translate-y-0 lg:block [@media(hover:none)]:hidden">
           <div className="flex gap-2">
-            <Button className="h-10 flex-1 touch-manipulation rounded-full" onClick={addToCart}>
+            <Button className="h-11 min-w-0 flex-1 touch-manipulation rounded-md px-3" onClick={addToCart}>
               <ShoppingBag className="mr-2 h-4 w-4" />
               Add
             </Button>
             <Button
               variant="outline"
               className={cn(
-                "h-10 touch-manipulation rounded-full",
+                "h-11 touch-manipulation rounded-md px-3",
                 hasCompare && "border-primary bg-primary/10 text-primary",
               )}
               type="button"
@@ -154,9 +156,10 @@ export function ProductCard({
           </div>
         </div>
       </div>
-      <div className="flex min-w-0 flex-1 flex-col space-y-1.5 p-2.5 sm:space-y-2 sm:p-4">
+      <div className="flex min-w-0 flex-1 flex-col space-y-2 px-0.5 pb-2 pt-3 sm:space-y-2.5 sm:pt-4">
+        <p className="truncate text-[9px] font-medium uppercase tracking-[0.13em] text-muted-foreground sm:text-[10px]">{product.category}</p>
         <Link href={productHref} className="block min-w-0">
-          <h3 className="line-clamp-2 min-h-[2.5rem] font-heading text-sm leading-5 tracking-[0.02em] text-foreground transition-colors hover:text-primary sm:min-h-0 sm:text-lg sm:leading-snug sm:tracking-[0.03em]">
+          <h3 className="line-clamp-2 min-h-[2.5rem] font-heading text-base font-medium leading-5 tracking-[-0.01em] text-foreground transition-colors hover:text-primary sm:min-h-0 sm:text-[1.35rem] sm:leading-snug">
             {product.name}
           </h3>
         </Link>
@@ -172,9 +175,9 @@ export function ProductCard({
           ) : null}
         </div>
         {/* Mobile / touch: always-visible actions (same as desktop hover) */}
-        <div className="mt-auto flex items-center gap-1.5 pt-1 sm:gap-2 lg:hidden">
+        <div className="mt-auto flex items-center gap-1.5 pt-1 sm:gap-2 lg:hidden [@media(hover:none)]:flex">
           <Button
-            className="h-9 min-h-9 min-w-0 flex-1 touch-manipulation rounded-full px-1.5 text-[11px] sm:h-11 sm:min-h-11 sm:px-4 sm:text-sm"
+            className="h-11 min-w-0 flex-1 touch-manipulation rounded-md px-1.5 text-xs sm:px-4 sm:text-sm"
             onClick={addToCart}
           >
             <ShoppingBag className="mr-1 h-3.5 w-3.5 shrink-0 sm:mr-1.5 sm:h-4 sm:w-4" />
@@ -185,7 +188,7 @@ export function ProductCard({
             variant="outline"
             size="icon"
             className={cn(
-              "h-9 min-h-9 w-9 min-w-9 shrink-0 touch-manipulation rounded-full p-0 sm:h-11 sm:min-h-11 sm:w-11 sm:min-w-11",
+              "size-11 shrink-0 touch-manipulation rounded-md p-0",
               hasCompare && "border-primary bg-primary/10 text-primary",
             )}
             type="button"

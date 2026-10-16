@@ -21,6 +21,8 @@ import { formatInr } from "@/lib/format";
 import { SITE_WHATSAPP_E164_DIGITS } from "@/lib/site-contact";
 import toast from "react-hot-toast";
 import { ProductThumbnailImage } from "@/components/product/catalog-product-photo";
+import { OrderJourney } from "@/components/shop/order-journey";
+import { MessageCircle } from "lucide-react";
 
 export default function CheckoutPage() {
   const items = useCartStore((s) => s.items);
@@ -120,7 +122,9 @@ export default function CheckoutPage() {
   return (
     <PageEnter>
       <div className="mx-auto w-full min-w-0 max-w-6xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
-        <h1 className="font-heading text-3xl sm:text-4xl">Checkout</h1>
+        <OrderJourney current={2} />
+        <p className="atelier-eyebrow mb-3">Your Mietaaf order</p>
+        <h1 className="atelier-heading">Checkout</h1>
         <p className="mt-2 text-sm leading-relaxed text-muted-foreground sm:text-base">
           Orders are confirmed via WhatsApp — no card payment on site.
         </p>
@@ -193,18 +197,19 @@ export default function CheckoutPage() {
             <Button
               type="submit"
               size="lg"
-              className="h-12 w-full touch-manipulation rounded-full sm:h-11 sm:w-auto"
+              className="min-h-12 h-auto w-full touch-manipulation whitespace-normal rounded-md px-4 py-3 sm:w-auto sm:px-6"
               disabled={form.formState.isSubmitting}
             >
-              Place order via WhatsApp
+              <MessageCircle className="size-4" aria-hidden="true" />
+              {form.formState.isSubmitting ? "Preparing your order…" : "Place order via WhatsApp"}
             </Button>
           </Card>
-          <Card className="h-fit min-w-0 space-y-4 border-border/60 p-5 sm:p-6 lg:sticky lg:top-24 lg:self-start">
+          <Card className="h-fit min-w-0 space-y-5 rounded-xl border-border/70 bg-surface-silver p-5 shadow-none sm:p-7 lg:sticky lg:top-[calc(var(--site-header-height)+1rem)] lg:self-start">
             <h2 className="font-heading text-xl">Order summary</h2>
             <div className="max-h-[min(18rem,45dvh)] space-y-3 overflow-y-auto overscroll-contain pr-1">
               {items.map((i) => (
                 <div key={`${i.productId}-${i.size}-${i.color}`} className="flex gap-3">
-                  <div className="relative h-16 w-14 shrink-0 overflow-hidden rounded-lg bg-white">
+                  <div className="relative h-16 w-14 shrink-0 overflow-hidden rounded-lg bg-surface-paper">
                     <ProductThumbnailImage
                       src={i.image}
                       alt={i.name}
@@ -225,6 +230,10 @@ export default function CheckoutPage() {
             <div className="flex justify-between text-lg font-semibold">
               <span>Total</span>
               <span>{formatInr(subtotal)}</span>
+            </div>
+            <div className="flex gap-3 border-t border-border pt-5 text-xs leading-6 text-muted-foreground">
+              <MessageCircle className="mt-1 size-4 shrink-0 text-primary" aria-hidden="true" />
+              <p>Your order details open in WhatsApp. Our team confirms availability, delivery, and the final order with you personally.</p>
             </div>
           </Card>
         </form>

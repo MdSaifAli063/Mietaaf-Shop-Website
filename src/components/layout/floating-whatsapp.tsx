@@ -35,10 +35,10 @@ export function FloatingWhatsApp() {
   const num = sanitizeWhatsAppNumber(raw);
   const href = `https://wa.me/${num}?text=${encodeURIComponent("Hello Mietaaf, I would like styling assistance.")}`;
 
-  if (pathname === "/cart" || pathname === "/checkout") return null;
+  if (pathname === "/cart" || pathname === "/checkout" || pathname?.startsWith("/product/")) return null;
 
   return (
-    <div className="fixed bottom-[max(0.75rem,env(safe-area-inset-bottom,0px))] right-[max(0.75rem,env(safe-area-inset-right,0px))] z-50 max-w-dvw touch-manipulation animate-in fade-in zoom-in duration-300 sm:bottom-[max(1.25rem,env(safe-area-inset-bottom,0px))] sm:right-[max(1.25rem,env(safe-area-inset-right,0px))] md:bottom-[max(2rem,env(safe-area-inset-bottom,0px))] md:right-[max(2rem,env(safe-area-inset-right,0px))]">
+    <div className="fixed bottom-[max(0.75rem,env(safe-area-inset-bottom,0px))] right-[max(0.75rem,env(safe-area-inset-right,0px))] z-30 max-w-dvw touch-manipulation animate-in fade-in zoom-in duration-300 sm:bottom-[max(1.25rem,env(safe-area-inset-bottom,0px))] sm:right-[max(1.25rem,env(safe-area-inset-right,0px))] md:bottom-[max(2rem,env(safe-area-inset-bottom,0px))] md:right-[max(2rem,env(safe-area-inset-right,0px))]">
       <Link
         href={href}
         target="_blank"

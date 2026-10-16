@@ -6,12 +6,13 @@ import { Button } from "@/components/ui/button";
 import { PAGE_IMAGE_LINKS } from "@/lib/data/image-links/page-images";
 import { PAGE_CONTAINER, PAGE_PY } from "@/lib/layout";
 import { publicPageMetadata } from "@/lib/seo";
+import { PageJsonLd, BreadcrumbJsonLd } from "@/components/seo/json-ld";
 import { bypassImageOptimization } from "@/lib/image-source";
 
 const { hero, craft, stitch, studio } = PAGE_IMAGE_LINKS.about;
 
 export const metadata: Metadata = publicPageMetadata({
-  title: "About",
+  title: "About Our Bangalore Atelier",
   description:
     "Meet Mietaaf Couture, a Bengaluru menswear house crafting luxury sherwanis, suits, indo-western looks, and ceremony-first tailoring.",
   path: "/about",
@@ -36,9 +37,11 @@ const pillars = [
 export default function AboutPage() {
   return (
     <PageEnter>
-      <div className="min-h-screen bg-[#fbf8f2] dark:bg-[#181613]">
+      <PageJsonLd type="AboutPage" title="About Mietaaf Couture" description="Mietaaf Couture's menswear atelier in Bengaluru (Bangalore), with custom-tailored suits, sherwanis and personal fittings." path="/about" />
+      <BreadcrumbJsonLd items={[{ name: "Home", url: "/" }, { name: "About", url: "/about" }]} />
+      <div className="min-h-screen bg-surface-paper dark:bg-[#181613]">
       <div className={`${PAGE_CONTAINER} ${PAGE_PY} min-w-0`}>
-        <div className="grid items-center gap-8 rounded-[2rem] border border-border/60 bg-[#eee4d6] p-6 shadow-[0_22px_60px_rgba(58,48,38,0.06)] sm:p-8 lg:grid-cols-2 lg:gap-12 lg:p-10 xl:gap-16 dark:bg-[#201d19]">
+        <div className="grid items-center gap-8 rounded-xl border border-border/60 bg-surface-cream p-6 shadow-[0_8px_32px_rgba(36,39,33,0.035)] sm:p-8 lg:grid-cols-2 lg:gap-12 lg:p-10 xl:gap-16 dark:bg-[#201d19]">
           <div className="max-w-xl lg:max-w-none">
             <p className="text-xs font-semibold uppercase tracking-[0.4em] text-primary">About</p>
             <h1 className="mt-3 font-heading text-3xl sm:text-4xl md:text-5xl xl:text-[3.25rem]">
@@ -79,7 +82,7 @@ export default function AboutPage() {
           </div>
         </div>
 
-        <section className="mt-14 rounded-[2rem] border border-border/50 bg-[#eee4d6] p-6 sm:mt-16 sm:p-8 md:mt-20 md:grid md:grid-cols-2 md:gap-10 lg:gap-14 lg:p-10 dark:bg-[#201d19]">
+        <section className="mt-14 rounded-xl border border-border/50 bg-surface-cream p-6 sm:mt-16 sm:p-8 md:mt-20 md:grid md:grid-cols-2 md:gap-10 lg:gap-14 lg:p-10 dark:bg-[#201d19]">
           <div className="relative aspect-16/11 overflow-hidden rounded-2xl bg-muted ring-1 ring-black/5 md:aspect-auto md:min-h-[340px] dark:ring-white/10">
             <Image
               src={craft}
@@ -142,7 +145,7 @@ export default function AboutPage() {
           </div>
         </div>
 
-        <aside className="mt-14 rounded-[2rem] border border-border/60 bg-[#eee4d6] px-6 py-8 text-center sm:mt-16 md:mt-20 md:px-10 dark:bg-[#201d19]">
+        <aside className="mt-14 rounded-xl border border-border/60 bg-surface-cream px-6 py-8 text-center sm:mt-16 md:mt-20 md:px-10 dark:bg-[#201d19]">
           <p className="font-heading text-xl text-foreground sm:text-2xl">
             Ready for a conversation?
           </p>

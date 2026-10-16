@@ -9,8 +9,6 @@ import {
   ChevronRight,
   Expand,
   Play,
-  Quote,
-  Star,
   X,
 } from "lucide-react";
 import { ProductCard } from "@/components/product/product-card";
@@ -29,7 +27,6 @@ import {
 } from "@/components/ui/dialog";
 import toast from "react-hot-toast";
 import { useShopData } from "@/hooks/use-shop-data";
-import { TESTIMONIALS } from "@/lib/data/testimonials";
 import { HOME_SECTION_IMAGE_LINKS } from "@/lib/data/image-links/home-section-images";
 import { HOME_PRODUCT_SECTIONS } from "@/lib/data/home-product-sections";
 import { cn } from "@/lib/utils";
@@ -37,6 +34,7 @@ import type { Product } from "@/types";
 import { buildProductHref } from "@/lib/product-links";
 import { bypassImageOptimization } from "@/lib/image-source";
 import { DoorstepServiceBanner } from "@/components/home/doorstep-service-banner";
+import { ClientStories } from "@/components/home/client-stories";
 
 function takeUniqueProducts(
   preferredSlugs: readonly string[],
@@ -123,29 +121,29 @@ export function HomeSections() {
 
   return (
     <>
-      <section className="border-b border-border/60 bg-[#eee4d6] py-12 sm:py-16 md:py-20 dark:bg-[#201d19]">
+      <section className="atelier-section bg-surface-paper">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <Reveal>
-            <div className="mb-12 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+            <div className="mb-8 flex flex-col gap-5 sm:mb-10 md:flex-row md:items-end md:justify-between">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.4em] text-primary">
+                <p className="atelier-eyebrow mb-3">
                   Curated
                 </p>
-                <h2 className="font-heading text-3xl md:text-4xl">Featured categories</h2>
+                <h2 className="atelier-heading">Featured categories</h2>
               </div>
-              <Button asChild variant="outline" className="rounded-full">
+              <Button asChild variant="link" className="w-fit rounded-none border-x-0 border-t-0 border-b border-foreground/40 px-0 text-xs uppercase tracking-[0.12em]">
                 <Link href="/shop">
                   View all <ArrowUpRight className="ml-1 h-4 w-4" />
                 </Link>
               </Button>
             </div>
           </Reveal>
-          <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
+          <div className="grid grid-cols-2 gap-x-4 gap-y-8 sm:gap-x-6 sm:gap-y-10 lg:grid-cols-4">
             {categories.slice(0, 8).map((c, i) => (
               <Reveal key={c.slug} delay={i * 0.05}>
                 <Link href={`/category/${c.slug}`} className="group block h-full">
-                  <Card className="h-full gap-0 overflow-hidden border-border/60 bg-card py-0 shadow-sm backdrop-blur-none transition-all hover:-translate-y-1 hover:shadow-xl">
-                    <div className="relative aspect-[4/5] overflow-hidden">
+                  <Card className="h-full gap-0 overflow-visible rounded-none border-0 bg-transparent py-0 shadow-none">
+                    <div className="relative aspect-[3/4] overflow-hidden rounded-lg bg-surface-silver">
                       <Image
                         src={c.image}
                         unoptimized={bypassImageOptimization(c.image)}
@@ -155,9 +153,12 @@ export function HomeSections() {
                         sizes="(max-width:639px) 50vw, (max-width:1024px) 50vw, 25vw"
                       />
                     </div>
-                    <div className="min-h-20 bg-card px-3 py-3 sm:min-h-24 sm:px-4 sm:py-4">
-                      <h3 className="font-heading text-base leading-tight sm:text-xl">{c.name}</h3>
-                      <p className="mt-1 line-clamp-2 text-[10px] leading-4 text-muted-foreground sm:text-xs">
+                    <div className="min-h-20 py-3 sm:py-4">
+                      <div className="flex items-start justify-between gap-2">
+                        <h3 className="font-heading text-xl leading-tight sm:text-2xl">{c.name}</h3>
+                        <ArrowUpRight className="mt-1 size-4 shrink-0 stroke-[1.25] text-muted-foreground transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" aria-hidden="true" />
+                      </div>
+                      <p className="mt-2 line-clamp-2 text-[11px] leading-5 text-muted-foreground sm:text-xs">
                         {c.description}
                       </p>
                     </div>
@@ -169,10 +170,11 @@ export function HomeSections() {
         </div>
       </section>
 
-      <section className="bg-[#fbf8f2] py-12 sm:py-16 md:py-20 dark:bg-[#181613]">
+      <section className="atelier-section border-y border-border/70 bg-surface-silver">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <Reveal>
-            <h2 className="font-heading text-3xl md:text-4xl">Trending now</h2>
+            <p className="atelier-eyebrow mb-3">The selection</p>
+            <h2 className="atelier-heading">Trending now</h2>
             <p className="mt-2 max-w-2xl text-muted-foreground">
               Pieces our clients are wearing this season — from receptions to runway-inspired
               evenings.
@@ -188,10 +190,11 @@ export function HomeSections() {
         </div>
       </section>
 
-      <section className="border-y border-border/60 bg-[#eee4d6] py-12 sm:py-16 md:py-20 dark:bg-[#201d19]">
+      <section className="atelier-section bg-surface-paper">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <Reveal>
-            <h2 className="font-heading text-3xl md:text-4xl">New arrivals</h2>
+            <p className="atelier-eyebrow mb-3">New to the atelier</p>
+            <h2 className="atelier-heading">New arrivals</h2>
           </Reveal>
           <div className="mt-7 grid grid-cols-2 gap-x-2.5 gap-y-5 sm:mt-10 sm:gap-6 lg:grid-cols-4">
             {arrivals.map((p, i) => (
@@ -203,18 +206,17 @@ export function HomeSections() {
         </div>
       </section>
 
-      <section className="relative bg-[#fbf8f2] py-14 sm:py-20 md:py-24 dark:bg-[#181613]">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/15 via-transparent to-transparent" />
+      <section className="atelier-section relative border-y border-border/60 bg-surface-cream">
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <Reveal>
             <div className="mb-10 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.4em] text-primary">
+                <p className="atelier-eyebrow">
                   Ceremonial
                 </p>
-                <h2 className="font-heading text-3xl md:text-4xl">Wedding collection</h2>
+                <h2 className="atelier-heading mt-3">Wedding collection</h2>
               </div>
-              <Button asChild className="rounded-full">
+              <Button asChild className="w-fit rounded-md">
                 <Link href="/category/wedding-collection">Enter the edit</Link>
               </Button>
             </div>
@@ -229,29 +231,29 @@ export function HomeSections() {
         </div>
       </section>
 
-      <section className="border-y border-border/60 bg-[#eee4d6] py-12 sm:py-16 md:py-20 dark:bg-[#201d19]">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <section id="premium-suits" aria-labelledby="premium-suits-heading" className="atelier-section bg-surface-paper">
+        <div className="page-container">
           <Reveal>
-            <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.4em] text-primary">
+            <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between sm:gap-8">
+              <div className="min-w-0 max-w-2xl">
+                <p className="atelier-eyebrow">
                   Tailored distinction
                 </p>
-                <h2 className="mt-2 font-heading text-3xl md:text-4xl">Premium suits</h2>
-                <p className="mt-2 max-w-2xl leading-relaxed text-muted-foreground">
+                <h2 id="premium-suits-heading" className="atelier-heading mt-3">Premium suits</h2>
+                <p className="mt-3 max-w-xl text-sm leading-6 text-muted-foreground sm:text-base sm:leading-7">
                   Refined tuxedos, bandhgalas, and three-piece suits crafted for weddings and special occasions.
                 </p>
               </div>
-              <Button asChild variant="outline" className="rounded-full bg-background/70">
+              <Button asChild variant="outline" className="w-fit shrink-0 self-start rounded-full bg-card px-5 sm:self-auto">
                 <Link href="/category/suits">
                   View all suits <ArrowUpRight className="ml-1 h-4 w-4" />
                 </Link>
               </Button>
             </div>
           </Reveal>
-          <div className="mt-8 grid gap-5 xl:grid-cols-2 xl:gap-6">
+          <div className="mt-6 grid gap-5 sm:mt-8 sm:gap-6 xl:grid-cols-2">
             {suits.map((product, index) => (
-              <Reveal key={product.id} delay={index * 0.07}>
+              <Reveal key={product.id} delay={index * 0.07} className="h-full min-w-0">
                 <CatalogProductPanel product={product} variant="showcase" />
               </Reveal>
             ))}
@@ -259,10 +261,11 @@ export function HomeSections() {
         </div>
       </section>
 
-      <section className="border-y border-border/60 bg-[#fbf8f2] py-16 dark:bg-[#181613]">
+      <section className="atelier-section border-y border-border/70 bg-surface-silver">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <Reveal>
-            <h2 className="mb-8 font-heading text-2xl md:text-3xl">Fashion gallery</h2>
+            <p className="atelier-eyebrow mb-3">Through our lens</p>
+            <h2 className="atelier-heading mb-8 sm:mb-10">Fashion gallery</h2>
           </Reveal>
           <div className="columns-2 gap-3 sm:columns-3 lg:columns-4">
             {feed.map((src, i) => (
@@ -369,28 +372,28 @@ export function HomeSections() {
         </DialogContent>
       </Dialog>
 
-      <section className="relative overflow-hidden bg-[#eee4d6] py-14 sm:py-20 md:py-24 dark:bg-[#201d19]">
-        <div className="absolute inset-0">
+      <section className="bg-surface-cream">
+        <div className="mx-auto grid max-w-[1600px] md:grid-cols-2">
+        <div className="relative min-h-80 sm:min-h-[480px] md:min-h-[600px]">
           <Image
             src={HOME_SECTION_IMAGE_LINKS.mietaafStory}
             unoptimized={bypassImageOptimization(HOME_SECTION_IMAGE_LINKS.mietaafStory)}
-            alt=""
+            alt="Mietaaf couture details"
             fill
-            className="object-cover opacity-30"
-            sizes="100vw"
+            className="object-cover"
+            sizes="(max-width:768px) 100vw, 50vw"
           />
-          <div className="absolute inset-0 bg-[#eee4d6]/88 backdrop-blur-sm dark:bg-[#201d19]/90" />
         </div>
-        <div className="relative mx-auto max-w-3xl px-4 text-center sm:px-6">
+        <div className="flex flex-col justify-center px-6 py-14 sm:px-10 sm:py-16 lg:px-16 xl:px-20">
           <Reveal>
-            <p className="text-xs font-semibold uppercase tracking-[0.45em] text-primary">Brand</p>
-            <h2 className="mt-4 font-heading text-3xl md:text-5xl">The Mietaaf story</h2>
-            <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
+            <p className="atelier-eyebrow">Brand</p>
+            <h2 className="atelier-heading mt-4">The Mietaaf story</h2>
+            <p className="mt-6 max-w-lg text-sm leading-7 text-muted-foreground lg:text-base lg:leading-8">
               Born from atelier craft and a love for modern Indian masculinity, Mietaaf curates
               ceremonial and formal wardrobes with cinematic presence. Each piece is considered —
               fabric, fall, and the quiet confidence of gold on ivory.
             </p>
-            <Button asChild variant="outline" className="mt-8 rounded-full px-8">
+            <Button asChild variant="outline" className="mt-8 rounded-md px-6">
               <Link href="/about">
                 <Play className="mr-2 h-4 w-4" />
                 Discover more
@@ -398,69 +401,14 @@ export function HomeSections() {
             </Button>
           </Reveal>
         </div>
-      </section>
-
-      <section className="relative overflow-hidden border-y border-border/60 bg-[#fbf8f2] py-14 sm:py-18 md:py-20 dark:bg-[#181613]">
-        <div className="pointer-events-none absolute -left-24 top-10 size-64 rounded-full bg-primary/8 blur-3xl" />
-        <div className="pointer-events-none absolute -right-24 bottom-0 size-72 rounded-full bg-mietaaf-gold/8 blur-3xl" />
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <Reveal>
-            <div className="mx-auto max-w-2xl text-center">
-              <p className="text-xs font-semibold uppercase tracking-[0.4em] text-primary">
-                Worn with confidence
-              </p>
-              <h2 className="mt-3 font-heading text-3xl md:text-5xl">Client stories</h2>
-              <p className="mx-auto mt-3 max-w-xl leading-relaxed text-muted-foreground">
-                Personal experiences from clients who chose Mietaaf for their most memorable moments.
-              </p>
-            </div>
-          </Reveal>
-
-          <div className="mt-10 grid gap-5 md:grid-cols-3 lg:gap-6">
-            {TESTIMONIALS.map((testimonial, index) => (
-              <Reveal key={testimonial.name} delay={index * 0.08}>
-                <Card className="group flex h-full flex-col rounded-[1.5rem] border-border/70 bg-card/90 p-6 shadow-[0_16px_45px_rgba(58,48,38,0.06)] backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-[0_22px_55px_rgba(58,48,38,0.1)] sm:p-7">
-                  <div className="flex items-center justify-between">
-                    <span className="flex size-10 items-center justify-center rounded-full bg-primary/10 text-primary">
-                      <Quote className="size-4" aria-hidden="true" />
-                    </span>
-                    <div className="flex gap-0.5 text-primary" aria-label="5 out of 5 stars">
-                      {Array.from({ length: 5 }).map((_, starIndex) => (
-                        <Star key={starIndex} className="size-3.5 fill-current" aria-hidden="true" />
-                      ))}
-                    </div>
-                  </div>
-
-                  <blockquote className="mt-6 flex-1 font-heading text-xl leading-7 tracking-[0.01em] text-foreground sm:text-[1.35rem]">
-                    &ldquo;{testimonial.quote}&rdquo;
-                  </blockquote>
-
-                  <div className="mt-7 flex items-center gap-3 border-t border-border/70 pt-5">
-                    <div className="relative size-12 shrink-0 overflow-hidden rounded-full ring-2 ring-background shadow-sm">
-                      <Image
-                        src={testimonial.image}
-                        unoptimized={bypassImageOptimization(testimonial.image)}
-                        alt={testimonial.name}
-                        fill
-                        className="object-cover transition-transform duration-500 group-hover:scale-105"
-                        sizes="48px"
-                      />
-                    </div>
-                    <div className="min-w-0">
-                      <p className="font-semibold text-foreground">{testimonial.name}</p>
-                      <p className="mt-0.5 text-xs text-muted-foreground">{testimonial.role}</p>
-                    </div>
-                  </div>
-                </Card>
-              </Reveal>
-            ))}
-          </div>
         </div>
       </section>
 
+      <ClientStories />
+
       <DoorstepServiceBanner />
 
-      <section className="bg-[#eee4d6] py-12 sm:py-16 md:py-20 dark:bg-[#201d19]">
+      <section className="atelier-section bg-surface-paper">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <Reveal>
             <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
@@ -468,7 +416,7 @@ export function HomeSections() {
                 <p className="text-xs font-semibold uppercase tracking-[0.4em] text-primary">
                   From the atelier
                 </p>
-                <h2 className="mt-2 font-heading text-3xl md:text-4xl">The feed</h2>
+                <h2 className="atelier-heading mt-3">The feed</h2>
                 <p className="mt-2 max-w-xl text-sm leading-6 text-muted-foreground">
                   A closer look at new silhouettes, refined details, and occasion-ready tailoring.
                 </p>
@@ -523,14 +471,17 @@ export function HomeSections() {
         </div>
       </section>
 
-      <section className="border-t border-border/60 bg-[#fbf8f2] py-10 sm:py-14 md:py-16 dark:bg-[#181613]">
-        <div className="mx-auto flex max-w-4xl flex-col items-center gap-4 px-4 text-center sm:px-6">
-          <h3 className="font-heading text-xl sm:text-2xl">Private list</h3>
-          <p className="text-sm text-muted-foreground">
+      <section className="border-t border-border/70 bg-surface-cream py-12 sm:py-16">
+        <div className="page-container grid items-center gap-8 lg:grid-cols-2 lg:gap-16">
+          <div>
+          <p className="atelier-eyebrow mb-3">Stay in the know</p>
+          <h3 className="font-heading text-4xl tracking-[-0.02em] sm:text-5xl">Private list</h3>
+          <p className="mt-4 max-w-md text-sm leading-6 text-muted-foreground">
             Be first to access limited runs and appointment slots at our Bengaluru atelier.
           </p>
+          </div>
           <form
-            className="mt-2 flex w-full max-w-md touch-manipulation flex-col gap-2 sm:flex-row sm:items-stretch"
+            className="flex w-full touch-manipulation flex-col gap-3 sm:flex-row sm:items-stretch"
             onSubmit={(e) => {
               e.preventDefault();
               toast.success("Welcome to the private list.");
@@ -543,9 +494,10 @@ export function HomeSections() {
               autoComplete="email"
               required
               placeholder="Your email"
-              className="h-11 min-w-0 flex-1 rounded-full"
+              aria-label="Email address for the private list"
+              className="h-12 min-w-0 flex-1 rounded-md bg-surface-paper"
             />
-            <Button type="submit" className="h-11 w-full shrink-0 rounded-full px-6 sm:w-auto">
+            <Button type="submit" className="h-12 w-full shrink-0 rounded-md px-8 sm:w-auto">
               Join
             </Button>
           </form>

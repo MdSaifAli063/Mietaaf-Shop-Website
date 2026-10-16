@@ -7,9 +7,9 @@ import { PAGE_CONTAINER, PAGE_PY } from "@/lib/layout";
 import { publicPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = publicPageMetadata({
-  title: "Fabrics",
+  title: "Fabrics & Personal Tailoring",
   description:
-    "Discover the upcoming Mietaaf fabric library for ceremonial, festive, and formal tailoring.",
+    "Explore fabric families for Mietaaf Couture suits, sherwanis and formal tailoring. Arrange a personal fabric consultation at our Bangalore atelier or your doorstep.",
   path: "/fabrics",
 });
 
@@ -61,9 +61,9 @@ const previewSteps = [
 export default function FabricsPage() {
   return (
     <PageEnter>
-      <div className="min-h-screen bg-[#fbf8f2] dark:bg-[#181613]">
+      <div className="min-h-screen bg-surface-paper dark:bg-[#181613]">
         <div className={`${PAGE_CONTAINER} ${PAGE_PY} min-w-0`}>
-          <header className="relative isolate overflow-hidden rounded-[2rem] border border-border/60 bg-[#eee4d6] shadow-[0_24px_70px_rgba(58,48,38,0.08)] dark:bg-[#201d19]">
+          <header className="relative isolate overflow-hidden rounded-xl border border-border/60 bg-surface-cream shadow-[0_8px_32px_rgba(36,39,33,0.035)] dark:bg-[#201d19]">
             <div className="pointer-events-none absolute -left-28 -top-32 size-80 rounded-full bg-[#c59b66]/15 blur-3xl" />
             <div className="grid items-center gap-8 px-6 py-9 sm:px-10 sm:py-12 lg:grid-cols-[1.02fr_0.98fr] lg:gap-12 lg:px-12 lg:py-14">
               <div className="relative z-10 max-w-2xl">
@@ -98,7 +98,7 @@ export default function FabricsPage() {
               </div>
 
               <div className="relative mx-auto h-[340px] w-full max-w-[520px] sm:h-[430px]">
-                <div className="absolute left-[2%] top-[13%] h-[74%] w-[54%] rotate-[-7deg] overflow-hidden rounded-[1.7rem] border border-white/50 bg-[linear-gradient(135deg,#e9ddc6,#a9875c)] shadow-[0_24px_60px_rgba(49,37,25,0.2)]">
+                <div className="absolute left-[2%] top-[13%] h-[74%] w-[54%] rotate-[-7deg] overflow-hidden rounded-[1.7rem] border border-white/50 bg-[linear-gradient(135deg,#e9ddc6,#a9875c)] shadow-[0_8px_32px_rgba(36,39,33,0.035)]">
                   <span className="absolute inset-0 bg-[repeating-linear-gradient(45deg,rgba(255,255,255,0.12)_0_2px,transparent_2px_15px)]" />
                   <span className="absolute bottom-5 left-5 text-xs font-semibold uppercase tracking-[0.28em] text-[#3d3025]">
                     Silk
@@ -138,7 +138,7 @@ export default function FabricsPage() {
               {fabricFamilies.map((fabric) => (
                 <article
                   key={fabric.name}
-                  className="overflow-hidden rounded-[1.5rem] border border-border/60 bg-card/75 shadow-[0_16px_45px_rgba(58,48,38,0.06)]"
+                  className="overflow-hidden rounded-xl border border-border/60 bg-card/75 shadow-[0_8px_32px_rgba(36,39,33,0.035)]"
                 >
                   <div className={`relative aspect-[4/3] ${fabric.className}`}>
                     <span className="absolute inset-3 rounded-[1rem] border border-white/25" />
@@ -154,7 +154,7 @@ export default function FabricsPage() {
             </div>
           </section>
 
-          <section className="mt-12 rounded-[2rem] border border-border/60 bg-[#f1e8dc] p-6 sm:mt-16 sm:p-8 lg:p-10 dark:bg-[#201d19]">
+          <section className="mt-12 rounded-xl border border-border/60 bg-surface-cream p-6 sm:mt-16 sm:p-8 lg:p-10 dark:bg-[#201d19]">
             <div className="grid gap-6 md:grid-cols-3">
               {previewSteps.map(({ icon: Icon, title, text }, index) => (
                 <div key={title} className="flex gap-4">
@@ -173,7 +173,7 @@ export default function FabricsPage() {
             </div>
           </section>
 
-          <aside className="mt-12 overflow-hidden rounded-[2rem] bg-[#1f1f1d] px-6 py-10 text-center text-white sm:mt-16 sm:px-10 sm:py-12">
+          <aside className="mt-12 overflow-hidden rounded-xl bg-mietaaf-charcoal px-6 py-10 text-center text-mietaaf-cream sm:mt-16 sm:px-10 sm:py-12">
             <p className="text-xs font-bold uppercase tracking-[0.4em] text-[#d8b98c]">
               Coming soon
             </p>
@@ -187,7 +187,7 @@ export default function FabricsPage() {
             <Button
               asChild
               variant="secondary"
-              className="mt-7 h-11 rounded-full bg-[#f7f1e8] px-7 text-[#1f1f1d] hover:bg-white"
+              className="mt-7 h-11 rounded-full border-mietaaf-cream bg-mietaaf-cream px-7 text-mietaaf-charcoal hover:border-mietaaf-cream/90 hover:bg-mietaaf-cream/90"
             >
               <Link href="/appointment">Book an appointment</Link>
             </Button>

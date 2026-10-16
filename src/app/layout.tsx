@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Cormorant_Garamond, DM_Sans } from "next/font/google";
+import localFont from "next/font/local";
 import { GoogleAnalytics } from "@next/third-parties/google";
 
 import { AppProviders } from "@/providers/app-providers";
@@ -8,16 +8,23 @@ import { rootMetadata } from "@/lib/seo";
 
 import "./globals.css";
 
-const dmSans = DM_Sans({
-  subsets: ["latin"],
+const dmSans = localFont({
+  src: "./fonts/dm-sans-latin-variable.woff2",
   variable: "--font-dm-sans",
-  weight: ["400", "500", "600", "700"],
+  weight: "100 1000",
+  style: "normal",
+  display: "swap",
+  fallback: ["Arial", "sans-serif"],
 });
 
-const cormorant = Cormorant_Garamond({
-  subsets: ["latin"],
+const cormorant = localFont({
+  src: "./fonts/cormorant-garamond-latin-variable.woff2",
   variable: "--font-cormorant",
-  weight: ["500", "600", "700"],
+  weight: "300 700",
+  style: "normal",
+  display: "swap",
+  fallback: ["Georgia", "serif"],
+  adjustFontFallback: "Times New Roman",
 });
 
 export const metadata: Metadata = rootMetadata();
@@ -29,7 +36,7 @@ export const viewport: Viewport = {
   themeColor: [
     {
       media: "(prefers-color-scheme: light)",
-      color: "#faf7f2",
+      color: "#f3eee5",
     },
     {
       media: "(prefers-color-scheme: dark)",
