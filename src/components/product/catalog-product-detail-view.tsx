@@ -104,7 +104,7 @@ export function CatalogProductDetailView({ product: originalProduct }: { product
                     key={s}
                     type="button"
                     variant={size === s ? "default" : "outline"}
-                    className="h-10 min-h-10 touch-manipulation rounded-full px-4"
+                    className="h-11 min-w-11 touch-manipulation rounded-full px-4"
                     onClick={() => setSize(s)}
                   >
                     {s}
@@ -120,7 +120,8 @@ export function CatalogProductDetailView({ product: originalProduct }: { product
                   type="button"
                   variant="ghost"
                   size="icon"
-                  className="rounded-full"
+                  className="size-11 rounded-full"
+                  aria-label="Decrease quantity"
                   onClick={() => setQty((q) => Math.max(1, q - 1))}
                 >
                   <Minus className="h-4 w-4" />
@@ -130,7 +131,8 @@ export function CatalogProductDetailView({ product: originalProduct }: { product
                   type="button"
                   variant="ghost"
                   size="icon"
-                  className="rounded-full"
+                  className="size-11 rounded-full"
+                  aria-label="Increase quantity"
                   onClick={() => setQty((q) => Math.min(product.stock, q + 1))}
                 >
                   <Plus className="h-4 w-4" />
@@ -138,7 +140,7 @@ export function CatalogProductDetailView({ product: originalProduct }: { product
               </div>
             </div>
 
-            <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+            <div className="mt-6 grid gap-3 sm:grid-cols-2 md:grid-cols-1 xl:grid-cols-2">
               <Button
                 className="h-11 flex-1 rounded-full touch-manipulation"
                 onClick={() => {
@@ -179,7 +181,7 @@ export function CatalogProductDetailView({ product: originalProduct }: { product
               <Button
                 size="lg"
                 variant="secondary"
-                className="h-11 w-full sm:w-auto touch-manipulation rounded-full"
+                className="h-11 w-full touch-manipulation rounded-md sm:col-span-2 md:col-span-1 xl:col-span-2"
                 onClick={share}
               >
                 <Share2 className="mr-2 h-4 w-4" />

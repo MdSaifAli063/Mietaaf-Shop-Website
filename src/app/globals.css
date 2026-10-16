@@ -7,8 +7,11 @@
 @theme inline {
   --color-mietaaf-gold: oklch(0.62 0.08 58);
   --color-mietaaf-gold-deep: oklch(0.5 0.06 52);
-  --color-mietaaf-cream: oklch(0.98 0.01 84);
-  --color-mietaaf-charcoal: oklch(0.255 0.025 70);
+  --color-mietaaf-cream: #f3eee5;
+  --color-mietaaf-charcoal: #302a24;
+  --color-surface-paper: var(--surface-paper);
+  --color-surface-cream: var(--surface-cream);
+  --color-surface-silver: var(--surface-silver);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-dm-sans), ui-sans-serif, system-ui;
@@ -53,42 +56,49 @@
 }
 
 :root {
-  /* Mietaaf — warm menswear luxury inspired by the reference */
-  --background: oklch(0.965 0.015 84);
-  --foreground: oklch(0.245 0.022 68);
-  --card: oklch(0.988 0.01 82);
-  --card-foreground: oklch(0.255 0.025 70);
-  --popover: oklch(0.988 0.01 82);
-  --popover-foreground: oklch(0.245 0.022 68);
-  --primary: oklch(0.62 0.08 58);
-  --primary-foreground: oklch(0.985 0.005 84);
-  --secondary: oklch(0.915 0.018 78);
-  --secondary-foreground: oklch(0.285 0.02 66);
-  --muted: oklch(0.9 0.015 80);
-  --muted-foreground: oklch(0.505 0.02 66);
-  --accent: oklch(0.89 0.02 74);
-  --accent-foreground: oklch(0.245 0.022 66);
+  --site-header-height: 6.75rem;
+  /* Cream foundations, off-white cards, soft silver accents and bronze details. */
+  --surface-paper: #faf6ee;
+  --surface-cream: #f3eee5;
+  --surface-silver: #efefec;
+  --background: #f3eee5;
+  --foreground: #302a24;
+  --card: #fffdfa;
+  --card-foreground: #302a24;
+  --popover: #fffdfa;
+  --popover-foreground: #302a24;
+  --primary: #795c40;
+  --primary-foreground: #faf6ee;
+  --secondary: #efefec;
+  --secondary-foreground: #40372e;
+  --muted: #e9e9e5;
+  --muted-foreground: #6e6256;
+  --accent: #e8ddcd;
+  --accent-foreground: #302a24;
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.83 0.018 74);
-  --input: oklch(0.83 0.018 74);
-  --ring: oklch(0.62 0.08 58);
+  --border: #d9cdbd;
+  --input: #c6b7a3;
+  --ring: #9b8568;
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);
   --chart-4: oklch(0.371 0 0);
   --chart-5: oklch(0.269 0 0);
   --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --sidebar: var(--surface-cream);
+  --sidebar-foreground: var(--foreground);
+  --sidebar-primary: var(--primary);
+  --sidebar-primary-foreground: var(--primary-foreground);
+  --sidebar-accent: var(--accent);
+  --sidebar-accent-foreground: var(--accent-foreground);
+  --sidebar-border: var(--border);
+  --sidebar-ring: var(--ring);
 }
 
 .dark {
+  --surface-paper: #1c1915;
+  --surface-cream: #25211c;
+  --surface-silver: #2b2721;
   --background: oklch(0.165 0.02 70);
   --foreground: oklch(0.955 0.01 84);
   --card: oklch(0.215 0.018 68);
@@ -112,14 +122,14 @@
   --chart-3: oklch(0.439 0 0);
   --chart-4: oklch(0.371 0 0);
   --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  --sidebar: var(--surface-cream);
+  --sidebar-foreground: var(--foreground);
+  --sidebar-primary: var(--primary);
+  --sidebar-primary-foreground: var(--primary-foreground);
+  --sidebar-accent: var(--accent);
+  --sidebar-accent-foreground: var(--accent-foreground);
+  --sidebar-border: var(--border);
+  --sidebar-ring: var(--ring);
 }
 
 @layer base {
@@ -135,10 +145,7 @@
 
   body {
     @apply bg-background text-foreground antialiased break-words;
-    background:
-      radial-gradient(circle at top left, oklch(0.93 0.03 72 / 0.6), transparent 32%),
-      radial-gradient(circle at top right, oklch(0.9 0.02 62 / 0.42), transparent 24%),
-      linear-gradient(180deg, oklch(0.982 0.01 84), oklch(0.965 0.014 80));
+    background: var(--background);
     overflow-x: clip;
     min-width: 0;
   }
@@ -157,13 +164,56 @@
   textarea {
     -webkit-tap-highlight-color: transparent;
   }
+
+  h1, h2, h3 {
+    text-wrap: balance;
+  }
+
+  ::selection {
+    background: #ded3c1;
+    color: #302a24;
+  }
 }
 
-@media (max-width: 639px) {
+@media (min-width: 640px) {
+  :root { --site-header-height: 7.5rem; }
+}
+
+/* Keep saved credentials in the account palette when browsers autofill them. */
+.auth-field:autofill {
+  -webkit-text-fill-color: var(--foreground);
+  caret-color: var(--foreground);
+  box-shadow: 0 0 0 1000px var(--surface-silver) inset;
+}
+
+.auth-field:autofill:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+@media (min-width: 1024px) {
+  :root { --site-header-height: 8rem; }
+}
+
+@media (max-width: 1023px), (pointer: coarse) {
   input,
   select,
   textarea {
     font-size: 16px;
+  }
+}
+
+/* Keep anchors and focused fields clear of the sticky storefront header. */
+html {
+  scroll-padding-top: calc(var(--site-header-height) + 1rem);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
 
@@ -181,6 +231,52 @@
 
 @utility font-heading {
   font-family: var(--font-heading);
+}
+
+@utility atelier-eyebrow {
+  @apply text-[10px] font-semibold uppercase tracking-[0.24em] text-primary sm:text-[11px];
+}
+
+@utility atelier-heading {
+  @apply font-heading text-4xl font-medium leading-[1.06] tracking-[-0.025em] sm:text-5xl lg:text-6xl;
+}
+
+@utility atelier-panel {
+  @apply rounded-xl border border-border/80 bg-card p-5 shadow-[0_8px_32px_rgba(36,39,33,0.035)] sm:p-7;
+}
+
+@utility atelier-section {
+  @apply py-14 sm:py-20 lg:py-24;
+}
+
+@utility storefront-hero-height {
+  min-height: max(480px, min(840px, calc(100svh - var(--site-header-height))));
+}
+
+@keyframes hanging-service-sway {
+  0%, 100% { transform: rotate(-0.65deg); }
+  50% { transform: rotate(0.65deg); }
+}
+
+.hanging-service-sign {
+  transform-origin: 50% -2rem;
+  animation: hanging-service-sway 6.5s ease-in-out infinite;
+}
+
+.hanging-service-sign:hover,
+.hanging-service-sign:focus-within {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hanging-service-sign {
+    animation: none;
+    transform: none;
+  }
+}
+
+@utility atelier-link {
+  @apply inline-flex min-h-11 items-center gap-2 border-b border-foreground/40 text-xs font-medium uppercase tracking-[0.12em] transition-colors hover:border-primary hover:text-primary;
 }
 
 /* subtle luxury noise */

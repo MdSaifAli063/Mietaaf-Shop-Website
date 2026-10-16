@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { publicPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = publicPageMetadata({
-  title: "Lookbook",
+  title: "Wedding & Formal Menswear Lookbook",
   description:
-    "Explore the Mietaaf lookbook: sherwanis, suits, tuxedos, waistcoats, and indo-western styling for modern ceremonies.",
+    "Explore Mietaaf Couture sherwanis, suits, tuxedos and Indo-Western styling. Discover wedding and formal menswear from our Bangalore atelier.",
   path: "/lookbook",
 });
 

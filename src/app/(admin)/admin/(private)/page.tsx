@@ -39,7 +39,7 @@ export default function AdminOverviewPage() {
       <div className="mt-7 grid grid-cols-2 gap-3 xl:grid-cols-4">
         {cards.map(({ href, label, value, icon: Icon }) => (
           <Link key={href} href={href}>
-            <Card className="h-full rounded-[1.35rem] p-4 transition-transform hover:-translate-y-0.5 sm:p-5">
+            <Card className="h-full rounded-lg p-4 transition-transform hover:-translate-y-0.5 sm:p-5">
               <Icon className="size-5 text-primary" />
               <p className="mt-5 text-2xl font-semibold">{value}</p>
               <p className="mt-1 text-xs text-muted-foreground sm:text-sm">{label}</p>
@@ -47,10 +47,10 @@ export default function AdminOverviewPage() {
           </Link>
         ))}
       </div>
-      <Card className="mt-5 rounded-[1.5rem] bg-[#292621] p-6 text-[#fffaf1] sm:p-8">
+      <Card className="mt-5 rounded-xl bg-mietaaf-charcoal p-6 text-mietaaf-cream sm:p-8">
         <Settings className="size-6 text-[#d7aa76]" />
         <h2 className="mt-5 font-heading text-2xl">Changes publish live</h2>
-        <p className="mt-2 max-w-xl text-sm leading-6 text-[#fffaf1]/70">
+        <p className="mt-2 max-w-xl text-sm leading-6 text-mietaaf-cream/75">
           Saved Firestore content updates open storefronts in real time. Local catalogue data remains available as a fallback, and any local item can be hidden from this panel.
         </p>
         <Link href="/admin/settings" className="mt-6 inline-flex text-sm font-semibold underline underline-offset-4">

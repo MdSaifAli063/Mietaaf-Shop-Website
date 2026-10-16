@@ -13,6 +13,9 @@ export const SITE_ADDRESS_DISPLAY =
 /** Public inbox for UI + mailto: links */
 export const SITE_EMAIL_DISPLAY = "mietaaf@gmail.com";
 
+/** Existing Google Business Profile supplied by the business owner. */
+export const SITE_GOOGLE_BUSINESS_PROFILE_URL = "https://share.google/IAhviumKntqp7Cz68";
+
 /** Open in Maps app / browser (canonical search link). */
 export const SITE_GOOGLE_MAPS_URL = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(SITE_ADDRESS_DISPLAY)}`;
 

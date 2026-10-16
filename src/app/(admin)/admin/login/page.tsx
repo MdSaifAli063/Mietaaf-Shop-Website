@@ -74,8 +74,8 @@ function AdminLoginForm() {
     <main className="relative flex min-h-dvh items-center justify-center overflow-hidden px-4 py-8 sm:px-6">
       <div className="pointer-events-none absolute -left-28 top-10 size-80 rounded-full bg-primary/10 blur-3xl" />
       <div className="pointer-events-none absolute -right-32 bottom-0 size-96 rounded-full bg-[#c89c66]/12 blur-3xl" />
-      <div className="relative grid w-full max-w-5xl overflow-hidden rounded-[2rem] border border-border/60 bg-card/95 shadow-[0_35px_100px_rgba(48,37,27,0.18)] lg:grid-cols-[1fr_0.82fr]">
-        <section className="hidden min-h-[620px] flex-col justify-between bg-[#292621] p-10 text-[#fffaf1] lg:flex">
+      <div className="relative grid w-full max-w-5xl overflow-hidden rounded-xl border border-border/60 bg-card/95 shadow-[0_35px_100px_rgba(48,37,27,0.18)] lg:grid-cols-[1fr_0.82fr]">
+        <section className="hidden min-h-[620px] flex-col justify-between bg-mietaaf-charcoal p-10 text-mietaaf-cream lg:flex">
           <div>
             <Logo href="/" variant="footer" priority />
             <p className="mt-10 text-xs font-semibold uppercase tracking-[0.38em] text-[#d4b18a]">
@@ -84,7 +84,7 @@ function AdminLoginForm() {
             <h1 className="mt-5 max-w-lg font-heading text-5xl leading-[0.98]">
               One secure place to run the Mietaaf storefront.
             </h1>
-            <p className="mt-5 max-w-md text-sm leading-7 text-[#fffaf1]/68">
+            <p className="mt-5 max-w-md text-sm leading-7 text-mietaaf-cream/75">
               Manage products, pricing, imagery, collections, homepage content, customer orders, and global website settings.
             </p>
           </div>
@@ -159,7 +159,7 @@ function AdminLoginForm() {
                     </button>
                   </div>
                 </div>
-                <Button type="submit" className="h-12 w-full rounded-2xl bg-[#292621] text-[#fffaf1]" disabled={submitting}>
+                <Button type="submit" className="h-12 w-full rounded-2xl" disabled={submitting}>
                   {submitting ? <LoaderCircle className="size-4 animate-spin" /> : <ShieldCheck className="size-4" />}
                   {submitting ? "Checking access…" : "Enter admin dashboard"}
                 </Button>

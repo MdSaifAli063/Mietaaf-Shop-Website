@@ -44,7 +44,7 @@ const fabricPreferences = [
 
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <div className="space-y-2">
+    <div className="min-w-0 space-y-2">
       <Label className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
         {label}
       </Label>
@@ -59,7 +59,7 @@ export function AppointmentBookingForm() {
 
   return (
     <form
-      className="rounded-[2rem] border border-border/60 bg-card/95 p-5 shadow-[0_24px_70px_rgba(58,48,38,0.12)] ring-1 ring-black/5 sm:p-7 dark:ring-white/10"
+      className="rounded-xl border border-border/60 bg-card/95 p-5 shadow-[0_8px_32px_rgba(36,39,33,0.035)] ring-1 ring-black/5 sm:p-7 dark:ring-white/10"
       onSubmit={async (event) => {
         event.preventDefault();
         setSubmitting(true);
@@ -162,7 +162,7 @@ export function AppointmentBookingForm() {
             and measurement requirements after reviewing your request.
           </p>
         </div>
-        <div className="flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-primary">
+        <div className="flex w-fit shrink-0 items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-primary">
           <Mail className="size-4" aria-hidden />
           Email booking
         </div>
@@ -188,7 +188,7 @@ export function AppointmentBookingForm() {
         </div>
       </div>
 
-      <div className="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mt-7 grid gap-4 sm:grid-cols-2">
         <Field label="Service type">
           <select
             name="serviceType"
@@ -284,7 +284,7 @@ export function AppointmentBookingForm() {
         </div>
       </div>
 
-      <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+      <div className="mt-6 flex flex-col gap-4">
         <div className="grid gap-1 text-sm text-muted-foreground sm:grid-cols-2 sm:gap-x-5">
           <span className="inline-flex items-center gap-2">
             <Phone className="size-4 text-primary" aria-hidden />
@@ -299,7 +299,7 @@ export function AppointmentBookingForm() {
             Fabric curation and measurement support
           </span>
         </div>
-        <Button type="submit" size="lg" className="h-12 min-w-44 rounded-full" disabled={submitting}>
+        <Button type="submit" size="lg" className="h-12 w-full rounded-full sm:w-fit sm:self-end sm:px-6" disabled={submitting}>
           {submitting ? "Sending..." : "Send appointment"}
         </Button>
       </div>

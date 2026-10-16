@@ -12,7 +12,7 @@ export default function StandaloneAdminLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="mietaaf-noise min-h-dvh w-full min-w-0 overflow-x-hidden bg-[#f7f1e8] dark:bg-[#151310]">
+    <div className="mietaaf-noise min-h-dvh w-full min-w-0 overflow-x-hidden bg-background">
       {children}
     </div>
   );

@@ -92,9 +92,9 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <div className="min-h-screen bg-[#f5eee4] py-5 dark:bg-[#171512] sm:py-8">
+    <div className="min-h-screen bg-surface-cream py-5 dark:bg-[#171512] sm:py-8">
       <div className="page-container grid min-w-0 gap-5 lg:grid-cols-[250px_minmax(0,1fr)]">
-        <aside className="h-fit overflow-hidden rounded-[1.5rem] border border-border/60 bg-card/90 shadow-[0_18px_45px_rgba(55,43,31,0.08)] lg:sticky lg:top-8">
+        <aside className="h-fit overflow-hidden rounded-xl border border-border/60 bg-card/90 shadow-[0_8px_32px_rgba(36,39,33,0.035)] lg:sticky lg:top-8">
           <div className="border-b border-border/60 p-5">
             <div className="flex items-center gap-3">
               <span className="flex size-10 items-center justify-center rounded-full bg-primary/12 text-primary">
@@ -163,7 +163,7 @@ function AccessCard({
 }) {
   return (
     <div className="page-container py-16">
-      <Card className="mx-auto max-w-xl rounded-[1.5rem] p-7 text-center">
+      <Card className="mx-auto max-w-xl rounded-xl p-7 text-center">
         <ShieldCheck className="mx-auto size-9 text-primary" />
         <h1 className="mt-4 font-heading text-2xl">{title}</h1>
         <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{body}</p>

@@ -398,7 +398,7 @@ export default function AdminOrdersPage() {
 
   return (
     <PageEnter>
-      <div className="min-h-screen bg-[#fbf8f2] dark:bg-[#181613]">
+      <div className="min-h-screen bg-surface-paper dark:bg-[#181613]">
         <div className="page-container py-8 sm:py-12">
           <header className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
             <div>
@@ -454,12 +454,12 @@ export default function AdminOrdersPage() {
               {[0, 1, 2].map((item) => (
                 <div
                   key={item}
-                  className="h-52 animate-pulse rounded-[1.5rem] bg-muted/60"
+                  className="h-52 animate-pulse rounded-xl bg-muted/60"
                 />
               ))}
             </div>
           ) : filteredOrders.length === 0 ? (
-            <Card className="mt-7 rounded-[1.5rem] p-10 text-center">
+            <Card className="mt-7 rounded-xl p-10 text-center">
               <PackageCheck className="mx-auto size-8 text-primary" />
               <h2 className="mt-4 font-heading text-xl">No {filter} orders</h2>
               <p className="mt-2 text-sm text-muted-foreground">
@@ -473,7 +473,7 @@ export default function AdminOrdersPage() {
                 return (
                   <Card
                     key={order.id}
-                    className="overflow-hidden rounded-[1.5rem] border-border/60 bg-card/90 p-0"
+                    className="overflow-hidden rounded-xl border-border/60 bg-card/90 p-0"
                   >
                     <div className="grid gap-6 p-5 sm:p-6 lg:grid-cols-[minmax(0,1fr)_280px]">
                       <div className="min-w-0">

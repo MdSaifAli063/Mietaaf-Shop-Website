@@ -65,10 +65,10 @@ export function QuickViewDialog() {
     <Dialog open onOpenChange={(o) => !o && setQuick(null)}>
       <DialogContent
         position="mobile-sheet"
-        className="gap-0 overflow-hidden border-border/80 bg-card/98 p-0 shadow-[0_24px_80px_rgba(34,28,22,0.28)] [&_[data-slot=dialog-close]]:z-30 [&_[data-slot=dialog-close]]:rounded-full [&_[data-slot=dialog-close]]:bg-background/90 [&_[data-slot=dialog-close]]:shadow-sm"
+        className="gap-0 overflow-hidden border-border/80 bg-card/98 p-0 shadow-[0_8px_32px_rgba(36,39,33,0.035)] [&_[data-slot=dialog-close]]:z-30 [&_[data-slot=dialog-close]]:rounded-full [&_[data-slot=dialog-close]]:bg-background/90 [&_[data-slot=dialog-close]]:shadow-sm"
       >
         <div className="grid max-h-[calc(94dvh-1rem)] min-h-0 min-w-0 grid-rows-[auto_minmax(0,1fr)] gap-0 md:h-[min(80dvh,700px)] md:grid-cols-2 md:grid-rows-1">
-          <div className="relative h-[clamp(240px,40dvh,340px)] w-full shrink-0 overflow-hidden bg-[#eee7dc] sm:h-[min(44dvh,380px)] md:h-full md:min-h-0 dark:bg-[#201d19]">
+          <div className="relative h-[min(36dvh,300px)] min-h-0 w-full shrink-0 overflow-hidden bg-surface-silver sm:h-[min(40dvh,340px)] md:h-full dark:bg-[#201d19]">
             <ProductThumbnailImage
               src={img}
               alt={product.name}

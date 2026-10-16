@@ -1,33 +1,25 @@
 import type { Metadata } from "next";
-import { Suspense } from "react";
 import { ShopExplorer } from "@/components/shop/shop-explorer";
-import { Skeleton } from "@/components/ui/skeleton";
 import { publicPageMetadata } from "@/lib/seo";
+import { getServerCategories, getServerProducts } from "@/lib/server-catalog";
+import { BreadcrumbJsonLd, PageJsonLd } from "@/components/seo/json-ld";
 
 export const metadata: Metadata = publicPageMetadata({
-  title: "Shop",
+  title: "Shop Men's Wedding & Formal Wear",
   description:
-    "Shop Mietaaf sherwanis, suits, blazers, kurtas, waistcoats, and premium menswear for weddings and formal occasions.",
+    "Shop Mietaaf Couture suits, sherwanis, blazers, kurtas and Indo-Western menswear. Visit our Bangalore atelier by appointment or order through WhatsApp.",
   path: "/shop",
 });
 
-function ShopFallback() {
+export default async function ShopPage({ searchParams }: { searchParams: Promise<{ category?: string | string[] }> }) {
+  const query = await searchParams;
+  const initialCategory = typeof query.category === "string" ? query.category : "all";
+  const [products, categories] = await Promise.all([getServerProducts(), getServerCategories()]);
   return (
-    <div className="mx-auto max-w-7xl space-y-6 px-4 py-10 sm:px-6 lg:px-8">
-      <Skeleton className="h-10 w-64" />
-      <div className="grid grid-cols-2 gap-x-2.5 gap-y-5 sm:gap-6 lg:grid-cols-3">
-        {Array.from({ length: 6 }).map((_, i) => (
-          <Skeleton key={i} className="aspect-[3/4] rounded-xl" />
-        ))}
-      </div>
-    </div>
-  );
-}
-
-export default function ShopPage() {
-  return (
-    <Suspense fallback={<ShopFallback />}>
-      <ShopExplorer />
-    </Suspense>
+    <>
+      <PageJsonLd type="CollectionPage" title="Shop Mietaaf Couture Menswear" description="Custom-tailored suits, sherwanis, wedding and formal menswear from Mietaaf Couture, Bangalore." path="/shop" />
+      <BreadcrumbJsonLd items={[{ name: "Home", url: "/" }, { name: "Shop", url: "/shop" }]} />
+      <ShopExplorer key={initialCategory} initialCategory={initialCategory} fallbackProducts={products} fallbackCategories={categories} />
+    </>
   );
 }

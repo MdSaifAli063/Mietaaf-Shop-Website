@@ -1,8 +1,8 @@
 import { ImageResponse } from "next/og";
-import { SITE_DESCRIPTION, SITE_NAME } from "@/lib/seo";
+import { SITE_NAME } from "@/lib/seo";
 
 export const runtime = "edge";
-export const alt = "Mietaaf luxury men's ethnic and formal wear";
+export const alt = "Mietaaf Couture — custom-tailored suits, sherwanis and wedding menswear in Bangalore";
 export const size = {
   width: 1200,
   height: 630,
@@ -20,9 +20,8 @@ export default function Image() {
           flexDirection: "column",
           justifyContent: "space-between",
           padding: 72,
-          color: "#f8f2e8",
-          background:
-            "linear-gradient(135deg, #171512 0%, #2f261d 48%, #b48754 100%)",
+          color: "#302a24",
+          background: "linear-gradient(135deg, #faf6ee 0%, #f3eee5 60%, #e8ddcd 100%)",
           fontFamily: "Georgia, serif",
         }}
       >
@@ -32,13 +31,13 @@ export default function Image() {
             alignItems: "center",
             justifyContent: "space-between",
             fontFamily: "Arial, sans-serif",
-            fontSize: 24,
-            letterSpacing: 12,
+            fontSize: 20,
+            letterSpacing: 4,
             textTransform: "uppercase",
           }}
         >
-          <span>{SITE_NAME}</span>
-          <span style={{ letterSpacing: 4, fontSize: 20 }}>Bengaluru Atelier</span>
+          <span>Your Presence, Our Craft.</span>
+          <span style={{ letterSpacing: 3, fontSize: 18 }}>Bangalore · Bengaluru</span>
         </div>
         <div
           style={{
@@ -48,26 +47,27 @@ export default function Image() {
         >
           <div
             style={{
-              fontSize: 104,
-              lineHeight: 0.92,
-              maxWidth: 880,
+              fontSize: 100,
+              lineHeight: 1.05,
+              maxWidth: 1056,
             }}
           >
-            Luxury Men&apos;s Ethnic & Formal
+            {SITE_NAME}
           </div>
           <div
             style={{
-              marginTop: 34,
-              maxWidth: 780,
+              marginTop: 28,
+              maxWidth: 960,
               fontFamily: "Arial, sans-serif",
-              fontSize: 30,
+              fontSize: 32,
               lineHeight: 1.35,
-              color: "#f2dfc2",
+              color: "#795c40",
             }}
           >
-            {SITE_DESCRIPTION}
+            Custom-tailored suits. Wedding menswear. Personal fittings.
           </div>
         </div>
+        <div style={{ display: "flex", fontFamily: "Arial, sans-serif", fontSize: 22, letterSpacing: 3, color: "#6e6256" }}>www.mietaaf.com</div>
       </div>
     ),
     size,

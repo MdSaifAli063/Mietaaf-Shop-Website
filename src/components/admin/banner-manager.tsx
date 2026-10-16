@@ -129,7 +129,7 @@ export function BannerManager() {
       </header>
       <div className="mt-7 grid gap-4">
         {banners.map((banner) => (
-          <Card key={banner.id} className="overflow-hidden rounded-[1.35rem] p-0 sm:grid sm:grid-cols-[240px_minmax(0,1fr)]">
+          <Card key={banner.id} className="overflow-hidden rounded-lg p-0 sm:grid sm:grid-cols-[240px_minmax(0,1fr)]">
             <div className="relative aspect-[16/9] bg-muted sm:aspect-auto sm:min-h-40">
               <Image src={banner.image} alt="" fill unoptimized={bypassImageOptimization(banner.image)} className="object-cover" sizes="240px" />
             </div>

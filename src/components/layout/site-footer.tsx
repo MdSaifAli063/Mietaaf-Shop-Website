@@ -14,11 +14,11 @@ import { useSiteSettings } from "@/hooks/use-site-settings";
 export function SiteFooter() {
   const { settings } = useSiteSettings();
   return (
-    <footer className="border-t border-border/70 bg-background text-foreground dark:bg-card">
-      <div className="mx-auto max-w-7xl px-4 pb-[max(3rem,env(safe-area-inset-bottom))] pt-12 sm:px-6 sm:py-16 lg:px-8">
-        <div className="grid gap-8 sm:gap-10 md:grid-cols-2 md:gap-12 lg:grid-cols-[minmax(0,1.35fr)_repeat(3,minmax(0,1fr))] lg:gap-10 xl:gap-12">
+    <footer className="border-t border-border/80 bg-surface-silver text-foreground">
+      <div className="mx-auto max-w-7xl px-4 pb-[max(3rem,env(safe-area-inset-bottom))] pt-14 sm:px-6 sm:py-20 lg:px-8">
+        <div className="grid grid-cols-2 gap-x-5 gap-y-8 sm:gap-10 md:gap-12 lg:grid-cols-[minmax(0,1.35fr)_repeat(3,minmax(0,1fr))] lg:gap-10 xl:gap-12">
           {/* Brand: logo + blurb + social — left column, contained width */}
-          <div className="flex min-w-0 max-w-full flex-col items-start gap-4 lg:pr-4">
+          <div className="col-span-2 flex min-w-0 max-w-full flex-col items-start gap-4 md:col-span-1 lg:pr-4">
             <Logo variant="footer" href="/" className="w-full max-w-full" />
             <p className="max-w-sm text-sm leading-relaxed text-muted-foreground">
               {settings.brandTagline}. {settings.footerDescription}
@@ -67,7 +67,7 @@ export function SiteFooter() {
             <ul className="space-y-2 text-sm text-muted-foreground">
               {FOOTER_LINKS.shop.map((l) => (
                 <li key={l.href}>
-                  <Link href={l.href} className="hover:text-primary">
+                  <Link href={l.href} className="inline-flex min-h-9 items-center py-1 hover:text-primary">
                     {l.label}
                   </Link>
                 </li>
@@ -81,7 +81,7 @@ export function SiteFooter() {
             <ul className="space-y-2 text-sm text-muted-foreground">
               {FOOTER_LINKS.company.map((l) => (
                 <li key={l.href}>
-                  <Link href={l.href} className="hover:text-primary">
+                  <Link href={l.href} className="inline-flex min-h-9 items-center py-1 hover:text-primary">
                     {l.label}
                   </Link>
                 </li>
@@ -93,14 +93,14 @@ export function SiteFooter() {
             <ul className="space-y-2 text-sm text-muted-foreground">
               {FOOTER_LINKS.legal.map((l) => (
                 <li key={l.href}>
-                  <Link href={l.href} className="hover:text-primary">
+                  <Link href={l.href} className="inline-flex min-h-9 items-center py-1 hover:text-primary">
                     {l.label}
                   </Link>
                 </li>
               ))}
             </ul>
           </div>
-          <div className="min-w-0 space-y-4">
+          <div className="col-span-2 min-w-0 space-y-4 md:col-span-1">
             <h4 className="text-xs font-semibold uppercase tracking-[0.35em] text-primary">
               Newsletter
             </h4>
@@ -108,7 +108,7 @@ export function SiteFooter() {
               Private previews, restocks, and event invitations.
             </p>
             <form
-              className="flex touch-manipulation flex-col gap-2 sm:flex-row sm:items-stretch"
+              className="flex touch-manipulation flex-col gap-2 sm:flex-row sm:items-stretch lg:flex-col"
               onSubmit={(e) => {
                 e.preventDefault();
                 toast.success("You are on the list.");
@@ -121,9 +121,10 @@ export function SiteFooter() {
                 autoComplete="email"
                 required
                 placeholder="Email"
-                className="min-h-11 min-w-0 flex-1 border-border/70 bg-background/70 text-foreground placeholder:text-muted-foreground"
+                aria-label="Newsletter email address"
+                className="min-h-12 min-w-0 flex-1 rounded-md border-border bg-card text-foreground placeholder:text-muted-foreground"
               />
-              <Button type="submit" className="h-11 w-full shrink-0 rounded-full sm:w-auto sm:px-8">
+              <Button type="submit" className="h-12 w-full shrink-0 rounded-md sm:w-auto sm:px-8 lg:w-full">
                 Join
               </Button>
             </form>
@@ -141,15 +142,15 @@ export function SiteFooter() {
             </div>
           </div>
         </div>
-        <div className="mt-10 flex flex-col items-center gap-4 border-t border-border/70 pt-6 text-center text-xs text-muted-foreground sm:mt-12 sm:flex-row sm:items-center sm:justify-between sm:gap-4 sm:pt-8 sm:text-start">
-          <p className="px-2">© {new Date().getFullYear()} Mietaaf. All rights reserved.</p>
+        <div className="mt-10 flex flex-col items-center gap-4 border-t border-border/70 pb-12 pt-6 text-center text-xs text-muted-foreground sm:mt-12 sm:pt-8 lg:flex-row lg:flex-wrap lg:justify-between lg:text-start">
+          <p className="px-2">© {new Date().getFullYear()} Mietaaf Couture. All rights reserved.</p>
           <span>
               Design and Develop by{" "}
               <a
                 href="https://softtrickscode.com"
                 target="_blank"
                 rel="noreferrer"
-                className="font-medium text-blue-500 hover:text-blue-400/80"
+                className="font-medium text-foreground underline-offset-4 hover:underline"
               >
                 Soft Tricks Code
               </a>

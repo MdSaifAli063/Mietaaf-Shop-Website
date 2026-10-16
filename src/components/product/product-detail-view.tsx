@@ -136,7 +136,7 @@ export function ProductDetailView({ product: originalProduct }: { product: Produ
 
       <div className="grid min-w-0 gap-8 lg:grid-cols-2 lg:gap-10">
         <div className="space-y-4">
-          <div className="relative aspect-[3/4] overflow-hidden rounded-2xl bg-muted transition-transform duration-300 hover:scale-[1.01]">
+          <div className="relative aspect-[3/4] overflow-hidden rounded-lg bg-surface-silver">
             <div className="relative h-full w-full overflow-hidden">
               <Image
                 src={mainImg}
@@ -166,12 +166,12 @@ export function ProductDetailView({ product: originalProduct }: { product: Produ
           </div>
         </div>
 
-        <div className="flex min-w-0 flex-col gap-6">
+        <div className="flex min-w-0 flex-col gap-6 rounded-xl border border-border/70 bg-card p-5 sm:p-7 lg:p-8">
           <div>
             {product.discountPercent ? (
               <Badge className="mb-3 rounded-full">{product.discountPercent}% off</Badge>
             ) : null}
-            <h1 className="font-heading text-2xl leading-tight sm:text-4xl md:text-5xl">{product.name}</h1>
+            <h1 className="mt-2 font-heading text-3xl font-medium leading-[1.08] tracking-[-0.025em] sm:text-4xl lg:text-5xl">{product.name}</h1>
             <div className="mt-3 flex flex-wrap items-center gap-4">
               <StarRating value={product.rating} count={product.reviewCount} />
               <span className="text-sm text-muted-foreground">
@@ -198,7 +198,7 @@ export function ProductDetailView({ product: originalProduct }: { product: Produ
                   key={s}
                   type="button"
                   variant={size === s ? "default" : "outline"}
-                  className="h-10 min-h-10 touch-manipulation rounded-full px-4"
+                  className="h-11 min-w-11 touch-manipulation rounded-full px-4"
                   onClick={() => setSize(s)}
                 >
                   {s}
@@ -217,7 +217,7 @@ export function ProductDetailView({ product: originalProduct }: { product: Produ
                   key={c.name}
                   type="button"
                   variant={color === c.name ? "default" : "outline"}
-                  className="rounded-full gap-2"
+                  className="h-11 rounded-full gap-2"
                   onClick={() => setColor(c.name)}
                 >
                   <span
@@ -237,7 +237,8 @@ export function ProductDetailView({ product: originalProduct }: { product: Produ
                 type="button"
                 variant="ghost"
                 size="icon"
-                className="rounded-full"
+                className="size-11 rounded-full"
+                aria-label="Decrease quantity"
                 onClick={() => setQty((q) => Math.max(1, q - 1))}
               >
                 <Minus className="h-4 w-4" />
@@ -247,7 +248,8 @@ export function ProductDetailView({ product: originalProduct }: { product: Produ
                 type="button"
                 variant="ghost"
                 size="icon"
-                className="rounded-full"
+                className="size-11 rounded-full"
+                aria-label="Increase quantity"
                 onClick={() => setQty((q) => Math.min(product.stock, q + 1))}
               >
                 <Plus className="h-4 w-4" />
@@ -301,14 +303,13 @@ export function ProductDetailView({ product: originalProduct }: { product: Produ
               className="h-12 w-full touch-manipulation rounded-full sm:h-11"
               onClick={share}
             >
-              <Share2 className="mr-2 h-5 w-5 sm:mr-0" />
-              <span className="sm:sr-only">Share</span>
-              <span className="sm:hidden">Share product</span>
+              <Share2 className="mr-2 h-5 w-5" />
+              Share product
             </Button>
           </div>
 
           <Tabs defaultValue="desc" className="w-full min-w-0">
-            <TabsList className="flex h-auto w-full gap-1 overflow-x-auto rounded-full bg-muted/80 p-1">
+            <TabsList className="flex h-auto min-h-12 w-full gap-1 overflow-x-auto rounded-full bg-muted/80 p-1">
               <TabsTrigger value="desc" className="shrink-0 rounded-full px-4 py-2 text-xs sm:text-sm">
                 Details
               </TabsTrigger>

@@ -52,7 +52,7 @@ export function SettingsManager() {
         </p>
       </header>
 
-      <Card className="mt-7 rounded-[1.5rem] p-5 sm:p-7">
+      <Card className="mt-7 rounded-xl p-5 sm:p-7">
         <h2 className="font-heading text-2xl">Brand presentation</h2>
         <p className="mt-1 text-sm text-muted-foreground">Global footer copy and public social profiles.</p>
         <div className="mt-5 grid gap-4 sm:grid-cols-2">
@@ -74,8 +74,8 @@ export function SettingsManager() {
         </div>
       </Card>
 
-      <Card className="mt-5 rounded-[1.5rem] p-5 sm:p-7">
-        <div className="flex items-start justify-between gap-4">
+      <Card className="mt-5 rounded-xl p-5 sm:p-7">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div>
             <h2 className="font-heading text-2xl">Announcement bar</h2>
             <p className="mt-1 text-sm text-muted-foreground">The first rotating message at the top of the storefront.</p>
@@ -101,7 +101,7 @@ export function SettingsManager() {
         </div>
       </Card>
 
-      <Card className="mt-5 rounded-[1.5rem] p-5 sm:p-7">
+      <Card className="mt-5 rounded-xl p-5 sm:p-7">
         <h2 className="font-heading text-2xl">Business contact</h2>
         <p className="mt-1 text-sm text-muted-foreground">Displayed publicly in the footer and used by the WhatsApp announcement.</p>
         <div className="mt-5 grid gap-4 sm:grid-cols-2">
@@ -120,7 +120,7 @@ export function SettingsManager() {
         </div>
       </Card>
 
-      <Card className="mt-5 rounded-[1.5rem] border-primary/20 bg-primary/5 p-5">
+      <Card className="mt-5 rounded-xl border-primary/20 bg-primary/5 p-5">
         <div className="flex gap-3">
           <ShieldCheck className="mt-0.5 size-5 shrink-0 text-primary" />
           <p className="text-sm leading-6 text-muted-foreground">
@@ -144,7 +144,7 @@ export function SettingsManager() {
 
 function SettingField({ label, className, children }: { label: string; className?: string; children: React.ReactNode }) {
   return (
-    <label className={className}>
+    <label className={`min-w-0 ${className ?? ""}`}>
       <span className="mb-1.5 block text-xs font-semibold uppercase tracking-[0.12em] text-muted-foreground">{label}</span>
       {children}
     </label>

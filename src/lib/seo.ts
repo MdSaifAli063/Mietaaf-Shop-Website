@@ -1,76 +1,60 @@
 import type { Metadata } from "next";
 
-export const SITE_NAME = "Mietaaf";
-export const SITE_TITLE = "Mietaaf | Luxury Men's Ethnic & Formal";
+export const SITE_NAME = "Mietaaf Couture";
+export const SITE_ORIGIN = "https://www.mietaaf.com";
+export const SITE_TITLE = "Mietaaf Couture | Custom-Tailored Menswear in Bangalore";
 export const SITE_DESCRIPTION =
-  "Discover sherwanis, suits, indo-western, wedding and premium festive menswear. Crafted for the modern gentleman.";
-export const SITE_DEFAULT_IMAGE = "/branding/mietaaf-social-card.png";
+  "Discover Mietaaf Couture in Bangalore (Bengaluru): custom-tailored suits, sherwanis and wedding menswear. Book a studio fitting or doorstep consultation. Order via WhatsApp.";
+export const SITE_DEFAULT_IMAGE = "/opengraph-image";
+export const SITE_KEYWORDS = [
+  "Mietaaf Couture", "Mietaaf Couture Bangalore", "Mietaaf Couture Bengaluru",
+  "custom-tailored suits Bangalore", "wedding menswear Bangalore", "sherwani Bangalore",
+  "men's ethnic and formal wear",
+];
 
-/**
- * Canonical origin for metadata, sitemap, and JSON-LD (no trailing slash).
- * - Production: set NEXT_PUBLIC_SITE_URL in Vercel, e.g. https://www.mietaaf.com.
- * - Preview: if unset, uses Vercel's deployment URL so OG/sitemap match the deployment.
- * - Local: http://localhost:3000 when neither is set.
- */
-function normalizeSiteUrl(value: string | undefined): string | null {
-  const raw = value?.trim().replace(/\/$/, "");
-  if (!raw) return null;
-
-  const localHostPattern = /^(localhost|127\.0\.0\.1)(:\d+)?$/i;
-  const candidate = /^https?:\/\//i.test(raw)
-    ? raw
-    : localHostPattern.test(raw)
-      ? `http://${raw}`
-      : `https://${raw}`;
+/** Keep canonical URLs on one production origin, including on preview builds. */
+export function getSiteUrl(): string {
+  const raw = process.env.NEXT_PUBLIC_SITE_URL?.trim();
+  if (!raw) return SITE_ORIGIN;
   try {
-    const url = new URL(candidate);
-    if (url.protocol !== "http:" && url.protocol !== "https:") return null;
-    // Vercel redirects the apex domain to www for this site. Keep all canonical,
-    // sitemap, Open Graph, and JSON-LD URLs on that single indexable host even
-    // when an old environment value still says https://mietaaf.com.
-    if (url.hostname.toLowerCase() === "mietaaf.com") {
-      url.hostname = "www.mietaaf.com";
-    }
-    return url.toString().replace(/\/$/, "");
+    if (/^[a-z][a-z\d+.-]*:\/\//i.test(raw) && !/^https?:\/\//i.test(raw)) return SITE_ORIGIN;
+    const url = new URL(/^https?:\/\//i.test(raw) ? raw : `https://${raw}`);
+    if (!["http:", "https:"].includes(url.protocol) || url.username || url.password) return SITE_ORIGIN;
+    const local = /^(localhost|127\.0\.0\.1|\[::1\])$/i.test(url.hostname);
+    if (local && process.env.NODE_ENV !== "development") return SITE_ORIGIN;
+    if (/^(www\.)?mietaaf\.com$/i.test(url.hostname)) return SITE_ORIGIN;
+    return url.origin;
   } catch {
-    return null;
+    return SITE_ORIGIN;
   }
 }
 
-export function getSiteUrl(): string {
-  return (
-    normalizeSiteUrl(process.env.NEXT_PUBLIC_SITE_URL) ??
-    normalizeSiteUrl(process.env.VERCEL_URL) ??
-    normalizeSiteUrl(process.env.VERCEL_PROJECT_PRODUCTION_URL) ??
-    "http://localhost:3000"
-  );
-}
-
-const base = getSiteUrl();
-
 export function absoluteUrl(pathOrUrl: string): string {
   if (/^https?:\/\//i.test(pathOrUrl)) return pathOrUrl;
-  const path = pathOrUrl.startsWith("/") ? pathOrUrl : `/${pathOrUrl}`;
-  return `${base}${path}`;
+  return new URL(pathOrUrl.startsWith("/") ? pathOrUrl : `/${pathOrUrl}`, `${getSiteUrl()}/`).href;
 }
 
 export const noIndexMetadata: Metadata = {
   robots: {
     index: false,
     follow: false,
-    googleBot: {
-      index: false,
-      follow: false,
-      noimageindex: true,
-    },
+    googleBot: { index: false, follow: false, noimageindex: true },
   },
 };
 
 export function isIndexingDisabled(): boolean {
-  return (
-    process.env.VERCEL_ENV === "preview" ||
-    process.env.NEXT_PUBLIC_INDEXING_DISABLED === "true"
-  );
+  return process.env.VERCEL_ENV === "preview" || process.env.NEXT_PUBLIC_INDEXING_DISABLED === "true";
+}
+
+export function publicRobots(): Metadata["robots"] {
+  return isIndexingDisabled() ? noIndexMetadata.robots : {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true, follow: true, "max-image-preview": "large",
+      "max-snippet": -1, "max-video-preview": -1,
+    },
+  };
 }
 
 type PublicPageMetadataInput = {
@@ -78,57 +62,43 @@ type PublicPageMetadataInput = {
   description: string;
   path: string;
   image?: string;
+  keywords?: string[];
 };
 
-export function publicPageMetadata({
-  title,
-  description,
-  path,
-  image = SITE_DEFAULT_IMAGE,
-}: PublicPageMetadataInput): Metadata {
+export function publicPageMetadata({ title, description, path, image = SITE_DEFAULT_IMAGE, keywords = [] }: PublicPageMetadataInput): Metadata {
   const imageUrl = absoluteUrl(image);
-  const imageEntry =
-    image === SITE_DEFAULT_IMAGE
-      ? { url: imageUrl, width: 1200, height: 630, alt: SITE_NAME }
-      : { url: imageUrl, alt: title };
+  const displayTitle = title === SITE_NAME || title === SITE_TITLE ? SITE_TITLE : `${title} | ${SITE_NAME}`;
   return {
     title,
     description,
-    alternates: { canonical: path || "/" },
+    keywords: [...new Set([...SITE_KEYWORDS.slice(0, 3), ...keywords])],
+    alternates: { canonical: absoluteUrl(path || "/") },
+    robots: publicRobots(),
     openGraph: {
       type: "website",
+      locale: "en_IN",
       siteName: SITE_NAME,
-      title: title === SITE_NAME ? SITE_TITLE : `${title} | ${SITE_NAME}`,
+      title: displayTitle,
       description,
-      url: path || "/",
-      images: [imageEntry],
+      url: absoluteUrl(path || "/"),
+      images: [{
+        url: imageUrl, alt: image === SITE_DEFAULT_IMAGE ? SITE_TITLE : title,
+        ...(image === SITE_DEFAULT_IMAGE ? { width: 1200, height: 630 } : {}),
+      }],
     },
-    twitter: {
-      card: "summary_large_image",
-      title: title === SITE_NAME ? SITE_TITLE : `${title} | ${SITE_NAME}`,
-      description,
-      images: [imageUrl],
-    },
+    twitter: { card: "summary_large_image", title: displayTitle, description, images: [imageUrl] },
   };
 }
 
 export function rootMetadata(): Metadata {
+  const page = publicPageMetadata({ title: SITE_NAME, description: SITE_DESCRIPTION, path: "/", keywords: SITE_KEYWORDS });
   return {
-    metadataBase: new URL(base),
+    ...page,
+    alternates: undefined,
+    metadataBase: new URL(getSiteUrl()),
     applicationName: SITE_NAME,
-    title: {
-      default: SITE_TITLE,
-      template: "%s | Mietaaf",
-    },
-    description: SITE_DESCRIPTION,
-    keywords: [
-      "men ethnic wear",
-      "sherwani",
-      "wedding collection",
-      "luxury menswear India",
-      "Mietaaf",
-    ],
-    authors: [{ name: SITE_NAME }],
+    title: { default: SITE_TITLE, template: `%s | ${SITE_NAME}` },
+    authors: [{ name: SITE_NAME, url: getSiteUrl() }],
     creator: SITE_NAME,
     publisher: SITE_NAME,
     category: "fashion",
@@ -140,33 +110,9 @@ export function rootMetadata(): Metadata {
       ],
       apple: [{ url: "/apple-icon.png", type: "image/png", sizes: "180x180" }],
     },
-    openGraph: {
-      type: "website",
-      locale: "en_IN",
-      siteName: SITE_NAME,
-      title: SITE_TITLE,
-      description:
-        "Premium men's ethnic and formal clothing for weddings, festive occasions, and refined tailoring.",
-      url: base,
-      images: [
-        {
-          url: SITE_DEFAULT_IMAGE,
-          width: 1200,
-          height: 630,
-          alt: SITE_TITLE,
-        },
-      ],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: SITE_NAME,
-      description: "Luxury men's ethnic and formal fashion.",
-      images: [SITE_DEFAULT_IMAGE],
-    },
-    verification: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
-      ? { google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION }
+    verification: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION?.trim()
+      ? { google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION.trim() }
       : undefined,
-    robots: isIndexingDisabled() ? noIndexMetadata.robots : undefined,
   };
 }
 
@@ -175,10 +121,8 @@ export function pageTitle(title: string): Metadata {
 }
 
 export function homePageMetadata(): Metadata {
-  return publicPageMetadata({
-    title: "Luxury Men's Ethnic & Formal",
-    description:
-      "Sherwani, suits, indo-western, wedding and premium menswear from the Mietaaf atelier experience.",
-    path: "/",
-  });
+  return {
+    ...publicPageMetadata({ title: SITE_NAME, description: SITE_DESCRIPTION, path: "/", keywords: SITE_KEYWORDS }),
+    title: { absolute: SITE_TITLE },
+  };
 }

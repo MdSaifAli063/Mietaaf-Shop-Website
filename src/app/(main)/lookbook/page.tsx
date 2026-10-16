@@ -15,9 +15,9 @@ export default function LookbookPage() {
 
   return (
     <PageEnter>
-      <div className="min-h-screen bg-[#fbf8f2] dark:bg-[#181613]">
+      <div className="min-h-screen bg-surface-paper dark:bg-[#181613]">
         <div className={`${PAGE_CONTAINER} ${PAGE_PY} min-w-0`}>
-          <header className="rounded-[2rem] border border-border/60 bg-[#eee4d6] px-6 py-9 sm:px-10 sm:py-12 lg:flex lg:items-end lg:justify-between lg:gap-12 dark:bg-[#201d19]">
+          <header className="rounded-xl border border-border/60 bg-surface-cream px-6 py-9 sm:px-10 sm:py-12 lg:flex lg:items-end lg:justify-between lg:gap-12 dark:bg-[#201d19]">
             <div className="max-w-3xl">
               <p className="text-xs font-semibold uppercase tracking-[0.4em] text-primary">
                 Lookbook

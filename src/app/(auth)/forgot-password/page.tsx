@@ -50,7 +50,7 @@ export default function ForgotPasswordPage() {
   return (
     <PageEnter className="motion-reduce:animate-none">
       <AuthPageShell showPromoPanel={false}>
-        <Card className="w-full min-w-0 space-y-6 rounded-[1.75rem] border-border/70 bg-card/95 px-6 pb-7 pt-6 shadow-[0_24px_60px_rgba(58,48,38,0.08)] ring-1 ring-black/5 backdrop-blur-md sm:px-8 sm:pb-8 sm:pt-7 lg:px-9 lg:pb-9 lg:pt-8 dark:bg-card/92 dark:shadow-black/25 dark:ring-white/8">
+        <Card className="w-full min-w-0 space-y-6 rounded-xl border-border/70 bg-card/95 px-6 pb-7 pt-6 shadow-[0_8px_32px_rgba(36,39,33,0.035)] ring-1 ring-black/5 backdrop-blur-md sm:px-8 sm:pb-8 sm:pt-7 lg:px-9 lg:pb-9 lg:pt-8 dark:bg-card/92 dark:shadow-black/25 dark:ring-white/8">
           <div className="flex flex-col items-center text-center *:max-w-full">
             <AuthWordmarkLink className="max-w-[min(100%,210px)] sm:max-w-[min(100%,230px)]" />
             <p className="mt-4 text-[10px] font-semibold uppercase tracking-[0.38em] text-muted-foreground">
@@ -91,7 +91,7 @@ export default function ForgotPasswordPage() {
             </div>
             <Button
               type="submit"
-              className="h-12 w-full rounded-2xl bg-[#2b2a28] text-[#F5F1EA] shadow-[0_14px_32px_rgba(43,42,40,0.18)] transition-all duration-200 hover:scale-[1.01] hover:bg-[#1e1d1b] disabled:scale-100 disabled:bg-[#2b2a28]/70"
+              className="h-12 w-full rounded-2xl shadow-[0_14px_32px_rgba(48,42,36,0.18)] transition-all duration-200 hover:scale-[1.01] disabled:scale-100"
               disabled={form.formState.isSubmitting}
             >
               {form.formState.isSubmitting ? (

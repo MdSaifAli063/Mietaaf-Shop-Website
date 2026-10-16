@@ -14,10 +14,10 @@ const serviceHighlights = [
 
 export function DoorstepServiceBanner() {
   return (
-    <section className="bg-[#eee4d6] py-12 sm:py-16 md:py-20 dark:bg-[#201d19]">
+    <section className="bg-surface-cream py-12 sm:py-16 md:py-20 dark:bg-[#201d19]">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <Reveal>
-          <div className="relative isolate overflow-hidden rounded-[1.75rem] border border-[#b58a60]/25 bg-[#211e1a] px-5 py-8 text-white shadow-[0_20px_55px_rgba(58,48,38,0.18)] sm:rounded-[2rem] sm:px-8 sm:py-10 lg:px-12 lg:py-12">
+          <div className="relative isolate overflow-hidden rounded-xl border border-[#b58a60]/25 bg-[#211e1a] px-5 py-8 text-white shadow-[0_8px_32px_rgba(36,39,33,0.035)] sm:rounded-xl sm:px-8 sm:py-10 lg:px-12 lg:py-12">
             <Image
               src={PAGE_IMAGE_LINKS.appointment.hero}
               unoptimized={bypassImageOptimization(PAGE_IMAGE_LINKS.appointment.hero)}
@@ -55,7 +55,7 @@ export function DoorstepServiceBanner() {
               </div>
 
               <div className="mt-7 flex flex-wrap gap-3">
-                <Button asChild className="h-11 rounded-full bg-[#fbf8f2] px-5 text-[#251e18] hover:bg-white">
+                <Button asChild className="h-11 rounded-full border-mietaaf-cream bg-mietaaf-cream px-5 text-mietaaf-charcoal hover:border-mietaaf-cream/90 hover:bg-mietaaf-cream/90">
                   <Link href="/appointment">
                     Book home service
                     <ArrowUpRight className="ml-1.5 size-4" aria-hidden="true" />

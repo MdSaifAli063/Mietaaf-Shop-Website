@@ -2,6 +2,9 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  // Keep metadata in the initial head for search/social/AI readers, and resolve
+  // unavailable catalogue routes before response headers are streamed.
+  htmlLimitedBots: /.*/,
   // Keep `next dev` and `next build` from overwriting each other's manifests.
   distDir: process.env.NODE_ENV === "development" ? ".next-dev" : ".next",
   devIndicators: false,
@@ -10,6 +13,9 @@ const nextConfig: NextConfig = {
       {
         source: "/:path*",
         headers: [
+          ...(process.env.VERCEL_ENV === "preview" || process.env.NEXT_PUBLIC_INDEXING_DISABLED === "true"
+            ? [{ key: "X-Robots-Tag", value: "noindex, nofollow" }]
+            : []),
           {
             key: "Cross-Origin-Opener-Policy",
             value: "same-origin-allow-popups",

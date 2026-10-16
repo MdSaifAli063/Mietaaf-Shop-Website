@@ -28,7 +28,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { NAV_CATEGORIES } from "@/lib/constants";
 import { useCartStore } from "@/store/cart-store";
 import { useCompareStore } from "@/store/compare-store";
@@ -105,7 +105,7 @@ export function SiteHeader() {
     setAnnouncementIndex((current) => (current + 1) % announcements.length);
 
   useEffect(() => {
-    if (isAuthPage || announcements.length < 2) return;
+    if (isAuthPage || announcements.length < 2 || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const timer = window.setInterval(() => {
       setAnnouncementIndex((current) => (current + 1) % announcements.length);
@@ -115,34 +115,34 @@ export function SiteHeader() {
   }, [announcements.length, isAuthPage]);
 
   return (
-    <header className="sticky top-0 z-40 w-full min-w-0 overflow-x-clip border-b border-border/70 bg-background/85 pt-[env(safe-area-inset-top,0px)] backdrop-blur-xl">
+    <header className="sticky top-0 z-40 w-full min-w-0 overflow-x-clip border-b border-border/70 bg-card/95 pt-[env(safe-area-inset-top,0px)] backdrop-blur-xl">
       {!isAuthPage ? (
-        <div className="bg-[#1f1f1d] text-white">
-          <div className="mx-auto flex min-h-8 w-full max-w-7xl items-center justify-center gap-1 px-1.5 py-1 sm:min-h-12 sm:gap-5 sm:px-6 sm:py-2">
+        <div className="bg-mietaaf-charcoal text-mietaaf-cream">
+          <div className="mx-auto flex min-h-11 w-full max-w-7xl items-center justify-center gap-1 px-1 py-1 sm:min-h-12 sm:gap-5 sm:px-6">
             <button
               type="button"
               onClick={showPreviousAnnouncement}
-              className="flex size-7 shrink-0 items-center justify-center rounded-full text-white/70 transition-colors hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70 sm:size-8"
+              className="flex size-9 shrink-0 items-center justify-center rounded-full text-white/70 transition-colors hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70 sm:size-10"
               aria-label="Previous announcement"
             >
               <ChevronLeft className="size-3.5 sm:size-4" aria-hidden="true" />
             </button>
-            <p className="min-w-0 flex-1 text-center text-[7px] font-bold uppercase leading-3 tracking-[0.12em] text-white sm:text-xs sm:leading-5 sm:tracking-[0.26em]">
+            <p className="min-w-0 flex-1 text-center text-[10px] font-semibold uppercase leading-4 tracking-[0.08em] text-white sm:text-xs sm:leading-5 sm:tracking-[0.2em]">
               <span className="sm:hidden">{announcement.mobileText}</span>
               <span className="hidden sm:inline">{announcement.text}</span>{" "}
               <Link
                 href={announcement.href}
                 target={announcement.external ? "_blank" : undefined}
                 rel={announcement.external ? "noopener noreferrer" : undefined}
-                className="whitespace-nowrap underline underline-offset-2 transition-colors hover:text-primary sm:underline-offset-4"
+                className="inline-block max-w-full align-bottom underline underline-offset-2 transition-colors hover:text-mietaaf-cream sm:underline-offset-4"
               >
-                {announcement.cta} {announcement.external ? null : "->"}
+                {announcement.cta} {announcement.external ? null : "→"}
               </Link>
             </p>
             <button
               type="button"
               onClick={showNextAnnouncement}
-              className="flex size-7 shrink-0 items-center justify-center rounded-full text-white/70 transition-colors hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70 sm:size-8"
+              className="flex size-9 shrink-0 items-center justify-center rounded-full text-white/70 transition-colors hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70 sm:size-10"
               aria-label="Next announcement"
             >
               <ChevronRight className="size-3.5 sm:size-4" aria-hidden="true" />
@@ -150,14 +150,14 @@ export function SiteHeader() {
           </div>
         </div>
       ) : null}
-      <div className="relative mx-auto grid h-14 w-full min-w-0 max-w-7xl grid-cols-[minmax(0,1fr)_auto] items-center gap-0.5 px-1.5 sm:h-[4.5rem] sm:gap-2 sm:px-4 md:h-[5.5rem] lg:h-24 lg:px-8">
+      <div className="relative mx-auto grid h-16 w-full min-w-0 max-w-7xl grid-cols-[minmax(0,1fr)_auto] items-center gap-1 px-2 sm:h-18 sm:gap-2 sm:px-6 lg:h-20 lg:px-8 xl:grid-cols-[auto_minmax(0,1fr)_auto] xl:gap-4">
         {/* Left: menu + logo (flush left) */}
         <div className="relative z-20 flex min-w-0 items-center gap-0.5 sm:gap-2">
           <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger
               className={cn(
                 buttonVariants({ variant: "ghost", size: "icon" }),
-                "h-8 w-8 shrink-0 sm:h-10 sm:w-10 xl:hidden",
+                "size-11 shrink-0 xl:hidden",
               )}
               aria-label="Open menu"
             >
@@ -167,6 +167,7 @@ export function SiteHeader() {
               side="left"
               className="flex h-dvh max-h-dvh w-[min(100dvw,420px)] max-w-[min(85vw,420px)] flex-col gap-0 overflow-hidden p-0"
             >
+              <SheetTitle className="sr-only">Mietaaf navigation</SheetTitle>
               <div className="shrink-0 border-b border-border/70 px-4 pb-4 pt-[max(1rem,env(safe-area-inset-top))] pr-12">
                 <Logo
                   href={logoHref}
@@ -240,6 +241,15 @@ export function SiteHeader() {
                       {wishCount > 0 ? <span className="ml-auto text-xs">{wishCount}</span> : null}
                     </Link>
                     <Link
+                      href="/compare"
+                      className="flex min-h-11 items-center gap-3 rounded-full px-3 py-2 text-[0.78rem] uppercase tracking-[0.2em] hover:bg-muted/70 sm:text-[0.72rem]"
+                      onClick={() => setOpen(false)}
+                    >
+                      <GitCompareArrows className="size-4 shrink-0" aria-hidden="true" />
+                      Compare
+                      {compareCount > 0 ? <span className="ml-auto text-xs">{compareCount}</span> : null}
+                    </Link>
+                    <Link
                       href="/cart"
                       className="flex min-h-11 items-center gap-3 rounded-full px-3 py-2 text-[0.78rem] uppercase tracking-[0.2em] hover:bg-muted/70 sm:text-[0.72rem]"
                       onClick={() => setOpen(false)}
@@ -278,20 +288,21 @@ export function SiteHeader() {
           <Logo href={logoHref} className="min-w-0" priority />
         </div>
 
-        {/* Desktop: dead-center in the bar (not “center of space between logo and icons”) */}
+        {/* Each desktop region has its own column so navigation cannot cover the logo or utilities. */}
         {!isAuthPage ? (
           <nav
             className={cn(
-              "pointer-events-none absolute inset-x-0 top-1/2 z-30 hidden -translate-y-1/2 xl:flex",
+              "relative z-30 hidden min-w-0 xl:flex",
               "items-center justify-center",
             )}
             aria-label="Primary"
           >
-            <div className="pointer-events-auto flex max-w-[min(100%,52rem)] items-center justify-center gap-3 px-2 xl:gap-6 2xl:gap-7">
+            <div className="flex min-w-0 items-center justify-center gap-4 2xl:gap-5">
               <Link
                 href={links[0]!.href}
+                aria-current={pathname === links[0]!.href ? "page" : undefined}
                 className={cn(
-                  "relative shrink-0 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground",
+                  "relative shrink-0 py-3 text-[13px] font-medium tracking-[0.025em] text-muted-foreground transition-colors hover:text-foreground aria-[current=page]:text-foreground",
                   "after:absolute after:-bottom-1 after:left-0 after:h-px after:w-0 after:bg-primary after:transition-all hover:after:w-full",
                 )}
               >
@@ -300,7 +311,7 @@ export function SiteHeader() {
               <DropdownMenu open={categoriesOpen} onOpenChange={setCategoriesOpen}>
                 <DropdownMenuTrigger
                   className={cn(
-                    "relative inline-flex h-10 shrink-0 items-center gap-1.5 px-1 text-sm font-medium text-muted-foreground outline-none transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background data-popup-open:text-foreground",
+                    "relative inline-flex h-11 shrink-0 items-center gap-1.5 px-1 text-[13px] font-medium tracking-[0.025em] text-muted-foreground outline-none transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background data-popup-open:text-foreground",
                     "after:absolute after:bottom-1 after:left-1 after:h-px after:w-0 after:bg-primary after:transition-all hover:after:w-[calc(100%-0.5rem)] data-popup-open:after:w-[calc(100%-0.5rem)]",
                   )}
                 >
@@ -337,8 +348,9 @@ export function SiteHeader() {
                 <Link
                   key={l.href}
                   href={l.href}
+                  aria-current={pathname === l.href ? "page" : undefined}
                   className={cn(
-                    "relative shrink-0 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground",
+                    "relative shrink-0 py-3 text-[13px] font-medium tracking-[0.025em] text-muted-foreground transition-colors hover:text-foreground aria-[current=page]:text-foreground",
                     "after:absolute after:-bottom-1 after:left-0 after:h-px after:w-0 after:bg-primary after:transition-all hover:after:w-full",
                   )}
                 >
@@ -356,7 +368,7 @@ export function SiteHeader() {
               <Button
                 variant="ghost"
                 size="icon"
-                className="inline-flex h-8 w-8 shrink-0 sm:h-11 sm:w-11"
+                className="inline-flex size-11 shrink-0"
                 onClick={() => setSearch(true)}
                 aria-label="Search"
               >
@@ -368,7 +380,7 @@ export function SiteHeader() {
                 aria-label="Wishlist"
                 className={cn(
                   buttonVariants({ variant: "ghost", size: "icon" }),
-                  "relative inline-flex h-8 w-8 shrink-0 sm:h-11 sm:w-11",
+                  "relative hidden size-11 shrink-0 sm:inline-flex",
                 )}
               >
                 <Heart className="h-[18px] w-[18px] sm:h-5 sm:w-5" />
@@ -384,7 +396,7 @@ export function SiteHeader() {
                 aria-label="Compare"
                 className={cn(
                   buttonVariants({ variant: "ghost", size: "icon" }),
-                  "relative inline-flex h-8 w-8 shrink-0 sm:h-11 sm:w-11",
+                  "relative hidden size-11 shrink-0 sm:inline-flex",
                 )}
               >
                 <GitCompareArrows className="h-[18px] w-[18px] sm:h-5 sm:w-5" />
@@ -400,7 +412,7 @@ export function SiteHeader() {
                 aria-label="Cart"
                 className={cn(
                   buttonVariants({ variant: "ghost", size: "icon" }),
-                  "relative h-8 w-8 shrink-0 sm:h-11 sm:w-11",
+                  "relative size-11 shrink-0",
                 )}
               >
                 <ShoppingBag className="h-[18px] w-[18px] sm:h-5 sm:w-5" />
@@ -418,7 +430,7 @@ export function SiteHeader() {
               <DropdownMenuTrigger
                 className={cn(
                   buttonVariants({ variant: "ghost", size: "icon" }),
-                  "h-8 w-8 shrink-0 sm:h-11 sm:w-11",
+                  "size-11 shrink-0",
                 )}
                 aria-label="Account"
               >

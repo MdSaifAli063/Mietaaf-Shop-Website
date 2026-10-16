@@ -75,7 +75,7 @@ Follow the complete checklist in [VERCEL_DEPLOYMENT.md](./VERCEL_DEPLOYMENT.md).
 
 ## Main structure
 
-- `src/app` - App Router pages, metadata, sitemap, robots, loading/error states
+- `src/app` - App Router pages, metadata, sitemap, robots, loading/error states and LLM reference routes
 - `src/components` - layout, auth, storefront, product, form, and UI components
 - `src/lib/data` - editable local catalog and content
 - `src/context` - Firebase authentication state

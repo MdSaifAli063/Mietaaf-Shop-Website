@@ -9,7 +9,7 @@ export function MainShell({ children }: { children: React.ReactNode }) {
   return (
     <>
       <LuxuryLoader />
-      <div className="mietaaf-noise flex min-h-dvh w-full min-w-0 flex-col overflow-x-clip">
+      <div className="storefront flex min-h-dvh w-full min-w-0 flex-col overflow-x-clip bg-background">
         <RequireAuth>
           <SiteHeader />
           <MainShellOverlays />

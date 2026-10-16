@@ -63,7 +63,7 @@ Rules for the values:
 - Do not surround values with quotes.
 - Environment variables changed after a deployment take effect only after a new deployment.
 
-For the first Vercel deployment, `NEXT_PUBLIC_SITE_URL` may be left unset. The app uses Vercel's deployment URL. Once the final `*.vercel.app` or custom domain is known, set its exact HTTPS origin for **Production** and redeploy so canonical links, sitemap, Open Graph, and JSON-LD all use it.
+The app now defaults to `https://www.mietaaf.com` when `NEXT_PUBLIC_SITE_URL` is unset. Keep that canonical origin for production; do not publish a Vercel deployment hostname as the canonical. Preview deployments remain noindexed. See [SEO_LAUNCH_CHECKLIST.md](SEO_LAUNCH_CHECKLIST.md) for the current search rollout.
 
 ## 3. Complete Firebase setup
 

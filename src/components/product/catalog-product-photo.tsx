@@ -11,6 +11,9 @@ type CatalogProductPhotoProps = {
   priority?: boolean;
   className?: string;
   imageClassName?: string;
+  frameClassName?: string;
+  fit?: "cover" | "contain";
+  sizes?: string;
 };
 
 /** Visible width of the catalog page image (photo column only — hides embedded PDF text). */
@@ -112,20 +115,24 @@ export function CatalogProductPhoto({
   priority = false,
   className,
   imageClassName,
+  frameClassName,
+  fit = "cover",
+  sizes = "(max-width:768px) 100vw, (max-width:1200px) 50vw, 600px",
 }: CatalogProductPhotoProps) {
   const frame = (
     <div
       className={cn(
-        "relative w-full overflow-hidden rounded-2xl bg-white ring-1 ring-black/5",
+        "relative w-full overflow-hidden rounded-lg bg-surface-silver ring-1 ring-black/5",
         className,
       )}
     >
-      <div className="relative aspect-[3/4] w-full overflow-hidden sm:aspect-[4/5]">
+      <div className={cn("relative aspect-[3/4] w-full overflow-hidden sm:aspect-[4/5]", frameClassName)}>
         <ProductThumbnailImage
           src={src}
           alt={alt}
           priority={priority}
-          sizes="(max-width:768px) 100vw, (max-width:1200px) 50vw, 600px"
+          sizes={sizes}
+          fit={fit}
           className={imageClassName}
         />
       </div>

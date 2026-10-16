@@ -137,7 +137,7 @@ export function CategoryManager() {
       </header>
       <div className="mt-7 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
         {categories.map((category) => (
-          <Card key={category.slug} className="overflow-hidden rounded-[1.35rem] p-0">
+          <Card key={category.slug} className="overflow-hidden rounded-lg p-0">
             <div className="relative aspect-[16/10] bg-muted">
               <Image src={category.image} alt="" fill unoptimized={bypassImageOptimization(category.image)} className="object-cover" sizes="(max-width:640px) 100vw, 33vw" />
             </div>

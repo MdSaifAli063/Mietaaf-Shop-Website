@@ -24,9 +24,9 @@ import { SITE_PHONE_DISPLAY } from "@/lib/site-contact";
 import { publicPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = publicPageMetadata({
-  title: "Book an Appointment",
+  title: "Book a Studio or Doorstep Fitting",
   description:
-    "Book Mietaaf home service for curated fabric collections, measurements, and custom menswear consultation in Bengaluru.",
+    "Book a Mietaaf Couture fitting in Bangalore: visit our studio or request doorstep fabric selection, measurements and a personal menswear consultation.",
   path: "/appointment",
   image: PAGE_IMAGE_LINKS.appointment.hero,
 });
@@ -75,7 +75,7 @@ const serviceCards = [
 export default function AppointmentPage() {
   return (
     <PageEnter>
-      <main className="min-h-screen bg-[#fbf8f2] text-foreground dark:bg-[#181613]">
+      <main className="min-h-screen bg-surface-paper text-foreground dark:bg-[#181613]">
         <section className="relative isolate overflow-hidden bg-[#171512] text-white">
           <div className="absolute inset-0">
             <Image
@@ -88,7 +88,7 @@ export default function AppointmentPage() {
               className="object-cover object-[center_22%] opacity-72"
             />
             <div className="absolute inset-0 bg-linear-to-r from-black/78 via-black/46 to-black/18" />
-            <div className="absolute inset-x-0 bottom-0 h-28 bg-linear-to-t from-[#fbf8f2] to-transparent dark:from-[#181613]" />
+            <div className="absolute inset-x-0 bottom-0 h-28 bg-linear-to-t from-surface-paper to-transparent dark:from-[#181613]" />
           </div>
 
           <div className={`${PAGE_CONTAINER} relative z-10 grid min-h-[calc(100svh-8rem)] items-end gap-8 py-10 sm:min-h-[620px] sm:py-14 lg:grid-cols-[1.05fr_0.95fr] lg:py-16`}>
@@ -121,7 +121,7 @@ export default function AppointmentPage() {
               </div>
             </div>
 
-            <div className="grid gap-3 rounded-[2rem] border border-white/16 bg-black/30 p-4 backdrop-blur-md sm:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
+            <div className="grid gap-3 rounded-xl border border-white/16 bg-black/30 p-4 backdrop-blur-md sm:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
               <div className="rounded-2xl border border-white/12 bg-white/10 p-4">
                 <p className="text-2xl font-semibold">40+</p>
                 <p className="mt-1 text-xs uppercase tracking-[0.2em] text-white/68">Fabric options</p>
@@ -143,7 +143,7 @@ export default function AppointmentPage() {
             {serviceCards.map((service) => (
               <div
                 key={service.title}
-                className="rounded-[1.6rem] border border-border/60 bg-card/88 p-5 shadow-[0_18px_50px_rgba(58,48,38,0.08)]"
+                className="rounded-xl border border-border/60 bg-card/88 p-5 shadow-[0_8px_32px_rgba(36,39,33,0.035)]"
               >
                 <div className="flex size-11 items-center justify-center rounded-full border border-primary/25 bg-primary/10 text-primary">
                   <service.icon className="size-5" aria-hidden />
@@ -155,7 +155,7 @@ export default function AppointmentPage() {
           </div>
         </section>
 
-        <section className="bg-[#eee4d6] py-12 dark:bg-[#201d19] sm:py-16">
+        <section className="bg-surface-cream py-12 dark:bg-[#201d19] sm:py-16">
           <div className={PAGE_CONTAINER}>
             <div className="grid gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
               <div>
@@ -184,7 +184,7 @@ export default function AppointmentPage() {
                 {steps.map((step, index) => (
                   <div
                     key={step.title}
-                    className="relative rounded-[1.6rem] border border-border/60 bg-background/70 p-5"
+                    className="relative rounded-xl border border-border/60 bg-background/70 p-5"
                   >
                     <span className="absolute right-5 top-5 font-heading text-4xl text-primary/18">
                       0{index + 1}

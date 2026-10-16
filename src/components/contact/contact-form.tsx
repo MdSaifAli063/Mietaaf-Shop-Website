@@ -18,7 +18,7 @@ export function ContactForm() {
   const { settings } = useSiteSettings();
 
   return (
-    <Card className="rounded-[1.5rem] border-border/55 bg-card/90 p-5 shadow-[0_18px_45px_rgba(58,48,38,0.07)] ring-1 ring-black/5 sm:p-7 dark:ring-white/10">
+    <Card className="rounded-xl border-border/55 bg-card/90 p-5 shadow-[0_8px_32px_rgba(36,39,33,0.035)] ring-1 ring-black/5 sm:p-7 dark:ring-white/10">
       <h2 className="font-heading text-xl sm:text-2xl">Write to us</h2>
       <p className="mt-1 text-sm text-muted-foreground">
         Orders, styling, or press — we reply within one business day.
