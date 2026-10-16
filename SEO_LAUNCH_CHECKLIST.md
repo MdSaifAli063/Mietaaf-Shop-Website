@@ -24,7 +24,7 @@ The small name beside the favicon and the clickable page title are separate Goog
 - Public catalogue routes validate existence before streaming a response. The previous global loading boundary was moved to checkout so missing products and collections can return HTTP 404. Metadata is delivered in the initial head; this waits for metadata resolution on dynamic pages rather than streaming the head later.
 - The first-visit splash is a browser-only enhancement. It does not cover the server-rendered storefront when JavaScript is disabled.
 - A single image-aware sitemap, crawlable public routes, private/auth page `noindex` rules, and preview/staging indexing safeguards.
-- Cream brand social images and existing favicon/Apple icons.
+- The owner-selected `public/branding/mietaaf-social-card.png` logo card is the default Open Graph and Twitter image. The `/opengraph-image` and `/twitter-image` endpoints serve that same PNG unchanged. Existing favicon/Apple icons are retained.
 - `/llms.txt` and `/llms-full.txt`, sharing the public brand facts and FAQ answers. These optional text references remain fetchable but are marked `noindex` to keep them out of ordinary search results.
 
 ## Local verification completed

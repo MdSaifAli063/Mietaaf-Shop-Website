@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
+import { SITE_SOCIAL_CARD_URL } from "@/lib/site-logo";
 
 export const SITE_NAME = "Mietaaf Couture";
 export const SITE_ORIGIN = "https://www.mietaaf.com";
 export const SITE_TITLE = "Mietaaf Couture | Custom-Tailored Menswear in Bangalore";
 export const SITE_DESCRIPTION =
   "Discover Mietaaf Couture in Bangalore (Bengaluru): custom-tailored suits, sherwanis and wedding menswear. Book a studio fitting or doorstep consultation. Order via WhatsApp.";
-export const SITE_DEFAULT_IMAGE = "/opengraph-image";
+export const SITE_DEFAULT_IMAGE = SITE_SOCIAL_CARD_URL;
 export const SITE_KEYWORDS = [
   "Mietaaf Couture", "Mietaaf Couture Bangalore", "Mietaaf Couture Bengaluru",
   "custom-tailored suits Bangalore", "wedding menswear Bangalore", "sherwani Bangalore",
