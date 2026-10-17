@@ -1,13 +1,17 @@
 import type { MetadataRoute } from "next";
 import { absoluteUrl } from "@/lib/seo";
+import { FABRIC_HERO_IMAGE } from "@/lib/data/fabrics";
+import { getServerFabrics } from "@/lib/server-fabrics";
 import { getServerCategories, getServerProducts, hasIndexableProductImage } from "@/lib/server-catalog";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const fabrics = await getServerFabrics();
   const paths = ["/", "/shop", "/lookbook", "/fabrics", "/appointment", "/about", "/contact", "/faq", "/privacy", "/terms", "/returns"];
   const entries: MetadataRoute.Sitemap = paths.map(path => ({
     url: absoluteUrl(path),
     changeFrequency: path === "/" || path === "/shop" ? "weekly" : "monthly",
     priority: path === "/" ? 1 : path === "/shop" ? 0.9 : 0.7,
+    ...(path === "/fabrics" ? { images: [FABRIC_HERO_IMAGE, ...fabrics.map(catalogue => catalogue.image)].map(absoluteUrl) } : {}),
   }));
   const [categories, products] = await Promise.all([getServerCategories(), getServerProducts()]);
   for (const category of categories) {

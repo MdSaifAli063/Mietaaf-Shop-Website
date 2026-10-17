@@ -1,14 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { ExternalLink, LoaderCircle, Save, ShieldCheck } from "lucide-react";
+import { ExternalLink, LoaderCircle, Save, Undo2 } from "lucide-react";
 import toast from "react-hot-toast";
 import type { SiteSettings } from "@/types";
 import { useSiteSettings } from "@/hooks/use-site-settings";
 import { saveSiteSettings } from "@/services/site-settings";
 import { DEFAULT_SITE_SETTINGS } from "@/lib/site-settings";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+import { AdminField as SettingField, AdminPageHeader, AdminPanel } from "@/components/admin/admin-ui";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
@@ -42,111 +42,46 @@ export function SettingsManager() {
     }
   }
 
+  const dirty = JSON.stringify(form) !== JSON.stringify(settings);
+  const saveButton = <Button className="h-10 rounded-lg text-xs" disabled={saving || loading || !dirty} onClick={() => void save()}>{saving ? <LoaderCircle className="size-4 animate-spin" /> : <Save className="size-4" />}{saving ? "Saving…" : "Save changes"}</Button>;
+
   return (
     <div>
-      <header>
-        <p className="text-xs font-semibold uppercase tracking-[0.34em] text-primary">Global content</p>
-        <h1 className="mt-2 font-heading text-3xl sm:text-4xl">Website settings</h1>
-        <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
-          Update the announcement bar and contact information used across the header and footer.
-        </p>
-      </header>
-
-      <Card className="mt-7 rounded-xl p-5 sm:p-7">
-        <h2 className="font-heading text-2xl">Brand presentation</h2>
-        <p className="mt-1 text-sm text-muted-foreground">Global footer copy and public social profiles.</p>
-        <div className="mt-5 grid gap-4 sm:grid-cols-2">
-          <SettingField label="Brand tagline" className="sm:col-span-2">
-            <Input value={form.brandTagline} onChange={(e) => patch("brandTagline", e.target.value)} />
-          </SettingField>
-          <SettingField label="Footer description" className="sm:col-span-2">
-            <Textarea value={form.footerDescription} onChange={(e) => patch("footerDescription", e.target.value)} />
-          </SettingField>
-          <SettingField label="LinkedIn URL">
-            <Input value={form.linkedinUrl} onChange={(e) => patch("linkedinUrl", e.target.value)} />
-          </SettingField>
-          <SettingField label="Instagram URL">
-            <Input value={form.instagramUrl} onChange={(e) => patch("instagramUrl", e.target.value)} />
-          </SettingField>
-          <SettingField label="Facebook URL" className="sm:col-span-2">
-            <Input value={form.facebookUrl} onChange={(e) => patch("facebookUrl", e.target.value)} />
-          </SettingField>
-        </div>
-      </Card>
-
-      <Card className="mt-5 rounded-xl p-5 sm:p-7">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-          <div>
-            <h2 className="font-heading text-2xl">Announcement bar</h2>
-            <p className="mt-1 text-sm text-muted-foreground">The first rotating message at the top of the storefront.</p>
+      <AdminPageHeader title="Website settings" eyebrow="Storefront preferences" description="Manage the brand details, announcements and contact information customers see." actions={<><span aria-live="polite" className="mr-1 text-[11px] text-muted-foreground">{dirty ? "Unsaved changes" : "No unsaved changes"}</span>{saveButton}</>} />
+      <div className="grid items-start gap-5 xl:grid-cols-2">
+        <AdminPanel className="p-5 sm:p-6">
+          <h2 className="text-sm font-semibold">Brand & social profiles</h2><p className="mt-1 text-xs leading-5 text-muted-foreground">Your public tagline, footer copy and social links.</p>
+          <div className="mt-5 grid gap-4 sm:grid-cols-2">
+            <SettingField label="Brand tagline" className="sm:col-span-2"><Input value={form.brandTagline} onChange={(e) => patch("brandTagline", e.target.value)} /></SettingField>
+            <SettingField label="Footer description" className="sm:col-span-2"><Textarea className="min-h-24" value={form.footerDescription} onChange={(e) => patch("footerDescription", e.target.value)} /></SettingField>
+            <SettingField label="Instagram URL"><Input value={form.instagramUrl} onChange={(e) => patch("instagramUrl", e.target.value)} /></SettingField>
+            <SettingField label="Facebook URL"><Input value={form.facebookUrl} onChange={(e) => patch("facebookUrl", e.target.value)} /></SettingField>
+            <SettingField label="LinkedIn URL" className="sm:col-span-2"><Input value={form.linkedinUrl} onChange={(e) => patch("linkedinUrl", e.target.value)} /></SettingField>
           </div>
-          <label className="flex shrink-0 items-center gap-2 text-sm">
-            <input type="checkbox" checked={form.announcementEnabled} onChange={(e) => patch("announcementEnabled", e.target.checked)} />
-            Enabled
-          </label>
-        </div>
-        <div className="mt-5 grid gap-4 sm:grid-cols-2">
-          <SettingField label="Desktop message" className="sm:col-span-2">
-            <Textarea value={form.announcementText} onChange={(e) => patch("announcementText", e.target.value)} />
-          </SettingField>
-          <SettingField label="Mobile message">
-            <Input value={form.announcementMobileText} onChange={(e) => patch("announcementMobileText", e.target.value)} />
-          </SettingField>
-          <SettingField label="Button text">
-            <Input value={form.announcementCta} onChange={(e) => patch("announcementCta", e.target.value)} />
-          </SettingField>
-          <SettingField label="Button link" className="sm:col-span-2">
-            <Input value={form.announcementHref} onChange={(e) => patch("announcementHref", e.target.value)} />
-          </SettingField>
-        </div>
-      </Card>
-
-      <Card className="mt-5 rounded-xl p-5 sm:p-7">
-        <h2 className="font-heading text-2xl">Business contact</h2>
-        <p className="mt-1 text-sm text-muted-foreground">Displayed publicly in the footer and used by the WhatsApp announcement.</p>
-        <div className="mt-5 grid gap-4 sm:grid-cols-2">
-          <SettingField label="Support email">
-            <Input type="email" value={form.supportEmail} onChange={(e) => patch("supportEmail", e.target.value)} />
-          </SettingField>
-          <SettingField label="Display phone">
-            <Input value={form.phoneDisplay} onChange={(e) => patch("phoneDisplay", e.target.value)} />
-          </SettingField>
-          <SettingField label="WhatsApp number (country code + number)">
-            <Input inputMode="numeric" value={form.whatsappNumber} onChange={(e) => patch("whatsappNumber", e.target.value)} />
-          </SettingField>
-          <SettingField label="Studio address" className="sm:col-span-2">
-            <Textarea value={form.address} onChange={(e) => patch("address", e.target.value)} />
-          </SettingField>
-        </div>
-      </Card>
-
-      <Card className="mt-5 rounded-xl border-primary/20 bg-primary/5 p-5">
-        <div className="flex gap-3">
-          <ShieldCheck className="mt-0.5 size-5 shrink-0 text-primary" />
-          <p className="text-sm leading-6 text-muted-foreground">
-            Firebase project keys, EmailJS credentials, SEO verification, and deployment secrets stay in Vercel Environment Variables. They are intentionally not editable in the browser admin panel.
-          </p>
-        </div>
-      </Card>
-
-      <div className="sticky bottom-3 mt-6 flex flex-col gap-2 rounded-2xl border border-border/70 bg-background/90 p-3 shadow-xl backdrop-blur sm:flex-row sm:justify-end">
-        <Button asChild variant="outline" className="rounded-full">
-          <a href="/" target="_blank" rel="noopener noreferrer"><ExternalLink className="size-4" /> Preview site</a>
-        </Button>
-        <Button className="rounded-full" disabled={saving || loading} onClick={() => void save()}>
-          {saving ? <LoaderCircle className="size-4 animate-spin" /> : <Save className="size-4" />}
-          Save website settings
-        </Button>
+        </AdminPanel>
+        <AdminPanel className="p-5 sm:p-6">
+          <div className="flex flex-wrap items-start justify-between gap-3"><div><h2 className="text-sm font-semibold">Announcement bar</h2><p className="mt-1 text-xs leading-5 text-muted-foreground">The first rotating message above your storefront.</p></div><label className="flex min-h-8 items-center gap-2 text-xs"><input type="checkbox" checked={form.announcementEnabled} onChange={(e) => patch("announcementEnabled", e.target.checked)} />Enabled</label></div>
+          <div className="mt-5 grid gap-4 sm:grid-cols-2">
+            <SettingField label="Desktop message" className="sm:col-span-2"><Textarea className="min-h-24" value={form.announcementText} onChange={(e) => patch("announcementText", e.target.value)} /></SettingField>
+            <SettingField label="Mobile message" className="sm:col-span-2"><Input value={form.announcementMobileText} onChange={(e) => patch("announcementMobileText", e.target.value)} /></SettingField>
+            <SettingField label="Button text"><Input value={form.announcementCta} onChange={(e) => patch("announcementCta", e.target.value)} /></SettingField>
+            <SettingField label="Button link"><Input value={form.announcementHref} onChange={(e) => patch("announcementHref", e.target.value)} /></SettingField>
+          </div>
+        </AdminPanel>
+        <AdminPanel className="p-5 sm:p-6 xl:col-span-2">
+          <h2 className="text-sm font-semibold">Business contact</h2><p className="mt-1 text-xs leading-5 text-muted-foreground">Used in the footer, contact page and WhatsApp ordering.</p>
+          <div className="mt-5 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+            <SettingField label="Support email"><Input type="email" value={form.supportEmail} onChange={(e) => patch("supportEmail", e.target.value)} /></SettingField>
+            <SettingField label="Display phone"><Input value={form.phoneDisplay} onChange={(e) => patch("phoneDisplay", e.target.value)} /></SettingField>
+            <SettingField label="WhatsApp number, including country code"><Input inputMode="numeric" value={form.whatsappNumber} onChange={(e) => patch("whatsappNumber", e.target.value)} /></SettingField>
+            <SettingField label="Studio address" className="sm:col-span-2 xl:col-span-3"><Textarea value={form.address} onChange={(e) => patch("address", e.target.value)} /></SettingField>
+          </div>
+        </AdminPanel>
+      </div>
+      <div className="sticky bottom-0 mt-5 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border/70 bg-card/95 p-3 shadow-sm backdrop-blur">
+        <Button asChild variant="ghost" className="h-9 rounded-lg text-xs"><a href="/" target="_blank" rel="noopener noreferrer"><ExternalLink className="size-3.5" /> Preview storefront</a></Button>
+        <div className="flex flex-wrap gap-2"><Button variant="outline" className="h-10 rounded-lg text-xs" disabled={saving || !dirty} onClick={() => setForm(settings)}><Undo2 className="size-3.5" />Reset changes</Button>{saveButton}</div>
       </div>
     </div>
-  );
-}
-
-function SettingField({ label, className, children }: { label: string; className?: string; children: React.ReactNode }) {
-  return (
-    <label className={`min-w-0 ${className ?? ""}`}>
-      <span className="mb-1.5 block text-xs font-semibold uppercase tracking-[0.12em] text-muted-foreground">{label}</span>
-      {children}
-    </label>
   );
 }

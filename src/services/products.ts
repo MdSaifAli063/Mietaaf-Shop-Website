@@ -5,6 +5,7 @@ import {
   getDoc,
   setDoc,
   deleteDoc,
+  deleteField,
   query,
   orderBy,
   serverTimestamp,
@@ -43,7 +44,7 @@ export async function createProduct(productData: Omit<Product, "id">): Promise<v
   // Using custom ID makes routing and URLs much cleaner.
   const docRef = productData.slug ? doc(db, COLLECTION_NAME, productData.slug) : doc(collection(db, COLLECTION_NAME));
   await setDoc(docRef, {
-    ...productData,
+    ...Object.fromEntries(Object.entries(productData).filter(([, value]) => value !== undefined)),
     id: docRef.id,
     createdAt: serverTimestamp(),
   });
@@ -53,8 +54,15 @@ export async function updateProduct(id: string, productData: Partial<Product>): 
   const db = getFirebaseDb();
   if (!db) throw new Error("Firebase DB not initialized");
   const docRef = doc(db, COLLECTION_NAME, id);
+  // Optional pricing fields can be empty in the editor. Firestore rejects
+  // undefined values; use explicit field deletion when clearing an old price.
+  const fields: Record<string, unknown> = {};
+  for (const [key, value] of Object.entries(productData)) {
+    if (value !== undefined) fields[key] = value;
+    else if (key === "compareAtPrice" || key === "discountPercent") fields[key] = deleteField();
+  }
   await setDoc(docRef, {
-    ...productData,
+    ...fields,
     updatedAt: serverTimestamp(),
   }, { merge: true });
 }

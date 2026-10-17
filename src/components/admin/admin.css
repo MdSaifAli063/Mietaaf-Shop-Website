@@ -1,0 +1,45 @@
+.admin-workspace input:not([type="checkbox"]):not([type="file"]),
+.admin-workspace select,
+.admin-editor input:not([type="checkbox"]):not([type="file"]),
+.admin-editor select {
+  min-height: 2.5rem;
+  border-radius: 0.5rem;
+  background-color: var(--card);
+}
+
+.admin-workspace textarea,
+.admin-editor textarea {
+  border-radius: 0.5rem;
+  background-color: var(--card);
+}
+
+.admin-workspace input[type="checkbox"],
+.admin-editor input[type="checkbox"] {
+  width: 1rem;
+  height: 1rem;
+  accent-color: var(--primary);
+}
+
+.admin-editor [data-slot="dialog-footer"] {
+  margin: 0;
+}
+
+.admin-navigation-drawer a[href="/admin"] {
+  padding-right: 3.5rem;
+}
+
+.admin-editor label,
+.admin-editor input,
+.admin-editor textarea,
+.admin-editor select {
+  min-width: 0;
+}
+
+@media (pointer: coarse) {
+  .admin-workspace button,
+  .admin-workspace a[role="button"],
+  .admin-editor button {
+    min-height: 2.75rem;
+    min-width: 2.75rem;
+  }
+}

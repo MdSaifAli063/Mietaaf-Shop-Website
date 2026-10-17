@@ -32,11 +32,11 @@ NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET
 NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID
 NEXT_PUBLIC_FIREBASE_APP_ID
 
-NEXT_PUBLIC_EMAILJS_SERVICE_ID
-NEXT_PUBLIC_EMAILJS_APPOINTMENT_TEMPLATE_ID
-NEXT_PUBLIC_EMAILJS_CONTACT_TEMPLATE_ID
-NEXT_PUBLIC_EMAILJS_ORDER_CONFIRMATION_TEMPLATE_ID
-NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
+EMAILJS_SERVICE_ID
+EMAILJS_APPOINTMENT_TEMPLATE_ID
+EMAILJS_CONTACT_TEMPLATE_ID
+EMAILJS_ORDER_CONFIRMATION_TEMPLATE_ID
+EMAILJS_PUBLIC_KEY
 ```
 
 Production URL and optional branding/social variables:
@@ -121,10 +121,20 @@ In EmailJS:
      template body.
 3. Confirm Appointment and Contact deliver to the intended Mietaaf inbox. The
    forms provide `{{to_email}}` and `{{reply_to}}`.
-4. In **Domains / Allowed Origins**, add the exact production origin and any
-   preview origin used for testing, including `https://`.
+4. In **Account -> Security**, enable API requests for non-browser applications,
+   as required by the [official EmailJS Node integration](https://github.com/emailjs-com/emailjs-nodejs#usage).
+5. Enable private-key authorization if available and set `EMAILJS_PRIVATE_KEY`
+   in Vercel. Never use a `NEXT_PUBLIC_` prefix for a private key.
+6. If migrating an existing deployment, copy the EmailJS values into the new
+   server-only names above, remove the old `NEXT_PUBLIC_EMAILJS_*` variables,
+   then redeploy. A temporary server-only fallback supports the old names.
 
-EmailJS and Firebase Web SDK run in the browser, so their public IDs are visible by design. Security comes from EmailJS origin controls and Firebase Rules, not from hiding these identifiers.
+All three email flows now run on the server. The browser sends validated form
+fields or an order ID, never provider credentials or a recipient override.
+The confirmation API verifies the Firebase ID token and the `admin: true` claim,
+then reads the saved order and updates it using that token, subject to Firestore
+Rules. Firebase Web SDK identifiers remain public because browser sign-in needs
+them; no Firebase service-account key is required for this email flow.
 
 ## 5. Deploy and smoke-test
 
@@ -138,11 +148,17 @@ Click **Deploy**, then verify on the deployed HTTPS URL:
 6. Contact and Appointment each reach the correct EmailJS template/inbox.
 7. Open `/admin` as the owner and verify product, category, banner, and website
    settings can be saved and appear on the storefront.
+   Wedding and Premium have separate admin screens for their collection items.
+   In `/admin/lookbook`, choose products, arrange their order, click **Save
+   lookbook**, then verify `/lookbook` displays that selection. It uses the
+   existing admin-protected `settings/lookbook` document; until the first save,
+   the original automatic gallery remains available.
 8. Place a customer order, open `/admin/orders` as the admin, click
-   **Confirm & email**, and verify:
+   **Confirm order**, and verify:
    - the admin order badge changes to Confirmed;
    - the customer profile changes to Confirmed without a refresh;
-   - the customer receives the EmailJS confirmation.
+   - the customer receives the EmailJS confirmation;
+   - if delivery fails, the order stays confirmed and **Resend email** can retry.
 9. `/robots.txt` and `/sitemap.xml` contain the production domain.
 10. The home page source includes Organization/WebSite JSON-LD, product pages include Product/Breadcrumb JSON-LD, and utility/admin pages include `noindex`.
 11. Test at least one mobile viewport and one desktop viewport.

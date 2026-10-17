@@ -6,7 +6,6 @@ import {
   collection,
   deleteDoc,
   doc,
-  getDoc,
   onSnapshot,
   orderBy,
   query,
@@ -14,11 +13,10 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import {
-  CheckCircle2,
-  Clock3,
+  ChevronRight,
+  Search,
   LoaderCircle,
   MailCheck,
-  PackageCheck,
   RefreshCcw,
   ShieldCheck,
   Truck,
@@ -29,17 +27,13 @@ import toast from "react-hot-toast";
 import { useAuth } from "@/context/auth-context";
 import { getFirebaseDb } from "@/firebase/client";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
-import { PageEnter } from "@/components/motion/page-enter";
+import { AdminEmptyState, AdminPageHeader, AdminPagination } from "@/components/admin/admin-ui";
+import { Input } from "@/components/ui/input";
 import { formatInr } from "@/lib/format";
 import { cn } from "@/lib/utils";
-import {
-  isOrderConfirmationEmailConfigured,
-  sendOrderConfirmationEmail,
-} from "@/services/order-confirmation-email";
+import { sendOrderConfirmationEmail } from "@/services/order-confirmation-email";
 import type { Order, OrderLine } from "@/types";
-import { useSiteSettings } from "@/hooks/use-site-settings";
 
 type OrderStatus = Order["status"];
 type ConfirmationEmailStatus = "sending" | "sent" | "failed" | null;
@@ -141,10 +135,11 @@ export default function AdminOrdersPage() {
   } = useAuth();
   const [orders, setOrders] = useState<AdminOrder[]>([]);
   const [ordersLoading, setOrdersLoading] = useState(true);
+  const [loadError, setLoadError] = useState(false);
+  const [search, setSearch] = useState("");
+  const [page, setPage] = useState(1);
   const [filter, setFilter] = useState<OrderStatus | "all">("pending");
   const [busyOrderId, setBusyOrderId] = useState<string | null>(null);
-  const emailConfigured = isOrderConfirmationEmailConfigured();
-  const { settings } = useSiteSettings();
 
   useEffect(() => {
     const db = getFirebaseDb();
@@ -155,6 +150,7 @@ export default function AdminOrdersPage() {
     }
 
     setOrdersLoading(true);
+    setLoadError(false);
     const ordersQuery = query(
       collection(db, "orders"),
       orderBy("createdAt", "desc"),
@@ -172,18 +168,18 @@ export default function AdminOrdersPage() {
       () => {
         setOrders([]);
         setOrdersLoading(false);
+        setLoadError(true);
         toast.error("Could not load orders. Check the admin claim and rules.");
       },
     );
   }, [isAdmin, user]);
 
-  const filteredOrders = useMemo(
-    () =>
-      filter === "all"
-        ? orders
-        : orders.filter((order) => order.status === filter),
-    [filter, orders],
-  );
+  const filteredOrders = useMemo(() => orders.filter((order) => {
+    const matchesStatus = filter === "all" || order.status === filter;
+    return matchesStatus && `${order.id} ${order.customerName} ${order.customerEmail} ${order.phone}`.toLowerCase().includes(search.trim().toLowerCase());
+  }), [filter, orders, search]);
+  const currentPage = Math.min(page, Math.max(1, Math.ceil(filteredOrders.length / 8)));
+  const pageOrders = filteredOrders.slice((currentPage - 1) * 8, currentPage * 8);
 
   const pendingCount = orders.filter(
     (order) => order.status === "pending",
@@ -192,112 +188,33 @@ export default function AdminOrdersPage() {
     (order) => order.status === "confirmed",
   ).length;
 
-  async function resolveCustomerEmail(order: AdminOrder): Promise<string> {
-    if (order.customerEmail) return order.customerEmail;
-    const db = getFirebaseDb();
-    if (!db || !order.userId) return "";
-    const profileSnapshot = await getDoc(doc(db, "users", order.userId));
-    const profileEmail = profileSnapshot.data()?.email;
-    return typeof profileEmail === "string" ? profileEmail : "";
-  }
-
-  async function emailCustomer(
-    order: AdminOrder,
-    customerEmail: string,
-  ): Promise<void> {
-    const db = getFirebaseDb();
-    if (!db) throw new Error("Firebase is not configured.");
-    const orderRef = doc(db, "orders", order.id);
-
-    await updateDoc(orderRef, {
-      confirmationEmailStatus: "sending",
-      updatedAt: serverTimestamp(),
-    });
-
-    try {
-      await sendOrderConfirmationEmail({
-        id: order.id,
-        customerName: order.customerName,
-        customerEmail,
-        createdAt: order.createdAt,
-        items: order.items,
-        total: order.total,
-        supportEmail: settings.supportEmail,
-        supportPhone: settings.phoneDisplay,
-        whatsappNumber: settings.whatsappNumber,
-      });
-      await updateDoc(orderRef, {
-        confirmationEmailStatus: "sent",
-        confirmationEmailSentAt: serverTimestamp(),
-        updatedAt: serverTimestamp(),
-      });
-    } catch (error) {
-      await updateDoc(orderRef, {
-        confirmationEmailStatus: "failed",
-        updatedAt: serverTimestamp(),
-      }).catch(() => undefined);
-      throw error;
-    }
-  }
-
   async function confirmOrder(order: AdminOrder) {
-    if (!emailConfigured) {
-      toast.error(
-        "Add the EmailJS order-confirmation template ID before confirming.",
-      );
-      return;
-    }
-    const db = getFirebaseDb();
-    if (!db || !user) return;
-
     setBusyOrderId(order.id);
     try {
-      const customerEmail = await resolveCustomerEmail(order);
-      if (!customerEmail) {
-        toast.error("This order has no customer email. Add one before confirming.");
-        return;
-      }
-
-      await updateDoc(doc(db, "orders", order.id), {
-        customerEmail,
-        status: "confirmed",
-        confirmedAt: serverTimestamp(),
-        confirmedBy: user.uid,
-        confirmationEmailStatus: "sending",
-        updatedAt: serverTimestamp(),
-      });
-
-      try {
-        await emailCustomer(order, customerEmail);
+      const result = await sendOrderConfirmationEmail(order.id, "confirm");
+      if (result.emailSent) {
         toast.success("Order confirmed and email sent to the customer.");
-      } catch {
-        toast.error(
-          "Order is confirmed, but the email failed. Use Resend email.",
-        );
+      } else {
+        toast.error("Order confirmed. The email could not be sent; use Resend email to retry.");
       }
-    } catch {
-      toast.error("Could not confirm this order. Please try again.");
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Could not confirm this order. Please try again.");
     } finally {
       setBusyOrderId(null);
     }
   }
 
   async function resendEmail(order: AdminOrder) {
-    if (!emailConfigured) {
-      toast.error("Order confirmation email is not configured.");
-      return;
-    }
     setBusyOrderId(order.id);
     try {
-      const customerEmail = await resolveCustomerEmail(order);
-      if (!customerEmail) {
-        toast.error("No customer email is available for this order.");
-        return;
+      const result = await sendOrderConfirmationEmail(order.id, "resend");
+      if (result.emailSent) {
+        toast.success("Confirmation email sent again.");
+      } else {
+        toast.error("The email could not be sent. Please try again later.");
       }
-      await emailCustomer(order, customerEmail);
-      toast.success("Confirmation email sent again.");
-    } catch {
-      toast.error("Could not send the confirmation email.");
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Could not send the confirmation email.");
     } finally {
       setBusyOrderId(null);
     }
@@ -366,7 +283,7 @@ export default function AdminOrdersPage() {
         <Card className="mx-auto max-w-xl p-7 text-center">
           <ShieldCheck className="mx-auto size-8 text-primary" />
           <h1 className="mt-4 font-heading text-2xl">Admin sign-in required</h1>
-          <Button asChild className="mt-6 rounded-full">
+          <Button asChild className="mt-6 rounded-lg">
             <Link href="/login?returnUrl=%2Fadmin%2Forders">Sign in</Link>
           </Button>
         </Card>
@@ -384,7 +301,7 @@ export default function AdminOrdersPage() {
             This account does not have the secure Firebase admin claim.
           </p>
           <Button
-            className="mt-6 rounded-full"
+            className="mt-6 rounded-lg"
             variant="outline"
             onClick={() => void refreshProfile()}
           >
@@ -397,51 +314,21 @@ export default function AdminOrdersPage() {
   }
 
   return (
-    <PageEnter>
-      <div className="min-h-screen bg-surface-paper dark:bg-[#181613]">
-        <div className="page-container py-8 sm:py-12">
-          <header className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.32em] text-primary">
-                Administration
-              </p>
-              <h1 className="mt-2 font-heading text-3xl sm:text-4xl">
-                Customer orders
-              </h1>
-              <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-                Confirm WhatsApp orders, notify customers by email, and keep
-                account status synchronized.
-              </p>
-            </div>
-            <div className="grid grid-cols-2 gap-3">
-              <Card className="min-w-28 px-4 py-3">
-                <p className="text-xs text-muted-foreground">Pending</p>
-                <p className="mt-1 text-xl font-semibold">{pendingCount}</p>
-              </Card>
-              <Card className="min-w-28 px-4 py-3">
-                <p className="text-xs text-muted-foreground">Confirmed</p>
-                <p className="mt-1 text-xl font-semibold">{confirmedCount}</p>
-              </Card>
-            </div>
-          </header>
+    <div>
+      <AdminPageHeader title="Customer orders" eyebrow="Order management" description="Review WhatsApp checkout orders, confirm details and manage fulfilment." actions={<div className="flex gap-2"><span className="rounded-lg border border-border/70 bg-card px-3 py-2 text-xs"><span className="font-semibold tabular-nums">{pendingCount}</span><span className="ml-2 text-muted-foreground">pending</span></span><span className="rounded-lg border border-border/70 bg-card px-3 py-2 text-xs"><span className="font-semibold tabular-nums">{confirmedCount}</span><span className="ml-2 text-muted-foreground">confirmed</span></span></div>} />
 
-          {!emailConfigured ? (
-            <div className="mt-7 rounded-2xl border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm text-amber-900 dark:text-amber-200">
-              Add{" "}
-              <code>NEXT_PUBLIC_EMAILJS_ORDER_CONFIRMATION_TEMPLATE_ID</code>{" "}
-              before using Confirm &amp; email.
-            </div>
-          ) : null}
-
-          <div className="mt-7 flex gap-2 overflow-x-auto pb-1">
+          <div className="mb-5 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border/70 bg-card p-3">
+            <div className="relative w-full sm:max-w-xs"><Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" aria-hidden="true" /><Input aria-label="Search orders" className="h-10 pl-9 text-sm" placeholder="Search name, order or contact…" value={search} onChange={(event) => { setSearch(event.target.value); setPage(1); }} /></div>
+            <div className="flex max-w-full gap-1 overflow-x-auto rounded-lg bg-surface-silver/60 p-1" aria-label="Order status">
             {(["pending", "confirmed", "shipped", "cancelled", "all"] as const).map(
               (status) => (
                 <Button
                   key={status}
                   size="sm"
-                  variant={filter === status ? "default" : "outline"}
-                  className="shrink-0 rounded-full capitalize"
-                  onClick={() => setFilter(status)}
+                  variant="ghost"
+                  aria-pressed={filter === status}
+                  className={`h-8 shrink-0 rounded-md text-xs capitalize ${filter === status ? "bg-card shadow-sm" : "text-muted-foreground"}`}
+                  onClick={() => { setFilter(status); setPage(1); }}
                 >
                   {status}
                 </Button>
@@ -449,79 +336,36 @@ export default function AdminOrdersPage() {
             )}
           </div>
 
+            </div>
+
           {ordersLoading ? (
-            <div className="mt-7 grid gap-4">
+            <div className="grid gap-3">
               {[0, 1, 2].map((item) => (
                 <div
                   key={item}
-                  className="h-52 animate-pulse rounded-xl bg-muted/60"
+                  className="h-24 animate-pulse rounded-xl bg-muted/60"
                 />
               ))}
             </div>
+          ) : loadError ? (
+            <AdminEmptyState title="Orders could not be loaded" description="Check your connection and admin access, then refresh the page." />
           ) : filteredOrders.length === 0 ? (
-            <Card className="mt-7 rounded-xl p-10 text-center">
-              <PackageCheck className="mx-auto size-8 text-primary" />
-              <h2 className="mt-4 font-heading text-xl">No {filter} orders</h2>
-              <p className="mt-2 text-sm text-muted-foreground">
-                New WhatsApp checkout orders will appear here automatically.
-              </p>
-            </Card>
+            <div className="rounded-xl border border-border/70 bg-card"><AdminEmptyState title={search ? "No matching orders" : filter === "all" ? "No orders yet" : `No ${filter} orders`} description="New WhatsApp checkout orders appear automatically. Try another search or status." action={search ? <Button size="sm" variant="outline" onClick={() => { setSearch(""); setPage(1); }}>Clear search</Button> : undefined} /></div>
           ) : (
-            <div className="mt-7 grid gap-5">
-              {filteredOrders.map((order) => {
+            <div className="grid gap-3">
+              {pageOrders.map((order) => {
                 const busy = busyOrderId === order.id;
                 return (
-                  <Card
-                    key={order.id}
-                    className="overflow-hidden rounded-xl border-border/60 bg-card/90 p-0"
-                  >
-                    <div className="grid gap-6 p-5 sm:p-6 lg:grid-cols-[minmax(0,1fr)_280px]">
+                  <details key={order.id} className="group overflow-hidden rounded-xl border border-border/70 bg-card">
+                    <summary className="grid cursor-pointer list-none grid-cols-[minmax(0,1fr)_auto] items-center gap-3 p-4 focus-visible:outline-2 focus-visible:outline-offset-[-3px] focus-visible:outline-ring sm:grid-cols-[minmax(0,1fr)_120px_110px_20px] [&::-webkit-details-marker]:hidden">
+                      <div className="min-w-0"><p className="text-[13px] font-semibold">{order.customerName}</p><p className="mt-1 truncate text-[10px] text-muted-foreground">#{order.id.toUpperCase()} · {order.items.length} {order.items.length === 1 ? "item" : "items"}</p></div>
+                      <span className={cn("w-fit rounded-md border px-2 py-1 text-[10px] font-medium capitalize", statusClass(order.status))}>{order.status}</span>
+                      <span className="text-xs font-semibold tabular-nums sm:text-right">{formatInr(order.total)}</span>
+                      <ChevronRight className="size-4 justify-self-end text-muted-foreground transition-transform group-open:rotate-90" aria-hidden="true" />
+                    </summary>
+                    <div className="grid gap-5 border-t border-border/60 p-4 sm:p-5 xl:grid-cols-[minmax(0,1fr)_220px]">
                       <div className="min-w-0">
-                        <div className="flex flex-wrap items-start justify-between gap-3">
-                          <div>
-                            <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
-                              Order #{order.id.toUpperCase()}
-                            </p>
-                            <h2 className="mt-2 font-heading text-xl">
-                              {order.customerName}
-                            </h2>
-                            <p className="mt-1 text-sm text-muted-foreground">
-                              {order.createdAt
-                                ? new Intl.DateTimeFormat("en-IN", {
-                                    dateStyle: "medium",
-                                    timeStyle: "short",
-                                  }).format(order.createdAt)
-                                : "Recently placed"}
-                            </p>
-                          </div>
-                          <div className="flex flex-wrap gap-2">
-                            <Badge
-                              variant="outline"
-                              className={cn(
-                                "capitalize",
-                                statusClass(order.status),
-                              )}
-                            >
-                              {order.status === "pending" ? (
-                                <Clock3 className="size-3" />
-                              ) : order.status === "confirmed" ? (
-                                <CheckCircle2 className="size-3" />
-                              ) : order.status === "shipped" ? (
-                                <Truck className="size-3" />
-                              ) : (
-                                <XCircle className="size-3" />
-                              )}
-                              {order.status}
-                            </Badge>
-                            {order.confirmationEmailStatus ? (
-                              <Badge variant="outline" className="capitalize">
-                                <MailCheck className="size-3" />
-                                Email {order.confirmationEmailStatus}
-                              </Badge>
-                            ) : null}
-                          </div>
-                        </div>
-
+                        <p className="text-[11px] text-muted-foreground">{order.createdAt ? new Intl.DateTimeFormat("en-IN", { dateStyle: "medium", timeStyle: "short" }).format(order.createdAt) : "Recently placed"}{order.confirmationEmailStatus ? ` · Email ${order.confirmationEmailStatus}` : ""}</p>
                         <div className="mt-5 grid gap-1 text-sm text-muted-foreground sm:grid-cols-2">
                           <p>{order.customerEmail || "Email linked to account"}</p>
                           <p>{order.phone}</p>
@@ -562,11 +406,11 @@ export default function AdminOrdersPage() {
                         ) : null}
                       </div>
 
-                      <div className="flex flex-col justify-center gap-3 border-t border-border/50 pt-5 lg:border-l lg:border-t-0 lg:pl-6 lg:pt-0">
+                      <div className="flex flex-col justify-center gap-3 border-t border-border/50 pt-5 xl:border-l xl:border-t-0 xl:pl-5 xl:pt-0">
                         {order.status === "pending" ? (
                           <Button
-                            className="w-full rounded-full"
-                            disabled={busy || !emailConfigured}
+                            className="w-full rounded-lg"
+                            disabled={busy}
                             onClick={() => void confirmOrder(order)}
                           >
                             {busy ? (
@@ -574,14 +418,14 @@ export default function AdminOrdersPage() {
                             ) : (
                               <MailCheck className="size-4" />
                             )}
-                            Confirm &amp; email
+                            Confirm order
                           </Button>
                         ) : null}
 
                         {order.status === "confirmed" ? (
                           <>
                             <Button
-                              className="w-full rounded-full"
+                              className="w-full rounded-lg"
                               disabled={busy}
                               onClick={() => void changeStatus(order, "shipped")}
                             >
@@ -590,8 +434,8 @@ export default function AdminOrdersPage() {
                             </Button>
                             <Button
                               variant="outline"
-                              className="w-full rounded-full"
-                              disabled={busy || !emailConfigured}
+                              className="w-full rounded-lg"
+                              disabled={busy}
                               onClick={() => void resendEmail(order)}
                             >
                               <RefreshCcw
@@ -606,7 +450,7 @@ export default function AdminOrdersPage() {
                         order.status !== "shipped" ? (
                           <Button
                             variant="outline"
-                            className="w-full rounded-full text-destructive hover:text-destructive"
+                            className="w-full rounded-lg text-destructive hover:text-destructive"
                             disabled={busy}
                             onClick={() => void changeStatus(order, "cancelled")}
                           >
@@ -617,7 +461,7 @@ export default function AdminOrdersPage() {
                         {order.status === "cancelled" ? (
                           <Button
                             variant="outline"
-                            className="w-full rounded-full text-destructive hover:text-destructive"
+                            className="w-full rounded-lg text-destructive hover:text-destructive"
                             disabled={busy}
                             onClick={() => void removeOrder(order)}
                           >
@@ -627,13 +471,12 @@ export default function AdminOrdersPage() {
                         ) : null}
                       </div>
                     </div>
-                  </Card>
+                  </details>
                 );
               })}
             </div>
           )}
-        </div>
-      </div>
-    </PageEnter>
+      {filteredOrders.length > 0 ? <div className="mt-4 overflow-hidden rounded-xl border border-border/70 bg-card"><AdminPagination page={currentPage} pageSize={8} total={filteredOrders.length} onPageChange={setPage} /></div> : null}
+    </div>
   );
 }

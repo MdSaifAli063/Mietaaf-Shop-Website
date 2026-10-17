@@ -7,15 +7,9 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { useSiteSettings } from "@/hooks/use-site-settings";
-
-const EMAILJS_SERVICE_ID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
-const EMAILJS_CONTACT_TEMPLATE_ID = process.env.NEXT_PUBLIC_EMAILJS_CONTACT_TEMPLATE_ID;
-const EMAILJS_PUBLIC_KEY = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
 
 export function ContactForm() {
   const [submitting, setSubmitting] = useState(false);
-  const { settings } = useSiteSettings();
 
   return (
     <Card className="rounded-xl border-border/55 bg-card/90 p-5 shadow-[0_8px_32px_rgba(36,39,33,0.035)] ring-1 ring-black/5 sm:p-7 dark:ring-white/10">
@@ -28,11 +22,6 @@ export function ContactForm() {
         onSubmit={async (event) => {
           event.preventDefault();
 
-          if (!EMAILJS_SERVICE_ID || !EMAILJS_CONTACT_TEMPLATE_ID || !EMAILJS_PUBLIC_KEY) {
-            toast.error("Contact email service is not configured yet.");
-            return;
-          }
-
           setSubmitting(true);
           const formElement = event.currentTarget;
           const form = new FormData(formElement);
@@ -42,43 +31,17 @@ export function ContactForm() {
           const phone = get("phone");
           const topic = get("topic");
           const customerMessage = get("message");
-          const subject = `Mietaaf contact enquiry - ${topic} - ${name}`;
-          const message = [
-            "New Mietaaf website contact enquiry",
-            "",
-            `Name: ${name}`,
-            `Email: ${email}`,
-            `Phone: ${phone || "Not shared"}`,
-            `Topic: ${topic}`,
-            "",
-            "Message:",
-            customerMessage,
-          ].join("\n");
-
           try {
-            const response = await fetch("https://api.emailjs.com/api/v1.0/email/send", {
+            const response = await fetch("/api/email/contact", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({
-                service_id: EMAILJS_SERVICE_ID,
-                template_id: EMAILJS_CONTACT_TEMPLATE_ID,
-                user_id: EMAILJS_PUBLIC_KEY,
-                template_params: {
-                  to_email: settings.supportEmail,
-                  subject,
-                  from_name: name,
-                  reply_to: email,
-                  customer_email: email,
-                  phone: phone || "Not shared",
-                  topic,
-                  customer_message: customerMessage,
-                  message,
-                },
+                name, email, phone, topic, message: customerMessage, website: get("website"),
               }),
             });
 
             if (!response.ok) {
-              throw new Error(await response.text());
+              throw new Error("Message delivery failed.");
             }
 
             toast.success("Message sent to Mietaaf. We will reply shortly.");
@@ -90,6 +53,7 @@ export function ContactForm() {
           }
         }}
       >
+        <input type="text" name="website" className="hidden" tabIndex={-1} autoComplete="off" aria-hidden="true" />
         <div className="space-y-2">
           <Label htmlFor="contact-name">Name</Label>
           <Input

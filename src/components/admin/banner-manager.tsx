@@ -11,9 +11,9 @@ import { createBanner, deleteBanner, updateBanner, uploadBannerImage } from "@/s
 import { BANNERS } from "@/lib/data/banners";
 import { bypassImageOptimization } from "@/lib/image-source";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+import { AdminEditor, AdminField, AdminPageHeader, AdminPanel, AdminStatus } from "@/components/admin/admin-ui";
 import { Input } from "@/components/ui/input";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog } from "@/components/ui/dialog";
 
 const blank = { title: "", subtitle: "", image: "", href: "/shop", cta: "Explore" };
 
@@ -117,61 +117,41 @@ export function BannerManager() {
     }
   }
 
+  const fieldLabels = { title: "Slide title", subtitle: "Supporting text", image: "Image URL", cta: "Button text", href: "Button link" };
+
   return (
     <>
-      <header className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
-        <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.34em] text-primary">Homepage</p>
-          <h1 className="mt-2 font-heading text-3xl sm:text-4xl">Hero banners</h1>
-          <p className="mt-2 text-sm text-muted-foreground">Control the large homepage slides, copy, buttons, and links.</p>
-        </div>
-        <Button className="rounded-full" onClick={startCreate}><Plus className="size-4" /> Add banner</Button>
-      </header>
-      <div className="mt-7 grid gap-4">
-        {banners.map((banner) => (
-          <Card key={banner.id} className="overflow-hidden rounded-lg p-0 sm:grid sm:grid-cols-[240px_minmax(0,1fr)]">
-            <div className="relative aspect-[16/9] bg-muted sm:aspect-auto sm:min-h-40">
-              <Image src={banner.image} alt="" fill unoptimized={bypassImageOptimization(banner.image)} className="object-cover" sizes="240px" />
-            </div>
-            <div className="flex min-w-0 flex-col justify-center p-5">
-              <p className="font-heading text-2xl">{banner.title}</p>
-              <p className="mt-1 text-sm text-muted-foreground">{banner.subtitle}</p>
-              <p className="mt-2 text-[10px] font-semibold uppercase tracking-wider text-primary">
-                {banner.deleted ? "Deleted" : banner.hidden ? "Hidden" : "Visible"}
-              </p>
-              <p className="mt-2 truncate text-xs text-primary">{banner.cta} → {banner.href}</p>
-              <div className="mt-5 flex flex-wrap gap-2">
-                <Button asChild size="sm" variant="outline" className="rounded-full">
-                  <Link href="/" target="_blank"><Eye className="size-3.5" /> View</Link>
-                </Button>
-                <Button size="sm" variant="outline" className="rounded-full" onClick={() => startEdit(banner)}><Pencil className="size-3.5" /> Edit</Button>
-                {banner.hidden || banner.deleted ? (
-                  <Button size="sm" variant="outline" className="rounded-full" onClick={() => void restore(banner)}><RotateCcw className="size-3.5" /> Restore</Button>
-                ) : (
-                  <Button size="sm" variant="outline" className="rounded-full" onClick={() => void hide(banner)}><EyeOff className="size-3.5" /> Hide</Button>
-                )}
-                {!banner.deleted ? (
-                  <Button size="sm" variant="outline" className="rounded-full text-destructive hover:text-destructive" onClick={() => void remove(banner)}><Trash2 className="size-3.5" /> Delete</Button>
-                ) : null}
+      <AdminPageHeader title="Homepage banners" eyebrow="Storefront content" description="Manage the photography, copy and shopping links in your homepage slideshow." actions={<Button className="h-10 rounded-lg text-xs" onClick={startCreate}><Plus className="size-4" /> Add banner</Button>} />
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-2 text-xs text-muted-foreground"><p>{banners.length} slides · {banners.filter((banner) => !banner.hidden && !banner.deleted).length} visible</p><p>Saved changes appear on the storefront.</p></div>
+      <div className="grid gap-4">
+        {banners.map((banner, index) => (
+          <AdminPanel key={banner.id} className="overflow-hidden sm:grid sm:grid-cols-[210px_minmax(0,1fr)]">
+            <div className="relative aspect-[16/9] bg-surface-silver sm:aspect-auto sm:min-h-40"><Image src={banner.image} alt="" fill unoptimized={bypassImageOptimization(banner.image)} className="object-cover" sizes="(min-width:640px) 210px, 100vw" /><span className="absolute left-3 top-3 rounded-md bg-card/95 px-2 py-1 text-[10px] font-semibold">SLIDE {String(index + 1).padStart(2, "0")}</span></div>
+            <div className="min-w-0 p-4 sm:p-5"><div className="flex flex-wrap items-center justify-between gap-2"><h2 className="text-sm font-semibold">{banner.title}</h2><AdminStatus status={banner.deleted ? "deleted" : banner.hidden ? "hidden" : "visible"} /></div><p className="mt-2 text-xs leading-5 text-muted-foreground">{banner.subtitle}</p><p className="mt-2 truncate text-[11px] text-primary">{banner.cta} → {banner.href}</p>
+              <div className="mt-4 flex flex-wrap gap-1.5">
+                <Button asChild size="sm" variant="outline" className="h-8 rounded-md text-xs"><Link href="/" target="_blank" rel="noopener noreferrer"><Eye className="size-3.5" /> Preview</Link></Button>
+                <Button size="sm" variant="outline" className="h-8 rounded-md text-xs" onClick={() => startEdit(banner)}><Pencil className="size-3.5" /> Edit</Button>
+                {banner.hidden || banner.deleted ? <Button size="sm" variant="outline" className="h-8 rounded-md text-xs" onClick={() => void restore(banner)}><RotateCcw className="size-3.5" /> Restore</Button> : <Button size="sm" variant="outline" className="h-8 rounded-md text-xs" onClick={() => void hide(banner)}><EyeOff className="size-3.5" /> Hide</Button>}
+                {!banner.deleted ? <Button size="icon" variant="ghost" className="size-8 rounded-md text-destructive hover:text-destructive" aria-label={`Delete ${banner.title}`} onClick={() => void remove(banner)}><Trash2 className="size-3.5" /></Button> : null}
               </div>
             </div>
-          </Card>
+          </AdminPanel>
         ))}
       </div>
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent position="bottom-sheet" className="overflow-y-auto p-5 sm:p-6">
-          <DialogHeader>
-            <DialogTitle className="text-2xl">{editing ? "Edit banner" : "Add banner"}</DialogTitle>
-            <DialogDescription>Use a wide, high-resolution image for the best result.</DialogDescription>
-          </DialogHeader>
+        <AdminEditor title={editing ? "Edit banner" : "Add banner"} description="Use a wide photograph and a clear destination for the shopping button." footer={<>
+
+            <Button variant="outline" className="rounded-lg" onClick={() => setOpen(false)}>Cancel</Button>
+            <Button className="rounded-lg" disabled={saving || uploading} onClick={() => void save()}>{saving ? <LoaderCircle className="size-4 animate-spin" /> : null} Save banner</Button>
+        </>}>
+
           {(["title", "subtitle", "image", "cta", "href"] as const).map((key) => (
-            <label key={key}>
-              <span className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">{key}</span>
+            <AdminField key={key} label={fieldLabels[key]}>
               <Input value={form[key]} onChange={(e) => patch(key, e.target.value)} />
-            </label>
+            </AdminField>
           ))}
-          <label className="inline-flex w-fit cursor-pointer items-center gap-2 rounded-full border border-border px-4 py-2 text-xs font-semibold">
+          <label className="inline-flex w-fit cursor-pointer items-center gap-2 rounded-lg border border-border px-4 py-2 text-xs font-semibold">
             {uploading ? <LoaderCircle className="size-4 animate-spin" /> : <ImagePlus className="size-4" />}
             {uploading ? `Uploading ${uploadProgress}%` : "Upload image"}
             <input
@@ -186,11 +166,7 @@ export function BannerManager() {
               }}
             />
           </label>
-          <DialogFooter>
-            <Button variant="outline" className="rounded-full" onClick={() => setOpen(false)}>Cancel</Button>
-            <Button className="rounded-full" disabled={saving || uploading} onClick={() => void save()}>{saving ? <LoaderCircle className="size-4 animate-spin" /> : null} Save banner</Button>
-          </DialogFooter>
-        </DialogContent>
+        </AdminEditor>
       </Dialog>
     </>
   );
