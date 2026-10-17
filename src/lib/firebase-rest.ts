@@ -50,6 +50,16 @@ export async function fetchCollectionREST(
   }
 }
 
+/** Read one publicly readable settings document with the same cache as catalogue data. */
+export async function fetchDocumentREST(collectionName: string, documentId: string): Promise<Record<string, unknown> | null> {
+  const config = getFirebasePublicClientConfig();
+  if (!config?.projectId) return null;
+  try {
+    const response = await fetch(`https://firestore.googleapis.com/v1/projects/${config.projectId}/databases/(default)/documents/${encodeURIComponent(collectionName)}/${encodeURIComponent(documentId)}`, { next: { revalidate: 60 } });
+    return response.ok ? parseFirestoreDocument(await response.json() as FirestoreDocument) : null;
+  } catch { return null; }
+}
+
 function parseFirestoreDocument(doc: FirestoreDocument): Record<string, unknown> {
   const id = doc.name.split("/").pop();
   const fields = doc.fields ?? {};

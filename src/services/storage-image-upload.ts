@@ -9,7 +9,7 @@ import { getFirebaseStorage } from "@/firebase/client";
 
 type UploadStorageImageOptions = {
   file: File;
-  folder: "products" | "categories" | "banners";
+  folder: "products" | "products/fabrics" | "categories" | "banners";
   maxBytes: number;
   timeoutMs?: number;
   onProgress?: (percentage: number) => void;

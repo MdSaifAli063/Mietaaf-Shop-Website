@@ -2,6 +2,8 @@ import { BRAND_FAQS } from "@/lib/brand-faq";
 import { absoluteUrl, SITE_NAME } from "@/lib/seo";
 import { SITE_ADDRESS_DISPLAY, SITE_EMAIL_DISPLAY, SITE_PHONE_DISPLAY, SITE_GOOGLE_BUSINESS_PROFILE_URL } from "@/lib/site-contact";
 import { getServerCategories } from "@/lib/server-catalog";
+import { fabricReferencePath } from "@/lib/data/fabrics";
+import { getServerFabrics } from "@/lib/server-fabrics";
 
 export async function llmsIndex(): Promise<string> {
   const categories = await getServerCategories();
@@ -23,7 +25,7 @@ export async function llmsIndex(): Promise<string> {
 - [Appointments](${absoluteUrl("/appointment")}): request studio or doorstep consultations.
 - [Questions and answers](${absoluteUrl("/faq")}): ordering, sizing, fittings and WhatsApp checkout.
 - [Shop](${absoluteUrl("/shop")}): browse current pieces; follow individual product pages for current details.
-- [Fabrics](${absoluteUrl("/fabrics")}): fabric selection and consultations.
+- [Fabrics](${absoluteUrl("/fabrics")}): browse the published fabric catalogues and colour or design references. Send a selected reference to the team on WhatsApp; confirm composition, availability and price directly.
 - [Returns](${absoluteUrl("/returns")}): return and alteration policy.
 - [Privacy](${absoluteUrl("/privacy")}) and [Terms](${absoluteUrl("/terms")}): store policies.
 
@@ -39,7 +41,14 @@ This optional reference mirrors public website content. It does not replace robo
 }
 
 export async function llmsFullReference(): Promise<string> {
+  const fabrics = await getServerFabrics();
   return `${await llmsIndex()}
+## Fabric catalogues
+
+${fabrics.map(catalogue => `- [${catalogue.title}](${absoluteUrl(fabricReferencePath(catalogue))}): ${catalogue.description}`).join("\n")}
+
+Design codes are specific to their catalogue. Screen colours can vary from actual fabrics; confirm the physical fabric and its composition with the team.
+
 ## Questions and answers
 
 ${BRAND_FAQS.map(({ q, a }) => `### ${q}\n\n${a}`).join("\n\n")}

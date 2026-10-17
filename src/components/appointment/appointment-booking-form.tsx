@@ -7,14 +7,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { SITE_EMAIL_DISPLAY } from "@/lib/site-contact";
-import { useSiteSettings } from "@/hooks/use-site-settings";
-
-const EMAILJS_SERVICE_ID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
-const EMAILJS_APPOINTMENT_TEMPLATE_ID =
-  process.env.NEXT_PUBLIC_EMAILJS_APPOINTMENT_TEMPLATE_ID ||
-  process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
-const EMAILJS_PUBLIC_KEY = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
 
 const serviceTypes = [
   "Home fabric consultation",
@@ -55,7 +47,6 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
 
 export function AppointmentBookingForm() {
   const [submitting, setSubmitting] = useState(false);
-  const { settings } = useSiteSettings();
 
   return (
     <form
@@ -67,79 +58,24 @@ export function AppointmentBookingForm() {
         const formElement = event.currentTarget;
         const form = new FormData(formElement);
         const get = (key: string) => String(form.get(key) || "").trim();
-        const fabrics = form.getAll("fabrics").map(String).join(", ") || "Help me choose";
-        const name = get("name");
-        const email = get("email");
-
-        const message = [
-          "Hello Mietaaf,",
-          "I want to book a home service appointment.",
-          "",
-          "Customer details:",
-          `Name: ${name}`,
-          `Phone: ${get("phone")}`,
-          `Email: ${email || "Not shared"}`,
-          `City / Area: ${get("city")}`,
-          `Address: ${get("address")}`,
-          "",
-          "Appointment preference:",
-          `Service: ${get("serviceType")}`,
-          `Date: ${get("date")}`,
-          `Time: ${get("time")}`,
-          `Visit type: ${get("visitType")}`,
-          "",
-          "Style details:",
-          `Outfit: ${get("outfitType")}`,
-          `Fabric interest: ${fabrics}`,
-          `Budget range: ${get("budget") || "Not decided"}`,
-          `Occasion date: ${get("occasionDate") || "Not shared"}`,
-          "",
-          `Notes: ${get("notes") || "No extra notes"}`,
-          "",
-          "Please confirm availability and next steps.",
-        ].join("\n");
-
-        const subject = `Mietaaf appointment request - ${name}`;
         try {
-          if (!EMAILJS_SERVICE_ID || !EMAILJS_APPOINTMENT_TEMPLATE_ID || !EMAILJS_PUBLIC_KEY) {
-            toast.error("Appointment email service is not configured yet.");
-            return;
-          }
-
-          const response = await fetch("https://api.emailjs.com/api/v1.0/email/send", {
+          const response = await fetch("/api/email/appointment", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              service_id: EMAILJS_SERVICE_ID,
-              template_id: EMAILJS_APPOINTMENT_TEMPLATE_ID,
-              user_id: EMAILJS_PUBLIC_KEY,
-              template_params: {
-                to_email: settings.supportEmail,
-                subject,
-                from_name: name,
-                reply_to: email || settings.supportEmail || SITE_EMAIL_DISPLAY,
-                phone: get("phone"),
-                customer_email: email || "Not shared",
-                city: get("city"),
-                address: get("address"),
-                service_type: get("serviceType"),
-                appointment_date: get("date"),
-                appointment_time: get("time"),
-                visit_type: get("visitType"),
-                outfit_type: get("outfitType"),
-                fabrics,
-                budget: get("budget") || "Not decided",
-                occasion_date: get("occasionDate") || "Not shared",
-                notes: get("notes") || "No extra notes",
-                message,
-              },
+              name: get("name"), email: get("email"), phone: get("phone"),
+              city: get("city"), address: get("address"), serviceType: get("serviceType"),
+              date: get("date"), time: get("time"), visitType: get("visitType"),
+              outfitType: get("outfitType"), fabrics: form.getAll("fabrics").map(String),
+              budget: get("budget"), occasionDate: get("occasionDate"),
+              notes: get("notes"), website: get("website"),
             }),
           });
 
           if (!response.ok) {
-            throw new Error(await response.text());
+            throw new Error("Message delivery failed.");
           }
 
           toast.success("Appointment request sent to Mietaaf email.");
@@ -151,6 +87,7 @@ export function AppointmentBookingForm() {
         }
       }}
     >
+      <input type="text" name="website" className="hidden" tabIndex={-1} autoComplete="off" aria-hidden="true" />
       <div className="flex flex-col gap-4 border-b border-border/60 pb-5 sm:flex-row sm:items-start sm:justify-between">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.34em] text-primary">

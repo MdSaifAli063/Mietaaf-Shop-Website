@@ -74,3 +74,26 @@ Client Stories remains in one horizontal row, with a preview of the next card on
 The current palette supersedes the earlier all-cream follow-up: cream remains the foundation, cards and the header use off-white (`#fffdfa`), and selected sections, account fields, secondary controls and the footer use soft silver (`#efefec`). Dark surfaces retain their existing theme values.
 
 ESLint, TypeScript and the production build passed. Section layouts were checked at eight widths from 280 to 1440 pixels. Twelve page/viewport checks across home, shop, login, signup, contact and cart found no page overflow or clipped controls. Native touch swiping, button boundaries, keyboard navigation, reduced motion and dark review cards were checked in local Chrome. A final production smoke check confirmed phone/desktop card layouts, slider navigation and account field colours without browser errors. Screenshots and scripts remain in `tmp/responsive-review/`.
+
+## Admin sign-in refinement — 17 October 2026
+
+Admin sign-in now pairs atelier embroidery photography with an off-white form panel, silver fields, clearer typography and a readable logo. Phones show a focused single-column form; shorter windows scroll naturally. Password visibility has a 44px control with an accessible pressed state, and the email field supports credential autofill. The form shows a loading state and prevents field changes during submission. The dark theme gives the logo a light backing.
+
+Nine browser viewport checks from 280px to 1440px, including short landscape, found no horizontal overflow or clipped controls. Required fields, password visibility, autofill colours and dark surfaces were checked. An exact source comparison confirmed the existing sign-in handler, forced admin-claim verification and rejection/logout behaviour were preserved. No live sign-in was submitted. Screenshots and results are under `tmp/responsive-review/admin-login-*`.
+
+## Compact product controls — 17 October 2026
+
+The shared product card now uses 32px wishlist/quick-view controls on phones and
+36px controls on larger screens, with 14px/16px icons and translucent, softly
+blurred backgrounds. Discount badges are smaller. Following the requested colour
+adjustment, Add retains the original dark filled colour and Compare retains its
+original outline colours at 36px on phones and 40px on tablets; the desktop hover tray
+uses compact 36px buttons. Wishlist state remains visible and is exposed through
+`aria-pressed`. Product links, buttons and other enabled interactive controls
+now show the pointer cursor.
+
+Local Chrome checks at 320, 375, 640, 768, 1024 and 1440 pixels found no horizontal
+overflow, clipped buttons or badge/icon overlap. Wishlist toggling, Add to cart,
+Quick view and Escape-to-close passed using browser-local data. Computed styles
+confirmed pointer cursors on all visible product actions and links. Screenshots
+and measurements are under `tmp/responsive-review/product-controls-*`.

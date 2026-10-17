@@ -8,10 +8,13 @@ import { PAGE_CONTAINER, PAGE_PY } from "@/lib/layout";
 import { useShopData } from "@/hooks/use-shop-data";
 import { cn } from "@/lib/utils";
 import { buildProductHref } from "@/lib/product-links";
+import { useLookbookSettings } from "@/hooks/use-lookbook-settings";
+import { selectLookbookProducts } from "@/lib/lookbook";
 
 export default function LookbookPage() {
   const { products } = useShopData();
-  const looks = products.slice(0, 8);
+  const { settings } = useLookbookSettings();
+  const looks = selectLookbookProducts(products, settings);
 
   return (
     <PageEnter>
@@ -38,6 +41,7 @@ export default function LookbookPage() {
           </header>
 
           <section className="mt-8 sm:mt-10" aria-label="Mietaaf lookbook">
+            {!looks.length ? <div className="rounded-xl border border-border/60 bg-card px-6 py-14 text-center"><h2 className="font-heading text-2xl">New looks are on the way</h2><p className="mt-3 text-sm text-muted-foreground">Explore our latest collections while we prepare the next edit.</p><Link href="/shop" className="mt-5 inline-flex text-sm font-medium text-primary underline underline-offset-4">Explore the collections</Link></div> : null}
             <div className="grid auto-rows-[170px] grid-cols-2 gap-3 sm:auto-rows-[220px] md:auto-rows-[260px] lg:grid-cols-4 lg:gap-4">
               {looks.map((product, index) => (
                 <Link

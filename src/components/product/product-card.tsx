@@ -99,17 +99,17 @@ export function ProductCard({
           />
         </Link>
         {discount ? (
-          <Badge className="absolute left-2 top-2 rounded-sm border-0 bg-surface-paper/95 px-2 py-1 text-[9px] font-medium uppercase tracking-[0.08em] text-foreground shadow-none sm:left-3 sm:top-3 sm:text-[10px]">
+          <Badge className="absolute left-1.5 top-1.5 h-[18px] rounded-sm border-white/40 bg-surface-paper/75 px-1.5 py-0 text-[8px] font-medium uppercase tracking-[0.06em] text-foreground shadow-none backdrop-blur-sm sm:left-2.5 sm:top-2.5 sm:h-5 sm:px-2 sm:text-[9px]">
             {discount}% off
           </Badge>
         ) : null}
-        <div className="absolute right-1.5 top-1.5 z-10 flex flex-col gap-1.5 sm:right-3 sm:top-3 sm:gap-2">
+        <div className="absolute right-1.5 top-1.5 z-10 flex flex-col gap-1 sm:right-2.5 sm:top-2.5 sm:gap-1.5">
           <Button
             type="button"
             size="icon"
-            variant="secondary"
+            variant="ghost"
             className={cn(
-              "size-11 touch-manipulation rounded-full border-white/60 bg-surface-paper/95 text-foreground shadow-none backdrop-blur-sm",
+              "size-8 touch-manipulation rounded-full border-white/45 bg-surface-paper/40 text-foreground shadow-none backdrop-blur-sm hover:border-white/70 hover:bg-surface-paper/80 sm:size-9 dark:border-white/15 dark:bg-surface-paper/55 dark:hover:bg-surface-paper/85",
               hasWish && "text-primary",
             )}
             onClick={(e) => {
@@ -118,34 +118,35 @@ export function ProductCard({
               toast.success(hasWish ? "Removed from wishlist" : "Saved to wishlist");
             }}
             aria-label={hasWish ? `Remove ${product.name} from wishlist` : `Save ${product.name} to wishlist`}
+            aria-pressed={hasWish}
           >
-            <Heart className={cn("h-3.5 w-3.5 sm:h-4 sm:w-4", hasWish && "fill-primary")} />
+            <Heart className={cn("size-3.5 sm:size-4", hasWish && "fill-primary")} aria-hidden="true" />
           </Button>
           <Button
             type="button"
             size="icon"
-            variant="secondary"
-            className="size-11 touch-manipulation rounded-full border-white/60 bg-surface-paper/95 text-foreground shadow-none backdrop-blur-sm"
+            variant="ghost"
+            className="size-8 touch-manipulation rounded-full border-white/45 bg-surface-paper/40 text-foreground shadow-none backdrop-blur-sm hover:border-white/70 hover:bg-surface-paper/80 sm:size-9 dark:border-white/15 dark:bg-surface-paper/55 dark:hover:bg-surface-paper/85"
             onClick={(e) => {
               e.preventDefault();
               setQuick(product.slug, primary);
             }}
             aria-label={`Quick view ${product.name}`}
           >
-            <Eye className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+            <Eye className="size-3.5 sm:size-4" aria-hidden="true" />
           </Button>
         </div>
         {/* Desktop hover tray */}
-        <div className="absolute inset-x-0 bottom-0 z-10 hidden translate-y-full bg-surface-paper/95 p-3 backdrop-blur-md transition-transform duration-300 group-focus-within:translate-y-0 [@media(hover:hover)]:group-hover:translate-y-0 lg:block [@media(hover:none)]:hidden">
+        <div className="absolute inset-x-0 bottom-0 z-10 hidden translate-y-full bg-surface-paper/80 p-2.5 backdrop-blur-md transition-transform duration-300 group-focus-within:translate-y-0 [@media(hover:hover)]:group-hover:translate-y-0 lg:block [@media(hover:none)]:hidden">
           <div className="flex gap-2">
-            <Button className="h-11 min-w-0 flex-1 touch-manipulation rounded-md px-3" onClick={addToCart}>
-              <ShoppingBag className="mr-2 h-4 w-4" />
+            <Button type="button" variant="default" className="h-9 min-w-0 flex-1 touch-manipulation gap-1.5 rounded-md px-2 text-xs shadow-none" aria-label={`Add ${product.name} to bag`} onClick={addToCart}>
+              <ShoppingBag className="size-3.5" aria-hidden="true" />
               Add
             </Button>
             <Button
               variant="outline"
               className={cn(
-                "h-11 touch-manipulation rounded-md px-3",
+                "h-9 touch-manipulation rounded-md px-2.5 text-xs shadow-none",
                 hasCompare && "border-primary bg-primary/10 text-primary",
               )}
               type="button"
@@ -177,10 +178,13 @@ export function ProductCard({
         {/* Mobile / touch: always-visible actions (same as desktop hover) */}
         <div className="mt-auto flex items-center gap-1.5 pt-1 sm:gap-2 lg:hidden [@media(hover:none)]:flex">
           <Button
-            className="h-11 min-w-0 flex-1 touch-manipulation rounded-md px-1.5 text-xs sm:px-4 sm:text-sm"
+            type="button"
+            variant="default"
+            className="h-9 min-w-0 flex-1 touch-manipulation gap-1.5 rounded-md px-2 text-[11px] shadow-none sm:h-10 sm:px-3 sm:text-xs"
+            aria-label={`Add ${product.name} to bag`}
             onClick={addToCart}
           >
-            <ShoppingBag className="mr-1 h-3.5 w-3.5 shrink-0 sm:mr-1.5 sm:h-4 sm:w-4" />
+            <ShoppingBag className="size-3.5 sm:size-4" aria-hidden="true" />
             <span className="md:hidden">Add</span>
             <span className="hidden md:inline">Add to bag</span>
           </Button>
@@ -188,14 +192,14 @@ export function ProductCard({
             variant="outline"
             size="icon"
             className={cn(
-              "size-11 shrink-0 touch-manipulation rounded-md p-0",
+              "size-9 shrink-0 touch-manipulation rounded-md p-0 shadow-none sm:size-10",
               hasCompare && "border-primary bg-primary/10 text-primary",
             )}
             type="button"
             onClick={addToCompare}
             aria-label={hasCompare ? `Selected in compare: ${product.name}` : `Compare ${product.name}`}
           >
-            <GitCompareArrows className="h-3.5 w-3.5 sm:h-4 sm:w-4" aria-hidden="true" />
+            <GitCompareArrows className="size-3.5 sm:size-4" aria-hidden="true" />
           </Button>
         </div>
       </div>
