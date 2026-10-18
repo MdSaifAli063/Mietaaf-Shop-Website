@@ -9,6 +9,7 @@ type LookbookSnapshot = { settings: LookbookSettings | null; ready: boolean; err
 const initialSnapshot: LookbookSnapshot = { settings: null, ready: false, error: false };
 let snapshot = initialSnapshot;
 let unsubscribe: Unsubscribe | null = null;
+let connectionTimeout: ReturnType<typeof setTimeout> | undefined;
 const listeners = new Set<() => void>();
 
 function publish(value: LookbookSnapshot) {
@@ -24,14 +25,17 @@ function startSync() {
     return;
   }
   if (snapshot.ready) publish({ ...snapshot, ready: false });
-  unsubscribe = onSnapshot(doc(db, "settings", "lookbook"), (document) => {
+  connectionTimeout = setTimeout(() => { clearTimeout(connectionTimeout); publish({ settings: snapshot.settings, ready: true, error: true }); }, 10000);
+  unsubscribe = onSnapshot(doc(db, "settings", "lookbook"), { includeMetadataChanges: true }, (document) => {
+    if (document.metadata?.fromCache) { publish({ ...snapshot, ready: false }); return; }
+    clearTimeout(connectionTimeout);
     if (!document.exists()) {
       publish({ settings: null, ready: true, error: false });
       return;
     }
     const parsed = lookbookSettingsSchema.safeParse(document.data());
     publish(parsed.success ? { settings: parsed.data, ready: true, error: false } : { settings: snapshot.settings, ready: true, error: true });
-  }, () => publish({ settings: snapshot.settings, ready: true, error: true }));
+  }, () => { clearTimeout(connectionTimeout); publish({ settings: snapshot.settings, ready: true, error: true }); });
 }
 
 function subscribe(listener: () => void) {
@@ -41,6 +45,7 @@ function subscribe(listener: () => void) {
     listeners.delete(listener);
     if (!listeners.size && unsubscribe) {
       unsubscribe();
+      clearTimeout(connectionTimeout);
       unsubscribe = null;
     }
   };

@@ -85,7 +85,7 @@ export function ProductCard({
           compact ? "aspect-[4/5]" : "aspect-[3/4]",
         )}
       >
-        <Link href={productHref} aria-label={`View ${product.name}`} className="absolute inset-0 z-0">
+        <Link prefetch={false} href={productHref} aria-label={`View ${product.name}`} className="absolute inset-0 z-0">
           <ProductThumbnailImage
             src={primary}
             alt={product.name}
@@ -159,7 +159,7 @@ export function ProductCard({
       </div>
       <div className="flex min-w-0 flex-1 flex-col space-y-2 px-0.5 pb-2 pt-3 sm:space-y-2.5 sm:pt-4">
         <p className="truncate text-[9px] font-medium uppercase tracking-[0.13em] text-muted-foreground sm:text-[10px]">{product.category}</p>
-        <Link href={productHref} className="block min-w-0">
+        <Link prefetch={false} href={productHref} className="block min-w-0">
           <h3 className="line-clamp-2 min-h-[2.5rem] font-heading text-base font-medium leading-5 tracking-[-0.01em] text-foreground transition-colors hover:text-primary sm:min-h-0 sm:text-[1.35rem] sm:leading-snug">
             {product.name}
           </h3>

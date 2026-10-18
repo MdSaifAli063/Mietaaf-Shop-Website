@@ -1,10 +1,10 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useState } from "react";
 import { ExternalLink, LoaderCircle, Save, Undo2 } from "lucide-react";
 import toast from "react-hot-toast";
 import type { SiteSettings } from "@/types";
-import { useSiteSettings } from "@/hooks/use-site-settings";
+import { useAdminSiteSettings as useSiteSettings } from "@/hooks/use-admin-site-settings";
 import { saveSiteSettings } from "@/services/site-settings";
 import { DEFAULT_SITE_SETTINGS } from "@/lib/site-settings";
 import { Button } from "@/components/ui/button";
@@ -13,7 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
 export function SettingsManager() {
-  const { settings, loading } = useSiteSettings();
+  const { settings, loading, error } = useSiteSettings();
   const [form, setForm] = useState<SiteSettings>(DEFAULT_SITE_SETTINGS);
   const [saving, setSaving] = useState(false);
 
@@ -24,6 +24,7 @@ export function SettingsManager() {
   }
 
   async function save() {
+    if (loading || error) return;
     if (!form.supportEmail.includes("@") || !form.whatsappNumber.trim()) {
       toast.error("Add a valid support email and WhatsApp number.");
       return;
@@ -43,11 +44,12 @@ export function SettingsManager() {
   }
 
   const dirty = JSON.stringify(form) !== JSON.stringify(settings);
-  const saveButton = <Button className="h-10 rounded-lg text-xs" disabled={saving || loading || !dirty} onClick={() => void save()}>{saving ? <LoaderCircle className="size-4 animate-spin" /> : <Save className="size-4" />}{saving ? "Saving…" : "Save changes"}</Button>;
+  const saveButton = <Button className="h-10 rounded-lg text-xs" disabled={saving || loading || error || !dirty} onClick={() => void save()}>{saving ? <LoaderCircle className="size-4 animate-spin" /> : <Save className="size-4" />}{saving ? "Saving…" : "Save changes"}</Button>;
 
   return (
     <div>
       <AdminPageHeader title="Website settings" eyebrow="Storefront preferences" description="Manage the brand details, announcements and contact information customers see." actions={<><span aria-live="polite" className="mr-1 text-[11px] text-muted-foreground">{dirty ? "Unsaved changes" : "No unsaved changes"}</span>{saveButton}</>} />
+      {error && <div role="alert" className="mb-5 rounded-lg border border-destructive/25 bg-destructive/5 p-4 text-xs leading-6">The saved settings could not be confirmed. Reconnect or refresh before saving changes.</div>}
       <div className="grid items-start gap-5 xl:grid-cols-2">
         <AdminPanel className="p-5 sm:p-6">
           <h2 className="text-sm font-semibold">Brand & social profiles</h2><p className="mt-1 text-xs leading-5 text-muted-foreground">Your public tagline, footer copy and social links.</p>

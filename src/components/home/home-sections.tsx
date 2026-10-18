@@ -132,7 +132,7 @@ export function HomeSections() {
                 <h2 className="atelier-heading">Featured categories</h2>
               </div>
               <Button asChild variant="link" className="w-fit rounded-none border-x-0 border-t-0 border-b border-foreground/40 px-0 text-xs uppercase tracking-[0.12em]">
-                <Link href="/shop">
+                <Link prefetch={false} href="/shop">
                   View all <ArrowUpRight className="ml-1 h-4 w-4" />
                 </Link>
               </Button>
@@ -141,7 +141,7 @@ export function HomeSections() {
           <div className="grid grid-cols-2 gap-x-4 gap-y-8 sm:gap-x-6 sm:gap-y-10 lg:grid-cols-4">
             {categories.slice(0, 8).map((c, i) => (
               <Reveal key={c.slug} delay={i * 0.05}>
-                <Link href={`/category/${c.slug}`} className="group block h-full">
+                <Link prefetch={false} href={`/category/${c.slug}`} className="group block h-full">
                   <Card className="h-full gap-0 overflow-visible rounded-none border-0 bg-transparent py-0 shadow-none">
                     <div className="relative aspect-[3/4] overflow-hidden rounded-lg bg-surface-silver">
                       <Image
@@ -217,7 +217,7 @@ export function HomeSections() {
                 <h2 className="atelier-heading mt-3">Wedding collection</h2>
               </div>
               <Button asChild className="w-fit rounded-md">
-                <Link href="/category/wedding-collection">Enter the edit</Link>
+                <Link prefetch={false} href="/category/wedding-collection">Enter the edit</Link>
               </Button>
             </div>
           </Reveal>
@@ -245,7 +245,7 @@ export function HomeSections() {
                 </p>
               </div>
               <Button asChild variant="outline" className="w-fit shrink-0 self-start rounded-full bg-card px-5 sm:self-auto">
-                <Link href="/category/suits">
+                <Link prefetch={false} href="/category/suits">
                   View all suits <ArrowUpRight className="ml-1 h-4 w-4" />
                 </Link>
               </Button>
@@ -394,7 +394,7 @@ export function HomeSections() {
               fabric, fall, and the quiet confidence of gold on ivory.
             </p>
             <Button asChild variant="outline" className="mt-8 rounded-md px-6">
-              <Link href="/about">
+              <Link prefetch={false} href="/about">
                 <Play className="mr-2 h-4 w-4" />
                 Discover more
               </Link>
@@ -422,7 +422,7 @@ export function HomeSections() {
                 </p>
               </div>
               <Button asChild variant="outline" className="w-fit rounded-full bg-background/70">
-                <Link href="/shop">
+                <Link prefetch={false} href="/shop">
                   Explore the collection <ArrowUpRight className="ml-1 size-4" />
                 </Link>
               </Button>
@@ -430,7 +430,7 @@ export function HomeSections() {
           </Reveal>
           <div className="mt-8 grid auto-rows-[170px] grid-cols-2 gap-3 sm:auto-rows-[210px] lg:auto-rows-[190px] lg:grid-cols-4">
             {feedProducts.map((product, index) => (
-              <Link
+              <Link prefetch={false}
                 key={product.id}
                 href={buildProductHref(product.slug, product.images[0])}
                 className={cn(

@@ -42,8 +42,10 @@ import { SITE_PHONE_E164_PLUS, SITE_WHATSAPP_E164_DIGITS } from "@/lib/site-cont
 import { useHasMounted } from "@/hooks/use-has-mounted";
 import { useSiteSettings } from "@/hooks/use-site-settings";
 import { useShopData } from "@/hooks/use-shop-data";
+import { usePageInteraction } from "@/hooks/use-page-interaction";
 
 export function SiteHeader() {
+  const interacted = usePageInteraction();
   const storedCartCount = useCartStore((s) =>
     s.items.reduce((n, i) => n + i.quantity, 0),
   );
@@ -105,14 +107,14 @@ export function SiteHeader() {
     setAnnouncementIndex((current) => (current + 1) % announcements.length);
 
   useEffect(() => {
-    if (isAuthPage || announcements.length < 2 || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!interacted || isAuthPage || announcements.length < 2 || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const timer = window.setInterval(() => {
       setAnnouncementIndex((current) => (current + 1) % announcements.length);
     }, 3000);
 
     return () => window.clearInterval(timer);
-  }, [announcements.length, isAuthPage]);
+  }, [announcements.length, isAuthPage, interacted]);
 
   return (
     <header className="sticky top-0 z-40 w-full min-w-0 overflow-x-clip border-b border-border/70 bg-card/95 pt-[env(safe-area-inset-top,0px)] backdrop-blur-xl">
@@ -130,7 +132,7 @@ export function SiteHeader() {
             <p className="min-w-0 flex-1 text-center text-[10px] font-semibold uppercase leading-4 tracking-[0.08em] text-white sm:text-xs sm:leading-5 sm:tracking-[0.2em]">
               <span className="sm:hidden">{announcement.mobileText}</span>
               <span className="hidden sm:inline">{announcement.text}</span>{" "}
-              <Link
+              <Link prefetch={false}
                 href={announcement.href}
                 target={announcement.external ? "_blank" : undefined}
                 rel={announcement.external ? "noopener noreferrer" : undefined}
@@ -182,21 +184,21 @@ export function SiteHeader() {
               <nav className="flex min-h-0 flex-1 touch-manipulation flex-col gap-0.5 overflow-y-auto overscroll-contain px-3 py-3 pb-[max(1.25rem,env(safe-area-inset-bottom))] sm:px-4">
                 {isAuthPage ? (
                   <>
-                    <Link
+                    <Link prefetch={false}
                       href="/login"
                       className="rounded-full px-3 py-3 text-[0.78rem] font-medium uppercase tracking-[0.24em] hover:bg-muted/70 sm:py-2 sm:text-[0.72rem]"
                       onClick={() => setOpen(false)}
                     >
                       Sign in
                     </Link>
-                    <Link
+                    <Link prefetch={false}
                       href="/signup"
                       className="rounded-full px-3 py-3 text-[0.78rem] font-medium uppercase tracking-[0.24em] hover:bg-muted/70 sm:py-2 sm:text-[0.72rem]"
                       onClick={() => setOpen(false)}
                     >
                       Create account
                     </Link>
-                    <Link
+                    <Link prefetch={false}
                       href="/forgot-password"
                       className="rounded-full px-3 py-3 text-[0.78rem] uppercase tracking-[0.22em] hover:bg-muted/70 sm:py-2 sm:text-[0.72rem]"
                       onClick={() => setOpen(false)}
@@ -207,7 +209,7 @@ export function SiteHeader() {
                 ) : (
                   <>
                     {links.map((l) => (
-                      <Link
+                      <Link prefetch={false}
                         key={l.href}
                         href={l.href}
                         className="rounded-full px-3 py-3 text-[0.78rem] font-medium uppercase tracking-[0.22em] hover:bg-muted/70 sm:py-2 sm:text-[0.72rem]"
@@ -231,7 +233,7 @@ export function SiteHeader() {
                       <Search className="size-4 shrink-0" aria-hidden="true" />
                       Search
                     </button>
-                    <Link
+                    <Link prefetch={false}
                       href="/wishlist"
                       className="flex min-h-11 items-center gap-3 rounded-full px-3 py-2 text-[0.78rem] uppercase tracking-[0.2em] hover:bg-muted/70 sm:text-[0.72rem]"
                       onClick={() => setOpen(false)}
@@ -240,7 +242,7 @@ export function SiteHeader() {
                       Wishlist
                       {wishCount > 0 ? <span className="ml-auto text-xs">{wishCount}</span> : null}
                     </Link>
-                    <Link
+                    <Link prefetch={false}
                       href="/compare"
                       className="flex min-h-11 items-center gap-3 rounded-full px-3 py-2 text-[0.78rem] uppercase tracking-[0.2em] hover:bg-muted/70 sm:text-[0.72rem]"
                       onClick={() => setOpen(false)}
@@ -249,7 +251,7 @@ export function SiteHeader() {
                       Compare
                       {compareCount > 0 ? <span className="ml-auto text-xs">{compareCount}</span> : null}
                     </Link>
-                    <Link
+                    <Link prefetch={false}
                       href="/cart"
                       className="flex min-h-11 items-center gap-3 rounded-full px-3 py-2 text-[0.78rem] uppercase tracking-[0.2em] hover:bg-muted/70 sm:text-[0.72rem]"
                       onClick={() => setOpen(false)}
@@ -258,7 +260,7 @@ export function SiteHeader() {
                       Shopping bag
                       {cartCount > 0 ? <span className="ml-auto text-xs">{cartCount}</span> : null}
                     </Link>
-                    <Link
+                    <Link prefetch={false}
                       href={user ? "/profile" : "/login"}
                       className="flex min-h-11 items-center gap-3 rounded-full px-3 py-2 text-[0.78rem] uppercase tracking-[0.2em] hover:bg-muted/70 sm:text-[0.72rem]"
                       onClick={() => setOpen(false)}
@@ -271,7 +273,7 @@ export function SiteHeader() {
                       Categories
                     </p>
                     {navCategories.map((c) => (
-                      <Link
+                      <Link prefetch={false}
                         key={c.slug}
                         href={`/category/${c.slug}`}
                         className="rounded-full px-3 py-3 text-[0.78rem] uppercase tracking-[0.22em] hover:bg-muted/70 sm:py-2 sm:text-[0.72rem]"
@@ -298,7 +300,7 @@ export function SiteHeader() {
             aria-label="Primary"
           >
             <div className="flex min-w-0 items-center justify-center gap-4 2xl:gap-5">
-              <Link
+              <Link prefetch={false}
                 href={links[0]!.href}
                 aria-current={pathname === links[0]!.href ? "page" : undefined}
                 className={cn(
@@ -331,7 +333,7 @@ export function SiteHeader() {
                 >
                   <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-3">
                     {navCategories.map((c) => (
-                      <Link
+                      <Link prefetch={false}
                         key={c.slug}
                         href={`/category/${c.slug}`}
                         onClick={() => setCategoriesOpen(false)}
@@ -345,7 +347,7 @@ export function SiteHeader() {
                 </DropdownMenuContent>
               </DropdownMenu>
               {links.slice(1).map((l) => (
-                <Link
+                <Link prefetch={false}
                   key={l.href}
                   href={l.href}
                   aria-current={pathname === l.href ? "page" : undefined}
@@ -375,7 +377,7 @@ export function SiteHeader() {
                 <Search className="h-[18px] w-[18px] sm:h-5 sm:w-5" />
               </Button>
 
-              <Link
+              <Link prefetch={false}
                 href="/wishlist"
                 aria-label="Wishlist"
                 className={cn(
@@ -391,7 +393,7 @@ export function SiteHeader() {
                 ) : null}
               </Link>
 
-              <Link
+              <Link prefetch={false}
                 href="/compare"
                 aria-label="Compare"
                 className={cn(
@@ -407,7 +409,7 @@ export function SiteHeader() {
                 ) : null}
               </Link>
 
-              <Link
+              <Link prefetch={false}
                 href="/cart"
                 aria-label="Cart"
                 className={cn(

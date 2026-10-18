@@ -53,7 +53,7 @@ export function CatalogProductPanel({
           <p className="text-[9px] font-semibold uppercase tracking-[0.24em] text-primary">
             Mietaaf catalog
           </p>
-          <Link href={href} className="mt-2 block">
+          <Link prefetch={false} href={href} className="mt-2 block">
             <h3 className="font-heading text-[1.625rem] leading-[1.1] tracking-[-0.015em] text-foreground transition-colors group-hover:text-primary sm:text-3xl xl:text-[1.625rem]">
               {product.name}
             </h3>
@@ -78,7 +78,7 @@ export function CatalogProductPanel({
                 </span>
               ) : null}
             </div>
-            <Link
+            <Link prefetch={false}
               href={href}
               className="inline-flex min-h-11 w-fit items-center gap-2 text-xs font-semibold text-primary underline-offset-4 transition-colors hover:text-foreground hover:underline focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-ring"
             >
@@ -107,7 +107,7 @@ export function CatalogProductPanel({
 
         <div className={cn("flex min-w-0 flex-col justify-center text-foreground", variant === "detail" && "rounded-xl border border-border/70 bg-card p-5 sm:p-7 lg:p-8")}>
         {isListing ? (
-          <Link href={href} className="group">
+          <Link prefetch={false} href={href} className="group">
             <h2 className="font-heading text-lg font-medium tracking-[0.06em] group-hover:text-primary sm:text-xl">
               {title}
             </h2>
@@ -153,7 +153,7 @@ export function CatalogProductPanel({
         </p>
 
         {isListing ? (
-          <Link
+          <Link prefetch={false}
             href={href}
             className="mt-5 inline-block text-sm font-medium text-primary hover:underline"
           >

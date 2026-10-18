@@ -11,6 +11,7 @@ import {
 import type { User } from "firebase/auth";
 import { isFirebaseConfigured } from "@/firebase/config";
 import type { UserProfile } from "@/types";
+import { usePathname } from "next/navigation";
 
 type AuthContextValue = {
   user: User | null;
@@ -45,10 +46,13 @@ async function getFirestoreClient() {
 }
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
   const [user, setUser] = useState<User | null>(null);
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [adminClaim, setAdminClaim] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [sessionInitialized, setSessionInitialized] = useState(false);
+  const needsSession = /^\/(admin(?:\/|$)|login(?:\/|$)|signup(?:\/|$)|forgot-password(?:\/|$)|checkout(?:\/|$)|profile(?:\/|$))/.test(pathname ?? "");
 
   const firebaseReady = isFirebaseConfigured();
 
@@ -132,11 +136,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       if (cancelled) return;
       if (!auth) {
         setLoading(false);
+        setSessionInitialized(true);
         return;
       }
 
-      const { browserLocalPersistence, onAuthStateChanged, setPersistence } = authModule;
-      void setPersistence(auth, browserLocalPersistence);
+      const { onAuthStateChanged } = authModule;
       unsubscribe = onAuthStateChanged(auth, async (u) => {
         setUser(u);
         if (u) {
@@ -149,16 +153,30 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           setProfile(null);
         }
         setLoading(false);
+        setSessionInitialized(true);
       });
     }
 
-    void listenForUser();
+    let start = () => { void listenForUser().catch(() => { if (!cancelled) { setLoading(false); setSessionInitialized(true); } }); };
+    let remembered = true;
+    try { remembered = Object.keys(localStorage).some(key => key.startsWith("firebase:authUser:") && localStorage.getItem(key) !== "null"); } catch { /* Restore through the SDK if storage is restricted. */ }
+    if (needsSession || remembered) start();
+    else {
+      setLoading(false);
+      const begin = start;
+      let started = false;
+      start = () => { if (!started) { started = true; begin(); } };
+      window.addEventListener("pointerdown", start, { once: true, passive: true });
+      window.addEventListener("keydown", start, { once: true });
+    }
 
     return () => {
       cancelled = true;
       unsubscribe?.();
+      window.removeEventListener("pointerdown", start);
+      window.removeEventListener("keydown", start);
     };
-  }, [firebaseReady, loadProfile]);
+  }, [firebaseReady, loadProfile, needsSession]);
 
   const refreshProfile = useCallback(async () => {
     if (user) {
@@ -203,7 +221,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const { auth, authModule } = await getAuthClient();
     if (!auth) throw new Error("Firebase is not configured");
     const provider = new authModule.GoogleAuthProvider();
-    const cred = await authModule.signInWithPopup(auth, provider);
+    const cred = await authModule.signInWithPopup(auth, provider, authModule.browserPopupRedirectResolver);
     const { db, firestoreModule } = await getFirestoreClient();
     if (db) {
       const { doc, getDoc, serverTimestamp, setDoc } = firestoreModule;
@@ -245,7 +263,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     () => ({
       user,
       profile,
-      loading,
+      loading: firebaseReady && (loading || (needsSession && !sessionInitialized)),
       firebaseReady,
       signInEmail,
       signUpEmail,
@@ -259,6 +277,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       user,
       profile,
       loading,
+      needsSession,
+      sessionInitialized,
       firebaseReady,
       signInEmail,
       signUpEmail,

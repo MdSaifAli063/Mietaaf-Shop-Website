@@ -8,7 +8,7 @@ import { PAGE_CONTAINER, PAGE_PY } from "@/lib/layout";
 import { useShopData } from "@/hooks/use-shop-data";
 import { cn } from "@/lib/utils";
 import { buildProductHref } from "@/lib/product-links";
-import { useLookbookSettings } from "@/hooks/use-lookbook-settings";
+import { usePublicLookbookSettings as useLookbookSettings } from "@/hooks/use-public-document";
 import { selectLookbookProducts } from "@/lib/lookbook";
 
 export default function LookbookPage() {

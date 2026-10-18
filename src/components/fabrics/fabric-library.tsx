@@ -6,7 +6,7 @@ import { ArrowDownToLine, ArrowUpRight, Check, ExternalLink, Layers3, MessageCir
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import { useSiteSettings } from "@/hooks/use-site-settings";
-import { useFabricSettings } from "@/hooks/use-fabric-settings";
+import { usePublicFabricSettings as useFabricSettings } from "@/hooks/use-public-document";
 import { selectVisibleFabrics } from "@/lib/fabric-settings";
 import { FABRIC_CATALOGUES, FABRIC_FAMILIES, fabricOriginalUrl, fabricReferencePath, type FabricCatalogue, type FabricDesign, type FabricFamily } from "@/lib/data/fabrics";
 import { fabricEnquiryUrl, fabricFamilyName, filterFabricCatalogues, parseFabricReference } from "@/lib/fabrics";

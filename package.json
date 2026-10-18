@@ -17,7 +17,9 @@
     "test:lookbook": "node --test tests/lookbook.test.mjs",
     "test:fabrics": "node --test tests/fabrics.test.mjs",
     "test:fabric-admin": "node --test tests/fabric-admin.test.mjs",
+    "test:performance": "node --test tests/performance-reliability.test.mjs",
     "assets:fabrics": "node scripts/build-fabric-assets.mjs",
+    "assets:storefront": "node scripts/build-storefront-assets.mjs",
     "admin:grant": "node scripts/grant-admin.mjs"
   },
   "dependencies": {

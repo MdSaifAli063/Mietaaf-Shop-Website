@@ -17,8 +17,8 @@ export function BrandIntroduction() {
             Visit by appointment, request a doorstep consultation, and confirm your order through WhatsApp.
           </p>
           <div className="mt-4 flex flex-wrap gap-x-6 gap-y-1">
-            <Link href="/about" className="atelier-link inline-flex min-h-11 items-center gap-2 text-xs">Our atelier <ArrowUpRight className="size-3.5" aria-hidden="true" /></Link>
-            <Link href="/contact" className="atelier-link inline-flex min-h-11 items-center gap-2 text-xs">Visit us in Bangalore <ArrowUpRight className="size-3.5" aria-hidden="true" /></Link>
+            <Link prefetch={false} href="/about" className="atelier-link inline-flex min-h-11 items-center gap-2 text-xs">Our atelier <ArrowUpRight className="size-3.5" aria-hidden="true" /></Link>
+            <Link prefetch={false} href="/contact" className="atelier-link inline-flex min-h-11 items-center gap-2 text-xs">Visit us in Bangalore <ArrowUpRight className="size-3.5" aria-hidden="true" /></Link>
           </div>
         </div>
       </div>

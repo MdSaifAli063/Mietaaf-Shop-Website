@@ -45,7 +45,7 @@ export function SiteFooter() {
               ).map(({ href, label, Icon }) => {
                 const external = href.startsWith("http");
                 return (
-                  <Link
+                  <Link prefetch={false}
                     key={label}
                     href={href}
                     {...(external
@@ -61,13 +61,13 @@ export function SiteFooter() {
             </div>
           </div>
           <div className="min-w-0">
-            <h4 className="mb-4 text-xs font-semibold uppercase tracking-[0.35em] text-primary">
+            <h2 className="mb-4 text-xs font-semibold uppercase tracking-[0.35em] text-primary">
               Shop
-            </h4>
+            </h2>
             <ul className="space-y-2 text-sm text-muted-foreground">
               {FOOTER_LINKS.shop.map((l) => (
                 <li key={l.href}>
-                  <Link href={l.href} className="inline-flex min-h-9 items-center py-1 hover:text-primary">
+                  <Link prefetch={false} href={l.href} className="inline-flex min-h-9 items-center py-1 hover:text-primary">
                     {l.label}
                   </Link>
                 </li>
@@ -75,25 +75,25 @@ export function SiteFooter() {
             </ul>
           </div>
           <div className="min-w-0">
-            <h4 className="mb-4 text-xs font-semibold uppercase tracking-[0.35em] text-primary">
+            <h2 className="mb-4 text-xs font-semibold uppercase tracking-[0.35em] text-primary">
               Company
-            </h4>
+            </h2>
             <ul className="space-y-2 text-sm text-muted-foreground">
               {FOOTER_LINKS.company.map((l) => (
                 <li key={l.href}>
-                  <Link href={l.href} className="inline-flex min-h-9 items-center py-1 hover:text-primary">
+                  <Link prefetch={false} href={l.href} className="inline-flex min-h-9 items-center py-1 hover:text-primary">
                     {l.label}
                   </Link>
                 </li>
               ))}
             </ul>
-            <h4 className="mb-4 mt-8 text-xs font-semibold uppercase tracking-[0.35em] text-primary">
+            <h2 className="mb-4 mt-8 text-xs font-semibold uppercase tracking-[0.35em] text-primary">
               Legal
-            </h4>
+            </h2>
             <ul className="space-y-2 text-sm text-muted-foreground">
               {FOOTER_LINKS.legal.map((l) => (
                 <li key={l.href}>
-                  <Link href={l.href} className="inline-flex min-h-9 items-center py-1 hover:text-primary">
+                  <Link prefetch={false} href={l.href} className="inline-flex min-h-9 items-center py-1 hover:text-primary">
                     {l.label}
                   </Link>
                 </li>
@@ -101,9 +101,9 @@ export function SiteFooter() {
             </ul>
           </div>
           <div className="col-span-2 min-w-0 space-y-4 md:col-span-1">
-            <h4 className="text-xs font-semibold uppercase tracking-[0.35em] text-primary">
+            <h2 className="text-xs font-semibold uppercase tracking-[0.35em] text-primary">
               Newsletter
-            </h4>
+            </h2>
             <p className="text-sm text-muted-foreground">
               Private previews, restocks, and event invitations.
             </p>
