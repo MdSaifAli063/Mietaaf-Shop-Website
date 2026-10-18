@@ -67,7 +67,7 @@ function hookHarness(configured = true) {
     react: { useSyncExternalStore: (subscribe, getSnapshot, getServerSnapshot) => ({ subscribe, getSnapshot, getServerSnapshot }) },
     "firebase/firestore": {
       doc: (db, collection, id) => ({ collection, id }),
-      onSnapshot: (reference, next, error) => { assert.deepEqual(reference, { collection: "settings", id: "lookbook" }); callbacks = { next, error }; return () => stopped++; },
+      onSnapshot: (reference, ...handlers) => { const [next, error] = handlers.slice(-2); assert.deepEqual(reference, { collection: "settings", id: "lookbook" }); callbacks = { next, error }; return () => stopped++; },
     },
     "@/firebase/client": { getFirebaseDb: () => configured ? {} : null },
     "@/lib/lookbook": lookbook,
@@ -79,6 +79,8 @@ test("live lookbook settings handle updates, invalid data, read failure and subs
   const h = hookHarness();
   assert.deepEqual(h.store.getServerSnapshot(), { settings: null, ready: false, error: false });
   const unsubscribe = h.store.subscribe(() => {});
+  h.callbacks().next({ metadata: { fromCache: true }, exists: () => false });
+  assert.equal(h.store.getSnapshot().ready, false, "Wait for a server-confirmed snapshot before enabling publication.");
   h.callbacks().next({ exists: () => true, data: () => ({ productSlugs: ["product-4", "product-1"], updatedAt: "ignored metadata" }) });
   assert.deepEqual(h.store.getSnapshot(), { settings: { productSlugs: ["product-4", "product-1"] }, ready: true, error: false });
   h.callbacks().next({ exists: () => true, data: () => ({ productSlugs: ["same", "same"] }) });

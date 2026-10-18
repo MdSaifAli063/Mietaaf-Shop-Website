@@ -15,18 +15,27 @@ export function ClientStories() {
     if (!track) return;
 
     const updateNavigation = () => {
-      setNavigation({
+      const next = {
         previous: track.scrollLeft > 2,
         next: track.scrollLeft < track.scrollWidth - track.clientWidth - 2,
-      });
+      };
+      setNavigation(current => current.previous === next.previous && current.next === next.next ? current : next);
     };
     const observer = new ResizeObserver(updateNavigation);
-    observer.observe(track);
-    track.addEventListener("scroll", updateNavigation, { passive: true });
-    updateNavigation();
+    // Measure after this below-the-fold section approaches the viewport, rather
+    // than forcing a document-wide layout during the first hydration.
+    const visibility = new IntersectionObserver(([entry]) => {
+      if (!entry?.isIntersecting) return;
+      observer.observe(track);
+      track.addEventListener("scroll", updateNavigation, { passive: true });
+      updateNavigation();
+      visibility.disconnect();
+    }, { rootMargin: "200px" });
+    visibility.observe(track);
 
     return () => {
       observer.disconnect();
+      visibility.disconnect();
       track.removeEventListener("scroll", updateNavigation);
     };
   }, []);
@@ -76,7 +85,7 @@ export function ClientStories() {
                 <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
                   <Quote className="size-4" aria-hidden="true" />
                 </span>
-                <div className="flex gap-0.5 text-primary" aria-label="5 out of 5 stars">
+                <div role="img" className="flex gap-0.5 text-primary" aria-label="5 out of 5 stars">
                   {Array.from({ length: 5 }).map((_, index) => (
                     <Star key={index} className="size-3 fill-current sm:size-3.5" aria-hidden="true" />
                   ))}

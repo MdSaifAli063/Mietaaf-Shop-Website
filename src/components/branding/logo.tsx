@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { SITE_LOGO_URL } from "@/lib/site-logo";
+import { SITE_LOGO_URL, displayLogoUrl } from "@/lib/site-logo";
 import { bypassImageOptimization } from "@/lib/image-source";
 import { cn } from "@/lib/utils";
 import { useSettingsStore } from "@/store/settings-store";
@@ -25,7 +25,7 @@ export function Logo({
   src,
 }: LogoProps) {
   const settingsLogo = useSettingsStore((s) => s.settings.logoUrl);
-  const activeLogo = src || settingsLogo || SITE_LOGO_URL;
+  const activeLogo = displayLogoUrl(src || settingsLogo || SITE_LOGO_URL);
 
   const box =
     variant === "footer"
@@ -62,7 +62,7 @@ export function Logo({
                 ? "object-left"
                 : "object-left sm:object-center",
           )}
-          sizes={variant === "auth" ? "260px" : "(max-width: 480px) 260px, (max-width: 640px) 300px, (max-width: 1024px) 400px, 620px"}
+          sizes={variant === "footer" ? "(max-width:639px) 252px, (max-width:1023px) 300px, 220px" : variant === "drawer" ? "280px" : variant === "auth" ? "180px" : "(max-width:639px) 112px, (max-width:1279px) 220px, 192px"}
           priority={priority}
         />
       </span>

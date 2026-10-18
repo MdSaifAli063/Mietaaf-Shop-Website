@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
-import { GoogleAnalytics } from "@next/third-parties/google";
+import { DeferredAnalytics } from "@/components/analytics/deferred-analytics";
 
 import { AppProviders } from "@/providers/app-providers";
 import { FirebasePublicEnvScript } from "@/components/firebase/firebase-public-env-script";
@@ -62,7 +62,7 @@ export default function RootLayout({
         <AppProviders>{children}</AppProviders>
       </body>
 
-      {googleAnalyticsId ? <GoogleAnalytics gaId={googleAnalyticsId} /> : null}
+      {googleAnalyticsId ? <DeferredAnalytics id={googleAnalyticsId} /> : null}
     </html>
   );
 }

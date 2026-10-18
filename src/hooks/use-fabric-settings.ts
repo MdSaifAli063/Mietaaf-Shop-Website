@@ -9,6 +9,7 @@ type FabricSnapshot = { settings: FabricSettings | null; ready: boolean; error: 
 const initialSnapshot: FabricSnapshot = { settings: null, ready: false, error: false };
 let snapshot = initialSnapshot;
 let unsubscribe: Unsubscribe | null = null;
+let connectionTimeout: ReturnType<typeof setTimeout> | undefined;
 const listeners = new Set<() => void>();
 function publish(value: FabricSnapshot) { snapshot = value; listeners.forEach(listener => listener()); }
 function startSync() {
@@ -16,15 +17,18 @@ function startSync() {
   const db = getFirebaseDb();
   if (!db) { if (!snapshot.ready) publish({ settings: null, ready: true, error: false }); return; }
   if (snapshot.ready) publish({ ...snapshot, ready: false });
-  unsubscribe = onSnapshot(doc(db, "settings", "fabrics"), document => {
+  connectionTimeout = setTimeout(() => { clearTimeout(connectionTimeout); publish({ settings: snapshot.settings, ready: true, error: true }); }, 10000);
+  unsubscribe = onSnapshot(doc(db, "settings", "fabrics"), { includeMetadataChanges: true }, (document) => {
+    if (document.metadata?.fromCache) { publish({ ...snapshot, ready: false }); return; }
+    clearTimeout(connectionTimeout);
     if (!document.exists()) { publish({ settings: null, ready: true, error: false }); return; }
     const parsed = fabricSettingsSchema.safeParse(document.data());
     publish(parsed.success ? { settings: parsed.data, ready: true, error: false } : { settings: snapshot.settings, ready: true, error: true });
-  }, () => publish({ settings: snapshot.settings, ready: true, error: true }));
+  }, () => { clearTimeout(connectionTimeout); publish({ settings: snapshot.settings, ready: true, error: true }); });
 }
 function subscribe(listener: () => void) {
   listeners.add(listener); startSync();
-  return () => { listeners.delete(listener); if (!listeners.size && unsubscribe) { unsubscribe(); unsubscribe = null; } };
+  return () => { listeners.delete(listener); if (!listeners.size && unsubscribe) { unsubscribe(); clearTimeout(connectionTimeout); unsubscribe = null; } };
 }
 export function useFabricSettings(): FabricSnapshot {
   return useSyncExternalStore(subscribe, () => snapshot, () => initialSnapshot);

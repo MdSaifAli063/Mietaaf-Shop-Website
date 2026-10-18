@@ -1,24 +1,34 @@
 ﻿"use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { ArrowUpRight, Home, MapPin, Pause, Play, Ruler, SwatchBook } from "lucide-react";
 import { useShopData } from "@/hooks/use-shop-data";
-import { bypassImageOptimization } from "@/lib/image-source";
 import { Button } from "@/components/ui/button";
+import { usePageInteraction } from "@/hooks/use-page-interaction";
+import { HeroImage } from "@/components/home/hero-image";
 
 export function HeroCarousel() {
   const { banners } = useShopData();
   const [activeIndex, setActiveIndex] = useState(0);
   const [paused, setPaused] = useState(false);
+  const interacted = usePageInteraction();
+  const heroRef = useRef<HTMLElement>(null);
+  const [visible, setVisible] = useState(true);
   const activeBanner = banners[activeIndex] ?? banners[0];
 
   useEffect(() => {
-    if (banners.length < 2 || paused || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (banners.length < 2 || paused || !interacted || !visible || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const timer = window.setInterval(() => setActiveIndex((current) => (current + 1) % banners.length), 6500);
     return () => window.clearInterval(timer);
-  }, [banners.length, paused]);
+  }, [banners.length, paused, interacted, visible]);
+
+  useEffect(() => {
+    if (!heroRef.current) return;
+    const observer = new IntersectionObserver(([entry]) => setVisible(entry!.isIntersecting));
+    observer.observe(heroRef.current);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     if (activeIndex >= banners.length) setActiveIndex(0);
@@ -27,17 +37,8 @@ export function HeroCarousel() {
   if (!activeBanner) return null;
 
   return (
-    <section aria-label="Featured collections" aria-roledescription="carousel" className="storefront-hero-height relative overflow-hidden bg-[#30332d] text-white">
-      <Image
-        key={activeBanner.id}
-        src={activeBanner.image}
-        unoptimized={bypassImageOptimization(activeBanner.image)}
-        alt={activeBanner.title}
-        fill
-        priority={activeIndex === 0}
-        className="object-cover object-[68%_18%] animate-in fade-in duration-1000 sm:object-[center_18%]"
-        sizes="100vw"
-      />
+    <section ref={heroRef} aria-label="Featured collections" aria-roledescription="carousel" className="storefront-hero-height relative overflow-hidden bg-[#30332d] text-white">
+      <HeroImage key={activeBanner.id} src={activeBanner.image} alt={activeBanner.title} first={activeIndex === 0} />
       <div className="pointer-events-none absolute inset-0 bg-linear-to-r from-[#171d16]/65 via-[#171d16]/15 to-transparent" />
       <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-[#11170f]/80 via-transparent to-black/5" />
       <div className="page-container relative flex min-h-[inherit] flex-col gap-7 py-6 sm:gap-8 sm:py-8">
@@ -64,7 +65,7 @@ export function HeroCarousel() {
                 <span className="flex items-center gap-2 text-[#ad7d38]" aria-hidden="true"><SwatchBook className="size-3.5" /><Ruler className="size-3.5" /><MapPin className="size-3.5" /></span>
                 <span>Fabric · Fit · Final detail</span>
               </div>
-              <Link href="/appointment" className="group relative mt-4 inline-flex min-h-11 min-w-44 items-center justify-center gap-3 px-6 text-[11px] font-semibold uppercase tracking-[0.1em] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#795c40]">
+              <Link prefetch={false} href="/appointment" className="group relative mt-4 inline-flex min-h-11 min-w-44 items-center justify-center gap-3 px-6 text-[11px] font-semibold uppercase tracking-[0.1em] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#795c40]">
                 <span aria-hidden="true" className="absolute inset-0 translate-y-1 bg-mietaaf-charcoal [clip-path:polygon(8%_0,100%_0,92%_100%,0%_100%)]" />
                 <span aria-hidden="true" className="absolute inset-0 bg-[#e6b956] transition-colors [clip-path:polygon(8%_0,100%_0,92%_100%,0%_100%)] group-hover:bg-[#efc66c]" />
                 <span className="relative">Book now</span><ArrowUpRight className="relative size-3.5" aria-hidden="true" />
@@ -74,7 +75,7 @@ export function HeroCarousel() {
         </aside>
         <div className="mt-auto min-w-0 shrink-0">
           <div className="max-w-2xl">
-            <Link href="/appointment" className="mb-6 inline-flex min-h-11 items-center gap-2 border-b border-white/45 text-[9px] font-medium uppercase tracking-[0.16em] text-white/90 xl:hidden"><Home className="size-3.5" aria-hidden="true" /> Doorstep service available <ArrowUpRight className="size-3.5" aria-hidden="true" /></Link>
+            <Link prefetch={false} href="/appointment" className="mb-6 inline-flex min-h-11 items-center gap-2 border-b border-white/45 text-[9px] font-medium uppercase tracking-[0.16em] text-white/90 xl:hidden"><Home className="size-3.5" aria-hidden="true" /> Doorstep service available <ArrowUpRight className="size-3.5" aria-hidden="true" /></Link>
             <p className="mb-4 text-[10px] font-medium uppercase tracking-[0.32em] text-white/75">Mietaaf Couture</p>
             <h2 className="font-heading text-[clamp(2.75rem,5.2vw,4.75rem)] font-medium leading-[1.02] tracking-[-0.035em] text-mietaaf-cream">{activeBanner.title}</h2>
             {activeBanner.subtitle ? (
@@ -85,14 +86,14 @@ export function HeroCarousel() {
             <div className="mt-7 flex flex-wrap items-center gap-3 sm:gap-4">
               {activeBanner.href ? (
                 <Button asChild size="lg" className="h-12 rounded-md border-mietaaf-cream/80 bg-mietaaf-cream px-5 text-mietaaf-charcoal hover:border-mietaaf-cream hover:bg-mietaaf-cream/90 sm:px-7">
-                  <Link href={activeBanner.href}>
+                  <Link prefetch={false} href={activeBanner.href}>
                     {activeBanner.cta ?? "Explore"}
                     <ArrowUpRight className="ml-1 size-4" aria-hidden="true" />
                   </Link>
                 </Button>
               ) : null}
               <Button asChild size="lg" variant="outline" className="h-12 rounded-md border-white/40 bg-transparent px-5 text-white hover:border-white hover:bg-white/10 hover:text-white sm:px-7">
-                <Link href="/shop">Shop all</Link>
+                <Link prefetch={false} href="/shop">Shop all</Link>
               </Button>
             </div>
           </div>
@@ -109,7 +110,7 @@ export function HeroCarousel() {
                 aria-label={`Show ${banner.title}`}
                 aria-pressed={index === activeIndex}
               >
-                <span className={`h-px w-7 transition-colors ${index === activeIndex ? "bg-white" : "bg-white/30"}`} />
+                <span className={`h-px w-7 bg-white transition-opacity ${index === activeIndex ? "opacity-100" : "opacity-30"}`} />
               </button>
             ))}
           </div>

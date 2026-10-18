@@ -17,3 +17,13 @@ export const SITE_MONOGRAM_URL = "/icon.png";
 
 /** 1200 × 630 first-party card for Google, WhatsApp, and social previews. */
 export const SITE_SOCIAL_CARD_URL = "/branding/mietaaf-social-card.png";
+
+/** Same supplied artwork, resized for UI use; custom CMS logos retain their URL. */
+export function displayLogoUrl(source: string): string {
+  if (source === "/branding/mietaaf-logo.png") return "/branding/mietaaf-logo-display.webp";
+  try {
+    const url = new URL(source);
+    if (url.hostname === "ik.imagekit.io" && url.pathname.startsWith("/77nsbwefl/") && /07[_:]56[_:]57/.test(decodeURIComponent(url.pathname))) return "/branding/mietaaf-logo-display.webp";
+  } catch { /* Local/custom paths are supported unchanged. */ }
+  return source;
+}

@@ -97,13 +97,15 @@ function hookHarness(configured = true) {
   let callbacks; let stopped = 0;
   const hook = load("src/hooks/use-fabric-settings.ts", {
     react: { useSyncExternalStore: (subscribe, getSnapshot, getServerSnapshot) => ({ subscribe, getSnapshot, getServerSnapshot }) },
-    "firebase/firestore": { doc: (db, collection, id) => ({ collection, id }), onSnapshot: (reference, next, error) => { assert.deepEqual(reference, { collection: "settings", id: "fabrics" }); callbacks = { next, error }; return () => stopped++; } },
+    "firebase/firestore": { doc: (db, collection, id) => ({ collection, id }), onSnapshot: (reference, ...handlers) => { const [next, error] = handlers.slice(-2); assert.deepEqual(reference, { collection: "settings", id: "fabrics" }); callbacks = { next, error }; return () => stopped++; } },
     "@/firebase/client": { getFirebaseDb: () => configured ? {} : null }, "@/lib/fabric-settings": settings,
   });
   return { store: hook.useFabricSettings(), callbacks: () => callbacks, stopped: () => stopped };
 }
 test("realtime reads handle saved emptiness, invalid updates, errors and subscription cleanup", () => {
   const h = hookHarness(); const unsubscribe = h.store.subscribe(() => {});
+  h.callbacks().next({ metadata: { fromCache: true }, exists: () => false });
+  assert.equal(h.store.getSnapshot().ready, false, "An empty offline cache cannot authorize publishing a replacement library.");
   h.callbacks().next({ exists: () => true, data: () => ({ catalogues: [] }) });
   assert.deepEqual(h.store.getSnapshot(), { settings: { catalogues: [] }, ready: true, error: false });
   h.callbacks().next({ exists: () => true, data: () => ({ catalogues: "invalid" }) });

@@ -12,7 +12,7 @@ export function ShoppingAssurance() {
     <section aria-label="The Mietaaf shopping experience" className="border-b border-border/80 bg-surface-paper">
       <div className="page-container grid grid-cols-3 divide-x divide-border/80 py-4 sm:py-5">
         {services.map(({ icon: Icon, title, detail, href }) => (
-          <Link key={title} href={href} className="group flex min-w-0 flex-col items-center justify-center gap-2 px-2 text-center sm:flex-row sm:gap-3 sm:px-5 sm:text-left">
+          <Link prefetch={false} key={title} href={href} className="group flex min-w-0 flex-col items-center justify-center gap-2 px-2 text-center sm:flex-row sm:gap-3 sm:px-5 sm:text-left">
             <Icon className="size-4 shrink-0 stroke-[1.3] text-primary sm:size-5" aria-hidden="true" />
             <span className="min-w-0">
               <span className="block text-[9px] font-medium uppercase leading-4 tracking-[0.08em] group-hover:text-primary sm:text-[10px] sm:tracking-[0.14em]">{title}</span>

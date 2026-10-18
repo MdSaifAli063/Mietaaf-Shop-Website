@@ -1,10 +1,10 @@
 /** CLIENT STORIES PROFILE IMAGES */
 export const CLIENT_STORY_IMAGE_LINKS = {
   arjunMehta:
-    "https://cdn-icons-png.flaticon.com/512/3781/3781973.png",
+    "/portraits/client-1.webp",
   kabirSingh:
-    "https://png.pngtree.com/png-vector/20220807/ourmid/pngtree-man-avatar-wearing-gray-suit-png-image_6102786.png",
+    "/portraits/client-2.webp",
   rohanVerma:
-    "https://pngpix.com/images/file/generic-male-avatar-icon-piiktqtfffyzulft.png",
+    "/portraits/client-3.webp",
 } as const;
 

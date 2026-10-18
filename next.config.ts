@@ -11,6 +11,14 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       {
+        source: "/portraits/:path*",
+        headers: [{ key: "Cache-Control", value: "public, max-age=86400, stale-while-revalidate=604800" }],
+      },
+      {
+        source: "/hero/optimized/:path*",
+        headers: [{ key: "Cache-Control", value: "public, max-age=86400, stale-while-revalidate=604800" }],
+      },
+      {
         source: "/:path*",
         headers: [
           ...(process.env.VERCEL_ENV === "preview" || process.env.NEXT_PUBLIC_INDEXING_DISABLED === "true"

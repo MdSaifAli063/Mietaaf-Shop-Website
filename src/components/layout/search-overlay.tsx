@@ -39,6 +39,7 @@ export function SearchOverlay() {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent
         position="bottom-sheet"
+        finalFocus={() => document.querySelector<HTMLButtonElement>('header button[aria-label="Search"]')}
         className="gap-4 overflow-y-auto overscroll-contain border-border/80 bg-card/95 p-4 sm:p-6"
       >
         <DialogHeader>
